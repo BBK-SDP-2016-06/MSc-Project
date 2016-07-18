@@ -17,7 +17,9 @@ public class TrainReaderTest {
 
     @Before
     public void init() {
-        path = new File("").getAbsolutePath() + File.separator + "test_resources" + File.separator;
+        path = new File("").getAbsolutePath() + File.separator
+                + "test_resources" + File.separator
+        + "TrainReaderTest_Resources" + File.separator;
     }
 
     @Test
@@ -52,6 +54,24 @@ public class TrainReaderTest {
     public void testConstructorOnEmptyLine() {
         reader = new TrainReader(path + "emptyLine.txt");
         assertEquals(12, reader.getLineCount());
+    }
+
+    @Test
+    public void testClassCountOnEmptyFile() {
+        reader = new TrainReader(path + "empty.txt");
+        assertEquals(0, reader.getClassCount());
+    }
+
+    @Test
+    public void testClassCountOnSingleLineOfData() {
+        reader = new TrainReader(path + "single.txt");
+        assertEquals(1, reader.getClassCount());
+    }
+
+    @Test
+    public void testClassCountOnMultipleLinesOfData() {
+        reader = new TrainReader(path + "classCount.txt");
+        assertEquals(8, reader.getClassCount());
     }
 
 }
