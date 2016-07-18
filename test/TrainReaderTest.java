@@ -1,6 +1,5 @@
 import io.CSVFileReader;
 import io.TrainReader;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -31,6 +30,28 @@ public class TrainReaderTest {
     public void testsGetLineCountOnSingleLineFile() {
         reader = new TrainReader(path + "single.txt");
         assertEquals(1, reader.getLineCount());
+    }
+
+    @Test
+    public void testsGetLineCountOnMultiLineFile() {
+        reader = new TrainReader(path + "lineCount.txt");
+        assertEquals(12, reader.getLineCount());
+    }
+
+    @Test
+    public void testConstructorOnEmptyStringAtEndOfLine() {
+        reader = new TrainReader(path + "emptyEndOfLine.txt");
+    }
+
+    @Test
+    public void testConstructorOnEmptyStringInMiddleOfLine() {
+        reader = new TrainReader(path + "emptyMiddleOfLine.txt");
+    }
+
+    @Test
+    public void testConstructorOnEmptyLine() {
+        reader = new TrainReader(path + "emptyLine.txt");
+        assertEquals(12, reader.getLineCount());
     }
 
 }
