@@ -21,4 +21,10 @@ public class TrainReaderTest {
         assertEquals(0, reader.getLineCount());
     }
 
+    @Test
+    public void testsGetLineCountOnSingleLineFile() {
+        reader = new TrainReader(PATH + "single.txt");
+        assertEquals(1, reader.getLineCount());
+    }
+
 }
