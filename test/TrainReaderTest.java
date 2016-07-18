@@ -74,4 +74,23 @@ public class TrainReaderTest {
         assertEquals(8, reader.getClassCount());
     }
 
+    @Test
+    public void testTimeSeriesLengthOnEmptyFile() {
+        reader = new TrainReader(path + "empty.txt");
+        assertEquals(0, reader.getTimeSeriesLength());
+    }
+
+    @Test
+    public void testTimeSeriesLengthOnSingleFile() {
+        reader = new TrainReader(path + "single.txt");
+        assertEquals(6, reader.getTimeSeriesLength());
+    }
+
+    @Test
+    public void testTimeSeriesLengthOnMultipleLinesOfData() {
+        reader = new TrainReader(path + "lineCount.txt");
+        assertEquals(5, reader.getTimeSeriesLength());
+    }
+
+
 }
