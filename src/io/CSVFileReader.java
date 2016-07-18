@@ -21,4 +21,11 @@ public interface CSVFileReader {
      * @return the number of classes in the file
      */
     int getClassCount();
+
+    /**
+     * Retrieves the length of the individual time series samples within this file. i.e. the
+     * number of values recorded for each time series sample.
+     * @return the length of the time series in the file
+     */
+    long getTimeSeriesLength();
 }
