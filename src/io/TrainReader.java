@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,6 +48,12 @@ public class TrainReader implements CSVFileReader {
     @Override
     public int getClassCount() {
         return trainingData.size();
+    }
+
+    @Override
+    public long getTimeSeriesLength() {
+        Optional<List<List<Double>>> dataLine = trainingData.values().stream().findFirst();
+        return dataLine.isPresent() ? dataLine.get().get(0).size() : 0;
     }
 
 }
