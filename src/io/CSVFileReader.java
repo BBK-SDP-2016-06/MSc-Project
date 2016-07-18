@@ -15,4 +15,10 @@ public interface CSVFileReader {
      * @return the number of lines in this file
      */
     int getLineCount();
+
+    /**
+     * Retrieves the number of different classes that are present in the current data set.
+     * @return the number of classes in the file
+     */
+    int getClassCount();
 }
