@@ -15,9 +15,4 @@ public interface CSVFileReader {
      * @return the number of lines in this file
      */
     int getLineCount();
-
-    /**
-     * Closes the file being read.
-     */
-    void close();
 }
