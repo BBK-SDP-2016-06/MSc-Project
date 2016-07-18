@@ -1,7 +1,6 @@
 package io;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -19,8 +18,11 @@ public class TrainReader implements CSVFileReader {
     public TrainReader(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             trainingData = reader.lines()
+                    .filter(line -> !line.trim().isEmpty())
                     .map(line -> Stream.of(line.split(","))
-                            .map(s -> Double.parseDouble(s.trim()))
+                            .map(String::trim)
+                            .filter(s -> !s.isEmpty())
+                            .map(Double::parseDouble)
                             .collect(Collectors.toList()))
                     .collect(Collectors.toList());
         } catch (IOException e) {
