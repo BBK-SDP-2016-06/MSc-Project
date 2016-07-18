@@ -33,9 +33,4 @@ public class TrainReaderTest {
         assertEquals(1, reader.getLineCount());
     }
 
-    @After
-    public void closeReader() {
-        reader.close();
-    }
-
 }
