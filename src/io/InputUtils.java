@@ -1,9 +1,7 @@
 package io;
 
-import exception.InvalidDataClassException;
-import exception.InvalidTimeSeriesException;
-import exception.MissingTimeSeriesException;
-import exception.NoDataClassException;
+import exception.*;
+
 import java.util.List;
 
 /**
@@ -13,9 +11,20 @@ import java.util.List;
  */
 public class InputUtils {
 
-    public static void validateInput(List<String> input) {
-        validateDataClass(input.get(0));
-        validateTimeSeries(input);
+    public static void validateInput(List<List<String>> input) {
+        for(int i = 0; i < input.size(); i++) {
+            try {
+                validateLine(input.get(i));
+            } catch (TrainingInputException e) {
+                e.setLineNumber(i + 1);
+                throw e;
+            }
+        }
+    }
+
+    public static void validateLine(List<String> line) {
+        validateDataClass(line.get(0));
+        validateTimeSeries(line);
     }
 
     private static void validateDataClass(String input) {
