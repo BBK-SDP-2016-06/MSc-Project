@@ -156,4 +156,40 @@ public class TrainReaderTest {
         reader = new TrainReader(path + "invalidTimeSeries3.txt");
     }
 
+    @Test
+    public void missingDataClassDetectedAtCorrectLine() {
+        try {
+            reader = new TrainReader(path + "missingClassLine5.txt");
+        } catch (NoDataClassException e) {
+            assertEquals(5, e.getLineNumber());
+        }
+    }
+
+    @Test
+    public void invalidDataClassDetectedAtCorrectLine() {
+        try {
+            reader = new TrainReader(path + "invalidClassLine2.txt");
+        } catch (InvalidDataClassException e) {
+            assertEquals(2, e.getLineNumber());
+        }
+    }
+
+    @Test
+    public void missingTimeSeriesDetectedAtCorrectLine() {
+        try {
+            reader = new TrainReader(path + "missingTimeSeriesLine10.txt");
+        } catch (MissingTimeSeriesException e) {
+            assertEquals(10, e.getLineNumber());
+        }
+    }
+
+    @Test
+    public void invalidTimeSeriesDetectedAtCorrectLine() {
+        try {
+            reader = new TrainReader(path + "invalidTimeSeriesLine1.txt");
+        } catch (InvalidTimeSeriesException e) {
+            assertEquals(1, e.getLineNumber());
+        }
+    }
+
 }
