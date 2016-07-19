@@ -9,4 +9,4 @@ package exception;
  * wil throw this exception.
  * Created by George Shiangoli on 19/07/2016.
  */
-public class InvalidDataClassException extends RuntimeException {}
+public class InvalidDataClassException extends TrainingInputException {}

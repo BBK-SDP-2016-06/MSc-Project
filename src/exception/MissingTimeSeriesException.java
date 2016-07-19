@@ -5,4 +5,4 @@ package exception;
  * no corresponding time series data.
  * Created by George Shiangoli on 19/07/2016.
  */
-public class MissingTimeSeriesException extends RuntimeException {}
+public class MissingTimeSeriesException extends TrainingInputException {}

@@ -5,4 +5,4 @@ package exception;
  * a series of data readings.
  * Created by George Shiangoli on 19/07/2016.
  */
-public class NoDataClassException extends RuntimeException {}
+public class NoDataClassException extends TrainingInputException {}
