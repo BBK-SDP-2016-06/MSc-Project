@@ -26,6 +26,7 @@ public class InputUtilsTest {
                 + "validateInput.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             incorrectData = reader.lines().map(line -> (Stream.of(line.split(","))
+                                                        .filter(s -> !s.trim().isEmpty())
                                                         .collect(Collectors.toList())))
                                           .collect(Collectors.toList());
         } catch (IOException e) {
@@ -48,5 +49,10 @@ public class InputUtilsTest {
     @Test (expected = InvalidTimeSeriesException.class)
     public void incorrectTimeSeriesDataFails() {
         InputUtils.validateInput(incorrectData.get(2));
+    }
+
+    @Test (expected = NoDataClassException.class)
+    public void blankClassFails() {
+        InputUtils.validateInput(incorrectData.get(3));
     }
 }
