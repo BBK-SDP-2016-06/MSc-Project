@@ -9,6 +9,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Tests for the TrainReader class of the io package.
@@ -81,19 +85,22 @@ public class TrainReaderTest {
     @Test
     public void testTimeSeriesLengthOnEmptyFile() {
         reader = new TrainReader(path + "empty.txt");
-        assertEquals(0, reader.getTimeSeriesLength());
+        assertEquals(0, reader.getTimeSeriesLength().getLowerBound());
+        assertEquals(0, reader.getTimeSeriesLength().getUpperBound());
     }
 
     @Test
     public void testTimeSeriesLengthOnSingleFile() {
         reader = new TrainReader(path + "single.txt");
-        assertEquals(6, reader.getTimeSeriesLength());
+        assertEquals(6, reader.getTimeSeriesLength().getLowerBound());
+        assertEquals(6, reader.getTimeSeriesLength().getUpperBound());
     }
 
     @Test
     public void testTimeSeriesLengthOnMultipleLinesOfData() {
         reader = new TrainReader(path + "lineCount.txt");
-        assertEquals(5, reader.getTimeSeriesLength());
+        assertEquals(5, reader.getTimeSeriesLength().getLowerBound());
+        assertEquals(5, reader.getTimeSeriesLength().getUpperBound());
     }
 
     @Test (expected = NoDataClassException.class)
@@ -190,6 +197,13 @@ public class TrainReaderTest {
         } catch (InvalidTimeSeriesException e) {
             assertEquals(1, e.getLineNumber());
         }
+    }
+
+    @Test
+    public void differentLengthTimeSeriesIsValid() {
+        reader = new TrainReader(path + "differentLengthSeries.txt");
+        assertEquals(4, reader.getTimeSeriesLength().getLowerBound());
+        assertEquals(6, reader.getTimeSeriesLength().getUpperBound());
     }
 
 }
