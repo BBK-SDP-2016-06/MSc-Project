@@ -2,26 +2,22 @@ import exception.InvalidDataClassException;
 import exception.InvalidTimeSeriesException;
 import exception.MissingTimeSeriesException;
 import exception.NoDataClassException;
-import io.CSVFileReader;
-import io.TrainReader;
+import io.FileReader;
+import io.TrainingFileReader;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.Set;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
- * Tests for the TrainReader class of the io package.
+ * Tests for the TrainingFileReader class of the io package.
  * Created by George Shiangoli on 18/07/2016.
  */
-public class TrainReaderTest {
+public class TrainingFileReaderTest {
 
     private String path;
-    private CSVFileReader reader;
+    private FileReader reader;
 
     @Before
     public void init() {
@@ -32,141 +28,141 @@ public class TrainReaderTest {
 
     @Test
     public void testsGetLineCountOnEmptyFile() {
-        reader = new TrainReader(path + "empty.txt");
+        reader = new TrainingFileReader(path + "empty.txt");
         assertEquals(0, reader.getLineCount());
     }
 
     @Test
     public void testsGetLineCountOnSingleLineFile() {
-        reader = new TrainReader(path + "single.txt");
+        reader = new TrainingFileReader(path + "single.txt");
         assertEquals(1, reader.getLineCount());
     }
 
     @Test
     public void testsGetLineCountOnMultiLineFile() {
-        reader = new TrainReader(path + "lineCount.txt");
+        reader = new TrainingFileReader(path + "lineCount.txt");
         assertEquals(12, reader.getLineCount());
     }
 
     @Test
     public void testConstructorOnEmptyStringAtEndOfLine() {
-        reader = new TrainReader(path + "emptyEndOfLine.txt");
+        reader = new TrainingFileReader(path + "emptyEndOfLine.txt");
     }
 
     @Test
     public void testConstructorOnEmptyStringInMiddleOfLine() {
-        reader = new TrainReader(path + "emptyMiddleOfLine.txt");
+        reader = new TrainingFileReader(path + "emptyMiddleOfLine.txt");
     }
 
     @Test
     public void testConstructorOnEmptyLine() {
-        reader = new TrainReader(path + "emptyLine.txt");
+        reader = new TrainingFileReader(path + "emptyLine.txt");
         assertEquals(12, reader.getLineCount());
     }
 
     @Test
     public void testClassCountOnEmptyFile() {
-        reader = new TrainReader(path + "empty.txt");
+        reader = new TrainingFileReader(path + "empty.txt");
         assertEquals(0, reader.getClassCount());
     }
 
     @Test
     public void testClassCountOnSingleLineOfData() {
-        reader = new TrainReader(path + "single.txt");
+        reader = new TrainingFileReader(path + "single.txt");
         assertEquals(1, reader.getClassCount());
     }
 
     @Test
     public void testClassCountOnMultipleLinesOfData() {
-        reader = new TrainReader(path + "classCount.txt");
+        reader = new TrainingFileReader(path + "classCount.txt");
         assertEquals(8, reader.getClassCount());
     }
 
     @Test
     public void testTimeSeriesLengthOnEmptyFile() {
-        reader = new TrainReader(path + "empty.txt");
+        reader = new TrainingFileReader(path + "empty.txt");
         assertEquals(0, reader.getTimeSeriesLength().getLowerBound());
         assertEquals(0, reader.getTimeSeriesLength().getUpperBound());
     }
 
     @Test
     public void testTimeSeriesLengthOnSingleFile() {
-        reader = new TrainReader(path + "single.txt");
+        reader = new TrainingFileReader(path + "single.txt");
         assertEquals(6, reader.getTimeSeriesLength().getLowerBound());
         assertEquals(6, reader.getTimeSeriesLength().getUpperBound());
     }
 
     @Test
     public void testTimeSeriesLengthOnMultipleLinesOfData() {
-        reader = new TrainReader(path + "lineCount.txt");
+        reader = new TrainingFileReader(path + "lineCount.txt");
         assertEquals(5, reader.getTimeSeriesLength().getLowerBound());
         assertEquals(5, reader.getTimeSeriesLength().getUpperBound());
     }
 
     @Test (expected = NoDataClassException.class)
     public void missingClassFailsConstructor1() {
-        reader = new TrainReader(path + "missingClass1.txt");
+        reader = new TrainingFileReader(path + "missingClass1.txt");
     }
 
     @Test (expected = NoDataClassException.class)
     public void missingClassFailsConstructor2() {
-        reader = new TrainReader(path + "missingClass2.txt");
+        reader = new TrainingFileReader(path + "missingClass2.txt");
     }
 
     @Test (expected = NoDataClassException.class)
     public void missingClassFailsConstructor3() {
-        reader = new TrainReader(path + "missingClass3.txt");
+        reader = new TrainingFileReader(path + "missingClass3.txt");
     }
 
     @Test (expected = InvalidDataClassException.class)
     public void invalidClassFailsConstructor1() {
-        reader = new TrainReader(path + "invalidClass1.txt");
+        reader = new TrainingFileReader(path + "invalidClass1.txt");
     }
 
     @Test (expected = InvalidDataClassException.class)
     public void invalidClassFailsConstructor2() {
-        reader = new TrainReader(path + "invalidClass2.txt");
+        reader = new TrainingFileReader(path + "invalidClass2.txt");
     }
 
     @Test (expected = InvalidDataClassException.class)
     public void invalidClassFailsConstructor3() {
-        reader = new TrainReader(path + "invalidClass3.txt");
+        reader = new TrainingFileReader(path + "invalidClass3.txt");
     }
 
     @Test (expected = MissingTimeSeriesException.class)
     public void MissingTimeSeriesFailsConstructor1() {
-        reader = new TrainReader(path + "missingTimeSeries1.txt");
+        reader = new TrainingFileReader(path + "missingTimeSeries1.txt");
     }
 
     @Test (expected = MissingTimeSeriesException.class)
     public void MissingTimeSeriesFailsConstructor2() {
-        reader = new TrainReader(path + "missingTimeSeries2.txt");
+        reader = new TrainingFileReader(path + "missingTimeSeries2.txt");
     }
 
     @Test (expected = MissingTimeSeriesException.class)
     public void MissingTimeSeriesFailsConstructor3() {
-        reader = new TrainReader(path + "missingTimeSeries3.txt");
+        reader = new TrainingFileReader(path + "missingTimeSeries3.txt");
     }
 
     @Test (expected = InvalidTimeSeriesException.class)
     public void invalidTimeSeriesFailsConstructor1() {
-        reader = new TrainReader(path + "invalidTimeSeries1.txt");
+        reader = new TrainingFileReader(path + "invalidTimeSeries1.txt");
     }
 
     @Test (expected = InvalidTimeSeriesException.class)
     public void invalidTimeSeriesFailsConstructor2() {
-        reader = new TrainReader(path + "invalidTimeSeries2.txt");
+        reader = new TrainingFileReader(path + "invalidTimeSeries2.txt");
     }
 
     @Test (expected = InvalidTimeSeriesException.class)
     public void invalidTimeSeriesFailsConstructor3() {
-        reader = new TrainReader(path + "invalidTimeSeries3.txt");
+        reader = new TrainingFileReader(path + "invalidTimeSeries3.txt");
     }
 
     @Test
     public void missingDataClassDetectedAtCorrectLine() {
         try {
-            reader = new TrainReader(path + "missingClassLine5.txt");
+            reader = new TrainingFileReader(path + "missingClassLine5.txt");
         } catch (NoDataClassException e) {
             assertEquals(5, e.getLineNumber());
         }
@@ -175,7 +171,7 @@ public class TrainReaderTest {
     @Test
     public void invalidDataClassDetectedAtCorrectLine() {
         try {
-            reader = new TrainReader(path + "invalidClassLine2.txt");
+            reader = new TrainingFileReader(path + "invalidClassLine2.txt");
         } catch (InvalidDataClassException e) {
             assertEquals(2, e.getLineNumber());
         }
@@ -184,7 +180,7 @@ public class TrainReaderTest {
     @Test
     public void missingTimeSeriesDetectedAtCorrectLine() {
         try {
-            reader = new TrainReader(path + "missingTimeSeriesLine10.txt");
+            reader = new TrainingFileReader(path + "missingTimeSeriesLine10.txt");
         } catch (MissingTimeSeriesException e) {
             assertEquals(10, e.getLineNumber());
         }
@@ -193,7 +189,7 @@ public class TrainReaderTest {
     @Test
     public void invalidTimeSeriesDetectedAtCorrectLine() {
         try {
-            reader = new TrainReader(path + "invalidTimeSeriesLine1.txt");
+            reader = new TrainingFileReader(path + "invalidTimeSeriesLine1.txt");
         } catch (InvalidTimeSeriesException e) {
             assertEquals(1, e.getLineNumber());
         }
@@ -201,7 +197,7 @@ public class TrainReaderTest {
 
     @Test
     public void differentLengthTimeSeriesIsValid() {
-        reader = new TrainReader(path + "differentLengthSeries.txt");
+        reader = new TrainingFileReader(path + "differentLengthSeries.txt");
         assertEquals(4, reader.getTimeSeriesLength().getLowerBound());
         assertEquals(6, reader.getTimeSeriesLength().getUpperBound());
     }

@@ -3,7 +3,6 @@ package io;
 import structure.DataLengthRange;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,12 +17,12 @@ import static java.util.stream.Collectors.toList;
  * class is associated with a list of time series.
  * Created by George Shiangoli on 18/07/2016.
  */
-public class TrainReader implements CSVFileReader {
+public class TrainingFileReader implements FileReader {
 
     private Map<Integer, List<List<Double>>> trainingData;
 
-    public TrainReader(String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+    public TrainingFileReader(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new java.io.FileReader(filePath))) {
             List<List<String>> stringData = reader.lines()
                                                     .filter(line -> !line.trim().isEmpty())
                                                     .map(line -> Stream.of(line.split(","))
