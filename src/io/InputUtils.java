@@ -2,6 +2,7 @@ package io;
 
 import exception.InvalidDataClassException;
 import exception.InvalidTimeSeriesException;
+import exception.MissingTimeSeriesException;
 import exception.NoDataClassException;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class InputUtils {
     }
 
     private static void validateTimeSeries(List<String> input) {
+        if(input.size() == 1) {
+            throw new MissingTimeSeriesException();
+        }
         for(int i = 1; i < input.size(); i++) {
             try {
                 Double.parseDouble(input.get(i));
