@@ -26,10 +26,8 @@ public class InputUtilsTest {
                 + "InputUtilsTest_Resources" + File.separator
                 + "validateInput.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            incorrectData = reader.lines().map(line -> (Stream.of(line.split(","))
-                                                        .filter(s -> !s.trim().isEmpty())
-                                                        .collect(Collectors.toList())))
-                                          .collect(Collectors.toList());
+            incorrectData = reader.lines().map(line -> Stream.of(line.split(",")).filter(s -> !s.trim().isEmpty())
+                                                        .collect(Collectors.toList())).collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,26 +37,24 @@ public class InputUtilsTest {
 
     @Test (expected = NoDataClassException.class)
     public void noSpecifiedClassFails() {
-        InputUtils.validateInput(incorrectData.get(0));
+        InputUtils.validateLine(incorrectData.get(0));
     }
 
     @Test (expected = InvalidDataClassException.class)
     public void incorrectClassFormatFails() {
-        InputUtils.validateInput(incorrectData.get(1));
+        InputUtils.validateLine(incorrectData.get(1));
     }
 
     @Test (expected = InvalidTimeSeriesException.class)
     public void incorrectTimeSeriesDataFails() {
-        InputUtils.validateInput(incorrectData.get(2));
+        InputUtils.validateLine(incorrectData.get(2));
     }
 
     @Test (expected = NoDataClassException.class)
     public void blankClassFails() {
-        InputUtils.validateInput(incorrectData.get(3));
+        InputUtils.validateLine(incorrectData.get(3));
     }
 
     @Test (expected = MissingTimeSeriesException.class)
-    public void missingTimeSeriesFails() {
-        InputUtils.validateInput(incorrectData.get(4));
-    }
+    public void missingTimeSeriesFails() { InputUtils.validateLine(incorrectData.get(4)); }
 }
