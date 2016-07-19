@@ -1,5 +1,6 @@
 import exception.InvalidDataClassException;
 import exception.InvalidTimeSeriesException;
+import exception.MissingTimeSeriesException;
 import exception.NoDataClassException;
 import io.InputUtils;
 import org.junit.Before;
@@ -54,5 +55,10 @@ public class InputUtilsTest {
     @Test (expected = NoDataClassException.class)
     public void blankClassFails() {
         InputUtils.validateInput(incorrectData.get(3));
+    }
+
+    @Test (expected = MissingTimeSeriesException.class)
+    public void missingTimeSeriesFails() {
+        InputUtils.validateInput(incorrectData.get(4));
     }
 }
