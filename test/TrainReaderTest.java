@@ -1,3 +1,7 @@
+import exception.InvalidDataClassException;
+import exception.InvalidTimeSeriesException;
+import exception.MissingTimeSeriesException;
+import exception.NoDataClassException;
 import io.CSVFileReader;
 import io.TrainReader;
 import org.junit.Before;
@@ -92,5 +96,64 @@ public class TrainReaderTest {
         assertEquals(5, reader.getTimeSeriesLength());
     }
 
+    @Test (expected = NoDataClassException.class)
+    public void missingClassFailsConstructor1() {
+        reader = new TrainReader(path + "missingClass1.txt");
+    }
+
+    @Test (expected = NoDataClassException.class)
+    public void missingClassFailsConstructor2() {
+        reader = new TrainReader(path + "missingClass2.txt");
+    }
+
+    @Test (expected = NoDataClassException.class)
+    public void missingClassFailsConstructor3() {
+        reader = new TrainReader(path + "missingClass3.txt");
+    }
+
+    @Test (expected = InvalidDataClassException.class)
+    public void invalidClassFailsConstructor1() {
+        reader = new TrainReader(path + "invalidClass1.txt");
+    }
+
+    @Test (expected = InvalidDataClassException.class)
+    public void invalidClassFailsConstructor2() {
+        reader = new TrainReader(path + "invalidClass2.txt");
+    }
+
+    @Test (expected = InvalidDataClassException.class)
+    public void invalidClassFailsConstructor3() {
+        reader = new TrainReader(path + "invalidClass3.txt");
+    }
+
+    @Test (expected = MissingTimeSeriesException.class)
+    public void MissingTimeSeriesFailsConstructor1() {
+        reader = new TrainReader(path + "missingTimeSeries1.txt");
+    }
+
+    @Test (expected = MissingTimeSeriesException.class)
+    public void MissingTimeSeriesFailsConstructor2() {
+        reader = new TrainReader(path + "missingTimeSeries2.txt");
+    }
+
+    @Test (expected = MissingTimeSeriesException.class)
+    public void MissingTimeSeriesFailsConstructor3() {
+        reader = new TrainReader(path + "missingTimeSeries3.txt");
+    }
+
+    @Test (expected = InvalidTimeSeriesException.class)
+    public void invalidTimeSeriesFailsConstructor1() {
+        reader = new TrainReader(path + "invalidTimeSeries1.txt");
+    }
+
+    @Test (expected = InvalidTimeSeriesException.class)
+    public void invalidTimeSeriesFailsConstructor2() {
+        reader = new TrainReader(path + "invalidTimeSeries2.txt");
+    }
+
+    @Test (expected = InvalidTimeSeriesException.class)
+    public void invalidTimeSeriesFailsConstructor3() {
+        reader = new TrainReader(path + "invalidTimeSeries3.txt");
+    }
 
 }
