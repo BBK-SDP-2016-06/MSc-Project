@@ -1,5 +1,7 @@
 package io;
 
+import structure.DataLengthRange;
+
 /**
  * Charged with the handling of reading in the TEST and TRAINING files
  * used for classification purposes. Valid files that can be read include
@@ -23,9 +25,9 @@ public interface CSVFileReader {
     int getClassCount();
 
     /**
-     * Retrieves the length of the individual time series samples within this file. i.e. the
-     * number of values recorded for each time series sample.
-     * @return the length of the time series in the file
+     * Retrieves the length range of the individual time series samples within this file. i.e.
+     * the number of values recorded for each time series sample.
+     * @return the range of length of the time series in the file
      */
-    long getTimeSeriesLength();
+    DataLengthRange getTimeSeriesLength();
 }
