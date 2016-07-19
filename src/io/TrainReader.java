@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 /**
  * Reads a training file that is selected by the user and populates a map
@@ -23,14 +23,17 @@ public class TrainReader implements CSVFileReader {
 
     public TrainReader(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            trainingData = reader.lines()
-                    .filter(line -> !line.trim().isEmpty())
-                    .map(line -> Stream.of(line.split(","))
-                            .map(String::trim)
-                            .filter(s -> !s.isEmpty())
-                            .map(Double::parseDouble)
-                            .collect(Collectors.toList()))
-                    .collect(groupingBy(dataSample -> dataSample.remove(0).intValue()));
+            List<List<String>> stringData = reader.lines()
+                                                    .filter(line -> !line.trim().isEmpty())
+                                                    .map(line -> Stream.of(line.split(","))
+                                                            .filter(s -> !s.trim().isEmpty())
+                                                            .collect(toList()))
+                                                    .collect(toList());
+            InputUtils.validateInput(stringData);
+            trainingData = stringData.parallelStream().map(line -> line.stream()
+                                                            .map(Double::parseDouble)
+                                                            .collect(toList()))
+                                                    .collect(groupingBy(dataSample -> dataSample.remove(0).intValue()));
         } catch (IOException e) {
             e.printStackTrace();
         }
