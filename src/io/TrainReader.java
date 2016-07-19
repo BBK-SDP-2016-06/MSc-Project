@@ -1,11 +1,12 @@
 package io;
 
+import structure.DataLengthRange;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -54,9 +55,15 @@ public class TrainReader implements CSVFileReader {
     }
 
     @Override
-    public long getTimeSeriesLength() {
-        Optional<List<List<Double>>> dataLine = trainingData.values().stream().findFirst();
-        return dataLine.isPresent() ? dataLine.get().get(0).size() : 0;
+    public DataLengthRange getTimeSeriesLength() {
+        List<Long> dataLengths = trainingData.values().parallelStream()
+                                                      .flatMap(Collection::stream)
+                                                      .map(List::size)
+                                                      .map(Integer::longValue)
+                                                      .collect(Collectors.toList());
+        long lowerBound = dataLengths.parallelStream().mapToLong(Long::longValue).min().orElse(0);
+        long upperBound = dataLengths.parallelStream().mapToLong(Long::longValue).max().orElse(0);
+        return new DataLengthRange(lowerBound, upperBound);
     }
 
 }
