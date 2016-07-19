@@ -9,7 +9,7 @@ import structure.DataLengthRange;
  * of the aforementioned types result in an error.
  * Created by George Shiangoli on 18/07/2016.
  */
-public interface CSVFileReader {
+public interface FileReader {
 
     /**
      * Retrieves the number of lines within the file that is being read. This
