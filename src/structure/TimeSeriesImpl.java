@@ -24,7 +24,7 @@ public class TimeSeriesImpl implements TimeSeries {
 
     @Override
     public List<Double> getData() {
-        return null;
+        return timeSeriesData;
     }
 
     @Override
