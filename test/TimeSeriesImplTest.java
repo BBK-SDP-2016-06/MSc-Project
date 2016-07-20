@@ -39,4 +39,9 @@ public class TimeSeriesImplTest {
         TimeSeries series = new TimeSeriesImpl(1, sampleData);
         assertEquals(5, series.getDataSize());
     }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void negativeClassTypeFails() {
+        TimeSeries series = new TimeSeriesImpl(-1, sampleData);
+    }
 }
