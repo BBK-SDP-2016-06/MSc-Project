@@ -1,7 +1,7 @@
 package structure;
 import java.util.List;
 
-/**erfa
+/**
  * A class used to represent a single sample of time series data
  * within the application. This structure is comprised of an integer
  * field to represent the class of data, as well as a list of double
