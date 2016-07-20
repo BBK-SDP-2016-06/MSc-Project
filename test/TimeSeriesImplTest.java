@@ -27,4 +27,10 @@ public class TimeSeriesImplTest {
             assertEquals(i, series.getClassType());
         }
     }
+
+    @Test
+    public void testGetData() {
+        TimeSeries series = new TimeSeriesImpl(1, sampleData);
+        assertEquals(sampleData, series.getData());
+    }
 }
