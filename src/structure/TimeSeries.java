@@ -15,7 +15,7 @@ public interface TimeSeries {
      * @return the integer value representing the class type of this
      * TimeSeries.
      */
-    int getclassType();
+    int getClassType();
 
     /**
      * Retrieves the list of data values of this TimeSeries.
