@@ -42,6 +42,11 @@ public class TimeSeriesImplTest {
 
     @Test (expected = IllegalArgumentException.class)
     public void negativeClassTypeFails() {
-        TimeSeries series = new TimeSeriesImpl(-1, sampleData);
+        new TimeSeriesImpl(-1, sampleData);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void nullDataListFails() {
+        new TimeSeriesImpl(1, null);
     }
 }
