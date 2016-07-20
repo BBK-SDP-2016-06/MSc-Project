@@ -17,6 +17,9 @@ public class TimeSeriesImpl implements TimeSeries {
             throw new IllegalArgumentException("Class type cannot be a negative integer.");
         }
         setClassType(classType);
+        if (data == null) {
+            throw new IllegalArgumentException("Data list cannot be null");
+        }
         setData(data);
     }
 
