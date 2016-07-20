@@ -2,6 +2,8 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import structure.TimeSeries;
+import structure.TimeSeriesImpl;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class TimeSeriesImplTest {
     public void testGetClassType() {
         for (int i = 1; i <= 10; i++) {
             TimeSeries series = new TimeSeriesImpl(i, sampleData);
-            assertEquals(i, series.getclassType());
+            assertEquals(i, series.getClassType());
         }
     }
 }
