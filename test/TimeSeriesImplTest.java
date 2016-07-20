@@ -33,4 +33,10 @@ public class TimeSeriesImplTest {
         TimeSeries series = new TimeSeriesImpl(1, sampleData);
         assertEquals(sampleData, series.getData());
     }
+
+    @Test
+    public void testGetDataSize() {
+        TimeSeries series = new TimeSeriesImpl(1, sampleData);
+        assertEquals(5, series.getDataSize());
+    }
 }
