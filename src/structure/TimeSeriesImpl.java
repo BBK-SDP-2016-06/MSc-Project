@@ -29,7 +29,7 @@ public class TimeSeriesImpl implements TimeSeries {
 
     @Override
     public long getDataSize() {
-        return 0;
+        return timeSeriesData.size();
     }
 
     private void setClassType(int classType) {
