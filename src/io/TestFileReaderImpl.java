@@ -4,7 +4,9 @@ import structure.TimeSeries;
 import java.io.*;
 import java.io.FileReader;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.stream.Stream;
+import static java.util.stream.Collectors.*;
 
 
 /**
@@ -20,7 +22,7 @@ public class TestFileReaderImpl implements TestFileReader {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             testData = reader.lines().filter(s -> !s.isEmpty())
                                      .map(InputUtils::toTimeSeries)
-                                     .collect(Collectors.toList());
+                                     .collect(toList());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,16 +35,18 @@ public class TestFileReaderImpl implements TestFileReader {
 
     @Override
     public List<TimeSeries> getDataSet() {
-        return null;
+        return testData;
     }
 
     @Override
     public TimeSeries getTimeSeries(int index) {
-        return null;
+        return testData.get(index);
     }
 
     @Override
-    public List<TimeSeries> getTimeSeriesOfClass(int... classTypes) {
-        return null;
+    public List<TimeSeries> getTimeSeriesOfClass(Integer... classTypes) {
+        Set<Integer> classSet = Stream.of(classTypes).collect(toSet());
+        return testData.parallelStream().filter(ts -> classSet.contains(ts.getClassType()))
+                                        .collect(toList());
     }
 }
