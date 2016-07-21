@@ -1,8 +1,6 @@
 package structure;
 
 import java.util.List;
-import java.util.stream.DoubleStream;
-import static java.util.stream.DoubleStream.*;
 
 /**
  * Implementation of the TimeSeries interface. Provides a concrete class
