@@ -45,5 +45,5 @@ public interface TestFileReader {
      * @return a list of all TimeSeries objects generated from the Test input
      * file that have the required class types as labels.
      */
-    List<TimeSeries> getTimeSeriesOfClass(int... classTypes);
+    List<TimeSeries> getTimeSeriesOfClass(Integer... classTypes);
 }
