@@ -18,7 +18,8 @@ public class TestFileReaderImpl implements TestFileReader {
 
     public TestFileReaderImpl(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            testData = reader.lines().map(InputUtils::toTimeSeries)
+            testData = reader.lines().filter(s -> !s.isEmpty())
+                                     .map(InputUtils::toTimeSeries)
                                      .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();
