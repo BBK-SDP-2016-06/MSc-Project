@@ -1,6 +1,8 @@
 package structure;
 
 import java.util.List;
+import java.util.stream.DoubleStream;
+import static java.util.stream.DoubleStream.*;
 
 /**
  * Implementation of the TimeSeries interface. Provides a concrete class
@@ -44,5 +46,25 @@ public class TimeSeriesImpl implements TimeSeries {
 
     private void setData(List<Double> timeSeriesData) {
         this.timeSeriesData = timeSeriesData;
+    }
+
+    @Override
+    public String toString() {
+        return "Class Type: " + getClassType() + "\nTime Series: " + getData();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == null) return false;
+        if (!(other instanceof TimeSeries)) return false;
+        TimeSeriesImpl that = (TimeSeriesImpl)other;
+        return this.classType == that.classType && this.timeSeriesData.equals(that.timeSeriesData);
+    }
+
+    @Override
+    public int hashCode() {
+        return (int)timeSeriesData.parallelStream()
+                                  .mapToDouble(Double::doubleValue)
+                                  .sum() * classType ;
     }
 }
