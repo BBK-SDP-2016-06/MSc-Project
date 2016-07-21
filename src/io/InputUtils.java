@@ -1,8 +1,12 @@
 package io;
 
 import exception.*;
+import structure.TimeSeries;
+import structure.TimeSeriesImpl;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Utility class used to maintain useful methods regarding IO
@@ -49,5 +53,14 @@ public class InputUtils {
                 throw new InvalidTimeSeriesException();
             }
         }
+    }
+
+    public static TimeSeries toTimeSeries(String dataLine) {
+        List<String> inter = Stream.of(dataLine.split(",")).collect(Collectors.toList());
+        int classLabel = Integer.parseInt(inter.remove(0));
+        List<Double> timeSeriesData = inter.parallelStream()
+                                           .map(Double::parseDouble)
+                                           .collect(Collectors.toList());
+        return new TimeSeriesImpl(classLabel, timeSeriesData);
     }
 }
