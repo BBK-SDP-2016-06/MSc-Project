@@ -34,4 +34,16 @@ public class TestFileReaderImplTest {
         assertEquals(2, reader.getTimeSeriesCount());
     }
 
+    @Test
+    public void testGetTimeSeriesCountOnEmptyLine() {
+        reader = new TestFileReaderImpl(path + "emptyLines.txt");
+        assertEquals(5, reader.getTimeSeriesCount());
+    }
+
+    @Test
+    public void testGetTimeSeriesCountOnExample1() {
+        reader = new TestFileReaderImpl(path + "exampleTest1.txt");
+        assertEquals(5, reader.getTimeSeriesCount());
+    }
+
 }
