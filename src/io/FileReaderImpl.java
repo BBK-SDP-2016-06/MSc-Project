@@ -26,6 +26,7 @@ public abstract class FileReaderImpl implements FileReader {
     public FileReaderImpl(String filePath) {
         try (BufferedReader reader = new BufferedReader(new java.io.FileReader(filePath))) {
             timeSeriesData = reader.lines().filter(s -> !s.isEmpty())
+                    .map(String::trim)
                     .map(InputUtils::toTimeSeries)
                     .collect(toList());
         } catch (IOException e) {
