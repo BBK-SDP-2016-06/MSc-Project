@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toSet;
  */
 public abstract class FileReaderImpl implements FileReader {
 
-    private List<TimeSeries> timeSeriesData;
+    protected List<TimeSeries> timeSeriesData;
 
     public FileReaderImpl(String filePath) {
         try (BufferedReader reader = new BufferedReader(new java.io.FileReader(filePath))) {
