@@ -23,4 +23,13 @@ public class InputUtilsTest {
         assertTrue(Arrays.asList(0.5, 1.5, 2.5, 3.5, 4.5).equals(series.getData()));
     }
 
+    @Test
+    public void testConvertingStringWithoutClassLabelToTimeSeriesObject() {
+        TimeSeries series = InputUtils.toTimeSeries("0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5");
+        assert series != null;
+        assertEquals(-1, series.getClassType());
+        assertEquals(10, series.getDataSize());
+        assertTrue(Arrays.asList(0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5).equals(series.getData()));
+    }
+
 }
