@@ -1,33 +1,48 @@
 package io;
 
-import structure.DataLengthRange;
+import data.TimeSeries;
+import java.util.List;
 
 /**
- * Charged with the handling of reading in the TEST and TRAINING files
- * used for classification purposes. Valid files that can be read include
- * .csv and .txt files. An attempt to open and read from a file that isn't
- * of the aforementioned types result in an error.
- * Created by George Shiangoli on 18/07/2016.
+ * Charged with the opening and reading of input data files that are to
+ * be used in the classification process, converting the csv / txt
+ * streams into a data structure recognised as by the application.
+ * Created by George Shiangoli on 20/07/2016.
  */
 public interface FileReader {
 
     /**
-     * Retrieves the number of lines within the file that is being read. This
-     * should equate to the number of time series data records present in the file.
-     * @return the number of lines in this file
+     * Returns the number of time series data samples in the file.
+     * @return the number of time series data samples in the file.
      */
-    int getLineCount();
+    int getTimeSeriesCount();
 
     /**
-     * Retrieves the number of different classes that are present in the current data set.
-     * @return the number of classes in the file
+     * Returns the entire list of TimeSeries data objects obtained from
+     * reading the input file.
+     * @return list of TimeSeries objects representing all time series
+     * data samples within the given file.
      */
-    int getClassCount();
+    List<TimeSeries> getDataSet();
 
     /**
-     * Retrieves the length range of the individual time series samples within this file. i.e.
-     * the number of values recorded for each time series sample.
-     * @return the range of length of the time series in the file
+     * Returns a TimeSeries object from the list data structure constructed
+     * from the input file.
+     * @param index the location within the list of TimeSeries objects that
+     *              the required time series data should be extracted from.
+     * @throws IndexOutOfBoundsException if the specified index is greater
+     * than or equal to the size of the list, or a negative number.
+     * @return the TimeSeries object at the given location in the list.
      */
-    DataLengthRange getTimeSeriesLength();
+    TimeSeries getTimeSeries(int index);
+
+    /**
+     * Returns a list of TimeSeries objects that are labelled with the desired
+     * class types given.
+     * @param classTypes the list of class types that the resulting list of
+     *                   TimeSeries objects should have.
+     * @return a list of all TimeSeries objects generated from the Test input
+     * file that have the required class types as labels.
+     */
+    List<TimeSeries> getTimeSeriesOfClass(Integer... classTypes);
 }

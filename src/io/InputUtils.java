@@ -1,9 +1,7 @@
 package io;
 
-import exception.*;
-import structure.TimeSeries;
-import structure.TimeSeriesImpl;
-
+import data.TimeSeries;
+import data.TimeSeriesImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,50 +13,10 @@ import java.util.stream.Stream;
  */
 public class InputUtils {
 
-    public static void validateInput(List<List<String>> input) {
-        for(int i = 0; i < input.size(); i++) {
-            try {
-                validateLine(input.get(i));
-            } catch (TrainingInputException e) {
-                e.setLineNumber(i + 1);
-                throw e;
-            }
-        }
-    }
-
-    public static void validateLine(List<String> line) {
-        validateDataClass(line.get(0));
-        validateTimeSeries(line);
-    }
-
-    private static void validateDataClass(String input) {
-        try {
-            Double d = Double.parseDouble(input);
-            if(d != d.intValue()) {
-                throw new NoDataClassException();
-            }
-        } catch (NumberFormatException e) {
-            throw new InvalidDataClassException();
-        }
-    }
-
-    private static void validateTimeSeries(List<String> input) {
-        if(input.size() == 1) {
-            throw new MissingTimeSeriesException();
-        }
-        for(int i = 1; i < input.size(); i++) {
-            try {
-                Double.parseDouble(input.get(i));
-            } catch (NumberFormatException e) {
-                throw new InvalidTimeSeriesException();
-            }
-        }
-    }
-
     public static TimeSeries toTimeSeries(String dataLine) {
-        List<String> inter = Stream.of(dataLine.split(",")).collect(Collectors.toList());
-        int classLabel = Integer.parseInt(inter.remove(0));
-        List<Double> timeSeriesData = inter.parallelStream()
+        List<String> splitLine = Stream.of(dataLine.split(",")).collect(Collectors.toList());
+        int classLabel = Integer.parseInt(splitLine.remove(0));
+        List<Double> timeSeriesData = splitLine.parallelStream()
                                            .map(Double::parseDouble)
                                            .collect(Collectors.toList());
         return new TimeSeriesImpl(classLabel, timeSeriesData);
