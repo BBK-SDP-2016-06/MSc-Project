@@ -40,9 +40,14 @@ public class TimeSeriesImplTest {
         assertEquals(5, series.getDataSize());
     }
 
+    @Test
+    public void minusOneClassTypeDoesNotFail() {
+        new TimeSeriesImpl(-1, sampleData);
+    }
+
     @Test (expected = IllegalArgumentException.class)
     public void negativeClassTypeFails() {
-        new TimeSeriesImpl(-1, sampleData);
+        new TimeSeriesImpl(-2, sampleData);
     }
 
     @Test (expected = IllegalArgumentException.class)
