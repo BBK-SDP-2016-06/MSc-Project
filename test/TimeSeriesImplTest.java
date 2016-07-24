@@ -1,8 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import structure.TimeSeries;
-import structure.TimeSeriesImpl;
+import data.TimeSeries;
+import data.TimeSeriesImpl;
 
 import java.util.Arrays;
 import java.util.List;

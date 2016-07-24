@@ -2,8 +2,8 @@ import io.TestFileReader;
 import io.TestFileReaderImpl;
 import org.junit.Before;
 import org.junit.Test;
-import structure.TimeSeries;
-import structure.TimeSeriesImpl;
+import data.TimeSeries;
+import data.TimeSeriesImpl;
 
 import static org.junit.Assert.*;
 
