@@ -1,4 +1,4 @@
-package structure;
+package data;
 
 import java.util.List;
 

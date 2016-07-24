@@ -1,4 +1,4 @@
-package structure;
+package data;
 
 /**
  * This class represents the range of time series lengths that
