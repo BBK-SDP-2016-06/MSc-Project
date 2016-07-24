@@ -97,4 +97,39 @@ public class TestFileReaderImplTest {
         assertEquals(4, dataList3.size());
     }
 
+    @Test
+    public void testFileReaderMethodsOnUnlabelledData() {
+        reader = new TestFileReaderImpl(path + "unlabelledData.txt");
+        assertEquals(2, reader.getTimeSeriesCount());
+        assertEquals(-1, reader.getTimeSeries(0).getClassType());
+        assertEquals(-1, reader.getTimeSeries(1).getClassType());
+
+        assertEquals(8, reader.getTimeSeries(0).getDataSize());
+        assertEquals(8, reader.getTimeSeries(1).getDataSize());
+
+        assertEquals(new TimeSeriesImpl(-1, Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)), reader.getTimeSeries(0));
+        assertEquals(new TimeSeriesImpl(-1, Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)), reader.getTimeSeries(1));
+
+    }
+
+    @Test
+    public void testFileReaderMethodsOnMixtureOfLabelledAndUnlabelledData() {
+        reader = new TestFileReaderImpl(path + "labelledAndUnlabelledData.txt");
+        assertEquals(4, reader.getTimeSeriesCount());
+        assertEquals(-1, reader.getTimeSeries(0).getClassType());
+        assertEquals(-1, reader.getTimeSeries(1).getClassType());
+        assertEquals(1, reader.getTimeSeries(2).getClassType());
+        assertEquals(2, reader.getTimeSeries(3).getClassType());
+
+        assertEquals(8, reader.getTimeSeries(0).getDataSize());
+        assertEquals(8, reader.getTimeSeries(1).getDataSize());
+        assertEquals(8, reader.getTimeSeries(2).getDataSize());
+        assertEquals(8, reader.getTimeSeries(3).getDataSize());
+
+        assertEquals(new TimeSeriesImpl(-1, Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)), reader.getTimeSeries(0));
+        assertEquals(new TimeSeriesImpl(-1, Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)), reader.getTimeSeries(1));
+        assertEquals(new TimeSeriesImpl(1, Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)), reader.getTimeSeries(2));
+        assertEquals(new TimeSeriesImpl(2, Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)), reader.getTimeSeries(3));
+    }
+
 }
