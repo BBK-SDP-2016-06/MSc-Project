@@ -27,6 +27,14 @@ public class InputUtils {
         }
     }
 
+    /**
+     * Converts a String into a TimeSeries object, deciphering the class label and
+     * accompanying / corresponding time series data. Any number format error detected
+     * at this stage will result in a null object being returned.
+     * @param dataLine the line obtained from an input file to be converted.
+     * @return the converted TimeSeries object relating to the input String. Null is returned
+     * if a number formatting error is located within the input String.
+     */
     public static TimeSeries toTimeSeries(String dataLine) {
         List<String> splitLine = Stream.of(dataLine.split(",")).filter(s -> !s.isEmpty()).collect(toList());
         int classLabel = isLabelled(splitLine) ? Integer.parseInt(splitLine.remove(0)) : -1;
