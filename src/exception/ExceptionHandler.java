@@ -40,21 +40,21 @@ public class ExceptionHandler {
         }
     }
 
-    private static List<Integer> getDataErrorIndices(List<TimeSeries> input) {
+    public static List<Integer> getDataErrorIndices(List<TimeSeries> input) {
         return IntStream.range(0, input.size())
                 .filter(i -> input.get(i) == null)
                 .boxed()
                 .collect(toList());
     }
 
-    private static List<Integer> getMissingDataIndices(List<TimeSeries> input) {
+    public static List<Integer> getMissingDataIndices(List<TimeSeries> input) {
         return IntStream.range(0, input.size())
                 .filter(i -> input.get(i).getDataSize() == 0)
                 .boxed()
                 .collect(toList());
     }
 
-    private static List<Integer> getClassErrorIndices(List<TimeSeries> input) {
+    public static List<Integer> getClassErrorIndices(List<TimeSeries> input) {
         return IntStream.range(0, input.size())
                 .filter(i -> input.get(i).getClassType() == -1)
                 .boxed()
