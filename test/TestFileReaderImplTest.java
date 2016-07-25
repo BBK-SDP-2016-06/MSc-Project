@@ -1,6 +1,9 @@
+import exception.FileFormatException;
+import exception.TimeSeriesFormatException;
 import io.TestFileReader;
 import io.TestFileReaderImpl;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import data.TimeSeries;
 import data.TimeSeriesImpl;
@@ -35,10 +38,9 @@ public class TestFileReaderImplTest {
         example1.add(new TimeSeriesImpl(5, Arrays.asList(3.01, 3.02, 3.03, 3.04, 3.05, 3.06, 3.07, 3.08, 3.09)));
     }
 
-    @Test
-    public void testGetTimeSeriesCountOnEmptyFile() {
+    @Test (expected = FileFormatException.class)
+    public void readingAnEmptyFileFails() {
         reader = new TestFileReaderImpl(path + "empty.txt");
-        assertEquals(0, reader.getTimeSeriesCount());
     }
 
     @Test
@@ -132,6 +134,7 @@ public class TestFileReaderImplTest {
         assertEquals(new TimeSeriesImpl(2, Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)), reader.getTimeSeries(3));
     }
 
+    @Ignore
     @Test
     public void testSingleInvalidInputFileResultsInListOfNullValues() {
         reader = new TestFileReaderImpl(path + "singleInvalidDataLine.txt");
@@ -139,6 +142,7 @@ public class TestFileReaderImplTest {
         assertNull(reader.getTimeSeries(0));
     }
 
+    @Ignore
     @Test
     public void testMultipleInvalidInputFileResultsInListOfNullValues() {
         reader = new TestFileReaderImpl(path + "multipleInvalidDataLine.txt");
@@ -148,6 +152,26 @@ public class TestFileReaderImplTest {
         assertEquals(-1, reader.getTimeSeries(1).getClassType());
         assertEquals(3, reader.getTimeSeries(1).getDataSize());
         assertNull(reader.getTimeSeries(2));
+    }
+
+    @Test
+    public void testExceptionMessageOnInvalidInput1() {
+        try {
+            reader = new TestFileReaderImpl(path + "singleInvalidDataLine.txt");
+            fail("expected TimeSeriesFormatException for invalid input");
+        } catch (TimeSeriesFormatException e) {
+            assertEquals("Number format error on lines: 0", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testExceptionMessageOnInvalidInput2() {
+        try {
+            reader = new TestFileReaderImpl(path + "multipleInvalidDataLine.txt");
+            fail("expected TimeSeriesFormatException for invalid input");
+        } catch (TimeSeriesFormatException e) {
+            assertEquals("Number format error on lines: 0, 2", e.getMessage());
+        }
     }
 
 }
