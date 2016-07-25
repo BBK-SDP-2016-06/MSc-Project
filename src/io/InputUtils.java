@@ -2,11 +2,8 @@ package io;
 
 import data.TimeSeries;
 import data.TimeSeriesImpl;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import static java.util.stream.Collectors.*;
 import java.util.stream.Stream;
 
 /**
@@ -18,9 +15,8 @@ public class InputUtils {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private static boolean isLabelled(List<String> dataElements) {
-        if(dataElements.isEmpty()) {
-            return false;
-        } else {
+        if(dataElements.isEmpty()) return false;
+        else {
             String firstElement = dataElements.get(0);
             try {
                 Integer.parseInt(firstElement);
@@ -32,22 +28,16 @@ public class InputUtils {
     }
 
     public static TimeSeries toTimeSeries(String dataLine) {
-        List<String> splitLine = Stream.of(dataLine.split(",")).collect(Collectors.toList());
+        List<String> splitLine = Stream.of(dataLine.split(",")).filter(s -> !s.isEmpty()).collect(toList());
         int classLabel = isLabelled(splitLine) ? Integer.parseInt(splitLine.remove(0)) : -1;
         try {
             List<Double> timeSeriesData = splitLine.parallelStream()
                     .map(Double::parseDouble)
-                    .collect(Collectors.toList());
+                    .collect(toList());
             return new TimeSeriesImpl(classLabel, timeSeriesData);
         } catch (NumberFormatException e) {
             return null;
         }
     }
 
-    public static List<Integer> getErrorIndices(List<TimeSeries> input) {
-        return IntStream.range(0, input.size())
-                .filter(i -> input.get(i) == null)
-                .boxed()
-                .collect(Collectors.toList());
-    }
 }
