@@ -1,13 +1,9 @@
-import data.TimeSeriesImpl;
 import io.InputUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import data.TimeSeries;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 
 /**
@@ -72,44 +68,6 @@ public class InputUtilsTest {
     public void missingCommaInStringResultsInNullTimeSeriesObject() {
         TimeSeries series = InputUtils.toTimeSeries("1 1.5");
         assertNull(series);
-    }
-
-    @Test
-    public void testGetErrorIndicesOnEmptyDataList() {
-        List<TimeSeries> list = new ArrayList<>();
-        List<Integer> errorIndices = InputUtils.getErrorIndices(list);
-        assertEquals(0, errorIndices.size());
-    }
-
-    @Test
-    public void testGetErrorIndicesOnCorrectDataList() {
-        List<TimeSeries> list = new ArrayList<>();
-        list.add(new TimeSeriesImpl(1, Arrays.asList(0.2, 0.4, 0.6, 0.8)));
-        list.add(new TimeSeriesImpl(2, Arrays.asList(0.1, 0.3, 0.5, 0.7)));
-        List<Integer> errorIndices = InputUtils.getErrorIndices(list);
-        assertEquals(0, errorIndices.size());
-    }
-
-    @Test
-    public void testGetErrorIndicesOnSingleInvalidEntry() {
-        List<TimeSeries> list = new ArrayList<>();
-        list.add(null);
-        List<Integer> errorIndices = InputUtils.getErrorIndices(list);
-        assertEquals(Collections.singletonList(0), errorIndices);
-    }
-
-    @Test
-    public void testGetErrorIndicesOnMultipleInvalidEntry() {
-        List<TimeSeries> list = new ArrayList<>();
-        list.add(new TimeSeriesImpl(1, Arrays.asList(0.2, 0.4, 0.6, 0.8)));
-        list.add(new TimeSeriesImpl(2, Arrays.asList(0.1, 0.3, 0.5, 0.7)));
-        list.add(null);
-        list.add(new TimeSeriesImpl(1, Arrays.asList(0.2, 0.4, 0.6, 0.8)));
-        list.add(null);
-        list.add(null);
-        list.add(new TimeSeriesImpl(2, Arrays.asList(0.1, 0.3, 0.5, 0.7)));
-        List<Integer> errorIndices = InputUtils.getErrorIndices(list);
-        assertEquals(Arrays.asList(2, 4, 5), errorIndices);
     }
 
 }
