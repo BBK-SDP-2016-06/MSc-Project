@@ -1,6 +1,7 @@
 package preprocessing;
 
 import java.util.List;
+import static java.lang.Math.*;
 
 /**
  * A utility class to hold various mathematical functions to help with the
@@ -17,5 +18,17 @@ public class MathUtils {
      */
     public static double getMean(List<Double> inputData) {
         return (inputData.parallelStream().mapToDouble(d -> d).sum()) / inputData.size();
+    }
+
+    /**
+     * Calculates the standard deviation of the input data. The result expresses
+     * how much the values of the input data differ from the mean value of the data
+     * as a whole.
+     * @param inputData the list of values
+     * @return the standard deviation of the list of values.
+     */
+    public static double getStandardDeviation(List<Double> inputData) {
+        double mean = getMean(inputData);
+        return sqrt(inputData.parallelStream().mapToDouble(d -> pow((d - mean), 2)).sum() / inputData.size());
     }
 }
