@@ -10,6 +10,6 @@ import java.util.List;
 public class MathUtils {
 
     public static double getMean(List<Double> inputData) {
-        return 0.0;
+        return (inputData.parallelStream().mapToDouble(d -> d).sum()) / inputData.size();
     }
 }
