@@ -60,4 +60,23 @@ public class ExceptionHandler {
                 .boxed()
                 .collect(toList());
     }
+
+    public static void validatePAAFrames(long frames) {
+        if (frames <= 0) {
+            throw new IllegalArgumentException("Frame count cannot be 0 or negative.");
+        }
+    }
+
+    public static void assessDataSize(List<Double> data, long frames) {
+        if (data == null) {
+            throw new IllegalArgumentException("Data list cannot be null.");
+        }
+        if (data.isEmpty()) {
+            throw new IllegalArgumentException("Data list cannot be empty");
+        }
+        if (frames > data.size()) {
+            throw new IllegalArgumentException("Frame count (" + frames + ") " +
+                    "cannot be greater than size of data sample (" + data.size() + ").");
+        }
+    }
 }
