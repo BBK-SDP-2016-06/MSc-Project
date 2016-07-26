@@ -25,13 +25,13 @@ public class PiecewiseAggregateApproximator implements DataApproximator {
 
     @Override
     public List<Double> reduce(List<Double> input) {
-        ExceptionHandler.assessDataSize(input, frames);
+        ExceptionHandler.assessDataSize(input, getFrames());
         List<List<Double>> partitionedData = partitionData(input);
         return partitionedData.parallelStream().map(MathUtils::getMean).collect(Collectors.toList());
     }
 
     public long getFrames() {
-        return frames;
+        return this.frames;
     }
 
     public void setFrames(long frames) {
@@ -39,7 +39,7 @@ public class PiecewiseAggregateApproximator implements DataApproximator {
     }
 
     private List<List<Double>> partitionData(List<Double> input) {
-        double partitionSize = input.size() / frames;
+        double partitionSize = input.size() / getFrames();
         List<List<Double>> output = new ArrayList<>();
         List<Double> partition = new ArrayList<>();
         double remainingPartition = partitionSize;
