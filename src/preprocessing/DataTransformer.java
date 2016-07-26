@@ -1,9 +1,20 @@
 package preprocessing;
 
+import java.util.List;
+
 /**
- * Uses a DimensionReducer (optional) and a Discretizer to
- * transform a TimeSeries object data structure to a symbolised
- * String format (Word) that can be analysed by the Classifier.
- * Created by George Shiangoli on 22/07/2016.
+ * Transforms a time series data set into new approximation in order to
+ * both reduce the dimensionality and complexity. This enables further
+ * pre-processing and classification to be performed with greater efficiency.
+ * Created by George Shiangoli on 25/07/2016.
  */
-public interface DataTransformer {}
+public interface DataTransformer {
+
+    /**
+     * Reduces an input time series data set in terms of dimensionality and
+     * complexity, while still aiming to retain its structural characteristics.
+     * @param input the input time series data sample.
+     * @return a reduced approximation of the input data sample.
+     */
+    List<Double> reduce(List<Double> input);
+}
