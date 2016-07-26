@@ -8,7 +8,7 @@ import java.util.List;
  * pre-processing and classification to be performed with greater efficiency.
  * Created by George Shiangoli on 25/07/2016.
  */
-public interface DataTransformer {
+public interface DataApproximator {
 
     /**
      * Reduces an input time series data set in terms of dimensionality and

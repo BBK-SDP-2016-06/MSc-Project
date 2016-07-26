@@ -13,13 +13,13 @@ import static preprocessing.MathUtils.*;
  */
 public abstract class Discretizer {
 
-    protected DataTransformer transformer;
+    protected DataApproximator approximator;
     protected DataConverter converter;
     private TimeSeries rawData;
 
-    public Discretizer(TimeSeries rawData, DataTransformer transformer, DataConverter converter) {
+    public Discretizer(TimeSeries rawData, DataApproximator approximator, DataConverter converter) {
         this.rawData = rawData;
-        this.transformer = transformer;
+        this.approximator = approximator;
         this.converter = converter;
     }
 
@@ -33,7 +33,7 @@ public abstract class Discretizer {
      */
     public final String executeDiscretization() {
         List<Double> normalizedData = normalizeData(rawData.getData());
-        List<Double> transformedData = transformer.reduce(normalizedData);
+        List<Double> transformedData = approximator.reduce(normalizedData);
         return converter.toWord(transformedData);
     }
 
