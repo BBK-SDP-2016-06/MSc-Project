@@ -79,4 +79,13 @@ public class ExceptionHandler {
                     "cannot be greater than size of data sample (" + data.size() + ").");
         }
     }
+
+    public static void validateAlphabetSize(int alphabetSize) {
+        if (alphabetSize < 2) {
+            throw new IllegalArgumentException("Alphabet size of " + alphabetSize + " is too small.");
+        }
+        if (alphabetSize > 26) {
+            throw new IllegalArgumentException("Alphabet size of " + alphabetSize + " is too large.");
+        }
+    }
 }
