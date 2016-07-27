@@ -75,4 +75,32 @@ public class PAATest {
         List<Double> approx = approximator.reduce(Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0));
         assertEquals(Arrays.asList(1.7143, 4.0, 6.2857), approx);
     }
+
+    @Test
+    public void testReduceMethodOnSampleData1() {
+        DataApproximator approximator = new PiecewiseAggregateApproximator(7);
+        List<Double> approx = approximator.reduce(Arrays.asList(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34));
+        assertEquals(Arrays.asList(2.2293, 5.6193, 8.6733, 6.36, 4.5833, 3.3313, 1.45), approx);
+    }
+
+    @Test
+    public void testReduceMethodOnSampleData2() {
+        DataApproximator approximator = new PiecewiseAggregateApproximator(9);
+        List<Double> approx = approximator.reduce(Arrays.asList(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34));
+        assertEquals(Arrays.asList(2.144, 3.63, 8.26, 8.28, 6.27, 4.65, 4.45, 2.392, 1.384), approx);
+    }
+
+    @Test
+    public void testReduceMethodOnSampleData3() {
+        DataApproximator approximator = new PiecewiseAggregateApproximator(15);
+        List<Double> approx = approximator.reduce(Arrays.asList(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34));
+        assertEquals(Arrays.asList(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34), approx);
+    }
+
+    @Test
+    public void testReduceMethodOnSampleData4() {
+        DataApproximator approximator = new PiecewiseAggregateApproximator(1);
+        List<Double> approx = approximator.reduce(Arrays.asList(2.02, 2.33, 2.99, 6.85, 9.20, 8.80, 7.50, 6.00, 5.85, 3.85, 4.85, 3.85, 2.22, 1.45, 1.34));
+        assertEquals(Collections.singletonList(4.6067), approx);
+    }
 }
