@@ -19,6 +19,7 @@ public class GaussianSplitConverter implements DataConverter {
 
     private int alphabetSize;
     private List<Double> breakPoints;
+    private static final int ASCII_DEC_OFFSET = 97;
 
     public GaussianSplitConverter(int alphabetSize) {
         ExceptionHandler.validateAlphabetSize(alphabetSize);
@@ -30,7 +31,8 @@ public class GaussianSplitConverter implements DataConverter {
 
     @Override
     public String toWord(List<Double> input) {
-        return null;
+        return input.parallelStream().map(this::toSymbol)
+                .reduce("", (char1, char2) -> char1 + char2);
     }
 
     private int getAlphabetSize() {
@@ -46,7 +48,12 @@ public class GaussianSplitConverter implements DataConverter {
         return MathUtils.to5SF(zValue);
     }
 
-    private char toSymbol(double inputValue) {
-        return '?';
+    private String toSymbol(double inputValue) {
+        for (int i = 0; i < breakPoints.size(); i++) {
+            if (inputValue < breakPoints.get(i)) {
+                return String.valueOf((char)(i + ASCII_DEC_OFFSET));
+            }
+        }
+        return String.valueOf((char)(breakPoints.size() + ASCII_DEC_OFFSET));
     }
 }
