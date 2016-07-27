@@ -221,4 +221,54 @@ public class MathUtilsTest {
                 1.0266,1.0323,0.99822,1.0058,0.97503,0.98456,0.98805,0.9686)));
     }
 
+    @Test
+    public void test5SFOnZero() {
+        assertEquals(0, MathUtils.to5SF(0), 0);
+    }
+
+    @Test
+    public void test5SFOnSingleDigit() {
+        assertEquals(1, MathUtils.to5SF(1), 0);
+    }
+
+    @Test
+    public void test5SFOn5DecimalPlaces() {
+        assertEquals(0.12345, MathUtils.to5SF(0.12345), 0);
+    }
+
+    @Test
+    public void test5SFOn5DigitNumber() {
+        assertEquals(12345, MathUtils.to5SF(12345), 0);
+    }
+
+    @Test
+    public void test5SFOnLargeDecimal() {
+        assertEquals(0.12346, MathUtils.to5SF(0.123456), 0);
+    }
+
+    @Test
+    public void test5SFOnLargeNumber() {
+        assertEquals(1253100, MathUtils.to5SF(1253112), 0);
+    }
+
+    @Test
+    public void test5SFOnSmallDecimal() {
+        assertEquals(0.12, MathUtils.to5SF(0.12), 0);
+    }
+
+    @Test
+    public void test5SFOnDecimalWithZeros() {
+        assertEquals(0.0053461, MathUtils.to5SF(0.0053460789333333), 0);
+    }
+
+    @Test
+    public void test5SFOnDecimalNumber() {
+        assertEquals(10.005, MathUtils.to5SF(10.0053460789333333), 0);
+    }
+
+    @Test
+    public void test5SFOnNegativeDecimalNumber() {
+        assertEquals(-10.005, MathUtils.to5SF(-10.0053460789333333), 0);
+    }
+
 }
