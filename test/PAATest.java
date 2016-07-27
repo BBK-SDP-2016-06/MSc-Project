@@ -1,9 +1,7 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 import preprocessing.DataApproximator;
-import preprocessing.MathUtils;
 import preprocessing.PiecewiseAggregateApproximator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
