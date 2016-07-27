@@ -1,6 +1,7 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 import preprocessing.DataApproximator;
+import preprocessing.MathUtils;
 import preprocessing.PiecewiseAggregateApproximator;
 
 import java.util.ArrayList;
@@ -66,5 +67,12 @@ public class PAATest {
         DataApproximator approximator = new PiecewiseAggregateApproximator(3);
         List<Double> approx =  approximator.reduce(Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5));
         assertEquals(Arrays.asList(2.0, 4.0, 6.0), approx);
+    }
+
+    @Test
+    public void testReduceMethodWithNonDivisibleFrameCount() {
+        DataApproximator approximator = new PiecewiseAggregateApproximator(3);
+        List<Double> approx = approximator.reduce(Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0));
+        assertEquals(Arrays.asList(1.7143, 4.0, 6.2857), approx);
     }
 }
