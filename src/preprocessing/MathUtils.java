@@ -1,5 +1,7 @@
 package preprocessing;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 import static java.lang.Math.*;
 
@@ -43,5 +45,15 @@ public class MathUtils {
     public static boolean isZNormalized(List<Double> inputData) {
         return abs(getMean(inputData) - 0) < ERROR_MARGIN
                 && abs(getStandardDeviation(inputData) - 1) < ERROR_MARGIN;
+    }
+
+    /**
+     * Rounds a double value to 5 significant figures.
+     * @param input double value.
+     * @return the input double value rounded to 5 significant figures.
+     */
+    public static double to5SF(double input) {
+        BigDecimal bd = new BigDecimal(input);
+        return bd.round(new MathContext(5)).doubleValue();
     }
 }
