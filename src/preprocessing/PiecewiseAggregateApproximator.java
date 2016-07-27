@@ -27,7 +27,11 @@ public class PiecewiseAggregateApproximator implements DataApproximator {
     public List<Double> reduce(List<Double> input) {
         ExceptionHandler.assessDataSize(input, getFrames());
         List<List<Double>> partitionedData = partitionData(input);
-        return partitionedData.parallelStream().map(MathUtils::getMean).collect(Collectors.toList());
+        return partitionedData.parallelStream()
+                .map(values -> values.parallelStream()
+                        .mapToDouble(d -> d).sum() / (input.size() / frames))
+                .map(MathUtils::to5SF)
+                .collect(Collectors.toList());
     }
 
     public long getFrames() {
