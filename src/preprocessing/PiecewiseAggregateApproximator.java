@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 public class PiecewiseAggregateApproximator implements DataApproximator {
 
     private long frames;
+    private double partitionSize;
+    private static final double ERROR_MARGIN = 0.00001;
 
     public PiecewiseAggregateApproximator(long frames) {
         ExceptionHandler.validatePAAFrames(frames);
@@ -26,10 +28,12 @@ public class PiecewiseAggregateApproximator implements DataApproximator {
     @Override
     public List<Double> reduce(List<Double> input) {
         ExceptionHandler.assessDataSize(input, getFrames());
+        partitionSize = (double)input.size() / (double)getFrames();
+
         List<List<Double>> partitionedData = partitionData(input);
         return partitionedData.parallelStream()
                 .map(values -> values.parallelStream()
-                        .mapToDouble(d -> d).sum() / (input.size() / frames))
+                        .mapToDouble(d -> d).sum() / partitionSize)
                 .map(MathUtils::to5SF)
                 .collect(Collectors.toList());
     }
@@ -43,23 +47,22 @@ public class PiecewiseAggregateApproximator implements DataApproximator {
     }
 
     private List<List<Double>> partitionData(List<Double> input) {
-        double partitionSize = input.size() / getFrames();
         List<List<Double>> output = new ArrayList<>();
         List<Double> partition = new ArrayList<>();
         double remainingPartition = partitionSize;
 
         for (Double d : input) {
 
-            if (remainingPartition > 1) {
+            if (remainingPartition - 1.0 > ERROR_MARGIN) {
                 partition.add(d);
                 remainingPartition--;
             } else {
                 partition.add(d * remainingPartition);
                 output.add(partition);
-                double leftOver = 1 - remainingPartition;
+                double leftOver = 1.0 - remainingPartition;
                 partition = new ArrayList<>();
 
-                if (leftOver > 0) {
+                if (leftOver > ERROR_MARGIN) {
                     partition.add(d * leftOver);
                     remainingPartition = partitionSize - leftOver;
                 } else {
