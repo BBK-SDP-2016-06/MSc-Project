@@ -67,16 +67,12 @@ public class ExceptionHandler {
         }
     }
 
-    public static void assessDataSize(List<Double> data, long frames) {
+    public static void assessDataSize(List<Double> data) {
         if (data == null) {
-            throw new IllegalArgumentException("Data list cannot be null.");
+            throw new IllegalArgumentException("Data list cannot be null");
         }
         if (data.isEmpty()) {
             throw new IllegalArgumentException("Data list cannot be empty");
-        }
-        if (frames > data.size()) {
-            throw new IllegalArgumentException("Frame count (" + frames + ") " +
-                    "cannot be greater than size of data sample (" + data.size() + ").");
         }
     }
 
@@ -86,6 +82,13 @@ public class ExceptionHandler {
         }
         if (alphabetSize > 26) {
             throw new IllegalArgumentException("Alphabet size of " + alphabetSize + " is too large.");
+        }
+    }
+
+    public static void compareFrameAndDataSize(List<Double> data, long frames) {
+        if (frames > data.size()) {
+            throw new IllegalArgumentException("Frame count (" + frames + ") " +
+                    "cannot be greater than size of data sample (" + data.size() + ").");
         }
     }
 }
