@@ -134,26 +134,6 @@ public class TestFileReaderImplTest {
         assertEquals(new TimeSeriesImpl(2, Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)), reader.getTimeSeries(3));
     }
 
-    @Ignore
-    @Test
-    public void testSingleInvalidInputFileResultsInListOfNullValues() {
-        reader = new TestFileReaderImpl(path + "singleInvalidDataLine.txt");
-        assertEquals(1, reader.getTimeSeriesCount());
-        assertNull(reader.getTimeSeries(0));
-    }
-
-    @Ignore
-    @Test
-    public void testMultipleInvalidInputFileResultsInListOfNullValues() {
-        reader = new TestFileReaderImpl(path + "multipleInvalidDataLine.txt");
-        assertEquals(3, reader.getTimeSeriesCount());
-        assertNull(reader.getTimeSeries(0));
-        assertNotNull(reader.getTimeSeries(1));
-        assertEquals(-1, reader.getTimeSeries(1).getClassType());
-        assertEquals(3, reader.getTimeSeries(1).getDataSize());
-        assertNull(reader.getTimeSeries(2));
-    }
-
     @Test
     public void testExceptionMessageOnInvalidInput1() {
         try {
