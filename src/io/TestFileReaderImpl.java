@@ -1,6 +1,6 @@
 package io;
 
-import exception.ExceptionHandler;
+import exception.IOExceptionHandler;
 
 /**
  * Reads a test file as specified by the application user, converting the data lines into
@@ -11,6 +11,6 @@ public class TestFileReaderImpl extends FileReaderImpl implements TestFileReader
 
     public TestFileReaderImpl(String filePath) {
         super(filePath);
-        ExceptionHandler.validateTestTimeSeries(timeSeriesData);
+        IOExceptionHandler.validateTestTimeSeries(timeSeriesData);
     }
 }

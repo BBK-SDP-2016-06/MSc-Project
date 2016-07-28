@@ -1,6 +1,6 @@
 package preprocessing;
 
-import exception.ExceptionHandler;
+import exception.PPExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,13 +21,13 @@ public class PiecewiseAggregateApproximator implements DataApproximator {
     private static final double ERROR_MARGIN = 0.00001;
 
     public PiecewiseAggregateApproximator(long frames) {
-        ExceptionHandler.validatePAAFrames(frames);
+        PPExceptionHandler.validatePAAFrames(frames);
         setFrames(frames);
     }
 
     @Override
     public List<Double> reduce(List<Double> input) {
-        ExceptionHandler.compareFrameAndDataSize(input, getFrames());
+        PPExceptionHandler.compareFrameAndDataSize(input, getFrames());
         partitionSize = (double)input.size() / (double)getFrames();
 
         List<List<Double>> partitionedData = partitionData(input);

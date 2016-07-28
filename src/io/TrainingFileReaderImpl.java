@@ -2,7 +2,7 @@ package io;
 
 import data.DataLengthRange;
 import data.TimeSeries;
-import exception.ExceptionHandler;
+import exception.IOExceptionHandler;
 
 /**
  * Reads a training file as specified by the application user, converting the data lines into
@@ -13,7 +13,7 @@ public class TrainingFileReaderImpl extends FileReaderImpl implements TrainingFi
 
     public TrainingFileReaderImpl(String filePath) {
         super(filePath);
-        ExceptionHandler.validateTrainingTimeSeries(timeSeriesData);
+        IOExceptionHandler.validateTrainingTimeSeries(timeSeriesData);
     }
 
     /**

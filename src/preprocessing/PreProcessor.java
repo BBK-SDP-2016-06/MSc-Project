@@ -1,7 +1,7 @@
 package preprocessing;
 
 import data.TimeSeries;
-import exception.ExceptionHandler;
+import exception.PPExceptionHandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,11 +27,11 @@ public abstract class PreProcessor {
      * first whether the data is in a z-normalized form and performing the normalization process if
      * required. The normalized data is then transformed into a reduced format before being converting
      * into a String word ready for the classification process.
-     * @param rawData the TimeSeries object upon which the discretization proces will take place.
+     * @param rawData the TimeSeries object upon which the discretization process will take place.
      * @return a String representation of the time series data of this TimeSeries object.
      */
     public final String discretize(TimeSeries rawData) {
-        ExceptionHandler.assessDataSize(rawData.getData());
+        PPExceptionHandler.assessData(rawData);
         List<Double> normalizedData = normalizeData(rawData.getData());
         List<Double> transformedData = approximator.reduce(normalizedData);
         return converter.toWord(transformedData);

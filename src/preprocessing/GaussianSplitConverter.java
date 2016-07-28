@@ -1,6 +1,6 @@
 package preprocessing;
 
-import exception.ExceptionHandler;
+import exception.PPExceptionHandler;
 import org.apache.commons.math3.special.Erf;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class GaussianSplitConverter implements DataConverter {
     private static final int ASCII_DEC_OFFSET = 97;
 
     public GaussianSplitConverter(int alphabetSize) {
-        ExceptionHandler.validateAlphabetSize(alphabetSize);
+        PPExceptionHandler.validateAlphabetSize(alphabetSize);
         setAlphabetSize(alphabetSize);
         breakPoints = IntStream.range(1, getAlphabetSize())
                 .mapToDouble(i -> getZValue((double)i / (double) getAlphabetSize()))

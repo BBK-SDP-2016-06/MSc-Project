@@ -54,7 +54,7 @@ public class SAXPreProcessorTest {
         new SAXPreProcessor(1, 27);
     }
 
-    @Test (expected = NullPointerException.class)
+    @Test (expected = IllegalArgumentException.class)
     public void testDiscretizeWithNullArgumentFails() {
         PreProcessor processor = new SAXPreProcessor(1, 2);
         processor.discretize(null);
