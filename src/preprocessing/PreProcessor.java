@@ -13,8 +13,8 @@ import static preprocessing.MathUtils.*;
  */
 public abstract class PreProcessor {
 
-    protected DataApproximator approximator;
-    protected DataConverter converter;
+    private DataApproximator approximator;
+    private DataConverter converter;
 
     public PreProcessor(DataApproximator approximator, DataConverter converter) {
         this.approximator = approximator;
