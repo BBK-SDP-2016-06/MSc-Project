@@ -27,7 +27,7 @@ public class PiecewiseAggregateApproximator implements DataApproximator {
 
     @Override
     public List<Double> reduce(List<Double> input) {
-        ExceptionHandler.assessDataSize(input, getFrames());
+        ExceptionHandler.compareFrameAndDataSize(input, getFrames());
         partitionSize = (double)input.size() / (double)getFrames();
 
         List<List<Double>> partitionedData = partitionData(input);
