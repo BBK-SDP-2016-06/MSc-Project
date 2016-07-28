@@ -6,10 +6,10 @@ import java.util.stream.IntStream;
 import static java.util.stream.Collectors.toList;
 
 /**
- * Decouples exception handling and throwing of exceptions from main application.
+ * Decouples exception handling and throwing of exceptions from io package.
  * Created by George Shiangoli on 25/07/2016.
  */
-public class ExceptionHandler {
+public class IOExceptionHandler {
 
     private static void validateTimeSeries(List<TimeSeries> input) {
         if(input.isEmpty()) {
@@ -59,36 +59,5 @@ public class ExceptionHandler {
                 .filter(i -> input.get(i).getClassType() == -1)
                 .boxed()
                 .collect(toList());
-    }
-
-    public static void validatePAAFrames(long frames) {
-        if (frames <= 0) {
-            throw new IllegalArgumentException("Frame count cannot be 0 or negative.");
-        }
-    }
-
-    public static void assessDataSize(List<Double> data) {
-        if (data == null) {
-            throw new IllegalArgumentException("Data list cannot be null");
-        }
-        if (data.isEmpty()) {
-            throw new IllegalArgumentException("Data list cannot be empty");
-        }
-    }
-
-    public static void validateAlphabetSize(int alphabetSize) {
-        if (alphabetSize < 2) {
-            throw new IllegalArgumentException("Alphabet size of " + alphabetSize + " is too small.");
-        }
-        if (alphabetSize > 26) {
-            throw new IllegalArgumentException("Alphabet size of " + alphabetSize + " is too large.");
-        }
-    }
-
-    public static void compareFrameAndDataSize(List<Double> data, long frames) {
-        if (frames > data.size()) {
-            throw new IllegalArgumentException("Frame count (" + frames + ") " +
-                    "cannot be greater than size of data sample (" + data.size() + ").");
-        }
     }
 }
