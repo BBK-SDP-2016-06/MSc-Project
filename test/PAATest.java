@@ -34,7 +34,7 @@ public class PAATest {
         }
     }
 
-    @Test (expected = IllegalArgumentException.class)
+    @Test (expected = NullPointerException.class)
     public void reduceMethodFailsIfListIsNull() {
         DataApproximator approximator = new PiecewiseAggregateApproximator(5);
         approximator.reduce(null);
