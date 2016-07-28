@@ -50,4 +50,10 @@ public class GaussianSplitConverterTest {
         assertEquals("ab", converter.toWord(Arrays.asList(-0.01, 0.0)));
     }
 
+    @Test
+    public void testToWordWithLargeAlphabet() {
+        DataConverter converter = new GaussianSplitConverter(10);
+        assertEquals("hfffebe", converter.toWord(Arrays.asList(0.57876,0.043931,0.026004,0.016075,-0.029599,-1.0434,-0.11122)));
+    }
+
 }
