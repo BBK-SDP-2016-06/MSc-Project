@@ -39,6 +39,11 @@ public class MathUtilsTest {
     }
 
     @Test
+    public void testGetMeanOnMultipleValues3() {
+        assertEquals(5.2833, MathUtils.getMean(Arrays.asList(3.0, 3.0, 4.0, 5.0, 7.5, 9.2)), 0.0001);
+    }
+
+    @Test
     public void testGetMeanOnTimeSeriesSample() {
         assertEquals(0.0, MathUtils.getMean(Arrays.asList(
                 1.0052,0.9826,0.9228,0.91275,0.94833,0.9109,0.87829,0.84618,0.83354,0.80056,0.79394,
