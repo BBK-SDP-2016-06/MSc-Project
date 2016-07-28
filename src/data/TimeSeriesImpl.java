@@ -1,5 +1,7 @@
 package data;
 
+import exception.DataExceptionHandler;
+
 import java.util.List;
 
 /**
@@ -14,13 +16,8 @@ public class TimeSeriesImpl implements TimeSeries {
     private List<Double> timeSeriesData;
 
     public TimeSeriesImpl(int classType, List<Double> data) {
-        if (classType < -1) {
-            throw new IllegalArgumentException("Class type cannot be a negative integer.");
-        }
+        DataExceptionHandler.validateTimeSeries(classType, data);
         setClassType(classType);
-        if (data == null) {
-            throw new IllegalArgumentException("Data list cannot be null");
-        }
         setData(data);
     }
 

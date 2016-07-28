@@ -1,5 +1,7 @@
 package data;
 
+import exception.DataExceptionHandler;
+
 /**
  * Implementation of the DiscretizedData interface. Provides a concrete class
  * to hold information about individual data approximations and their class type.
@@ -12,6 +14,7 @@ public class DiscretizedDataImpl implements DiscretizedData {
     private String word;
 
     public DiscretizedDataImpl(int classType, String word) {
+        DataExceptionHandler.validateDiscretizedData(classType, word);
         setClassType(classType);
         setWord(word);
     }
