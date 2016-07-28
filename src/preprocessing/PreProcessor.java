@@ -1,6 +1,7 @@
 package preprocessing;
 
 import data.TimeSeries;
+import exception.ExceptionHandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ public abstract class PreProcessor {
      * @return a String representation of the time series data of this TimeSeries object.
      */
     public final String discretize(TimeSeries rawData) {
+        ExceptionHandler.assessDataSize(rawData.getData());
         List<Double> normalizedData = normalizeData(rawData.getData());
         List<Double> transformedData = approximator.reduce(normalizedData);
         return converter.toWord(transformedData);
