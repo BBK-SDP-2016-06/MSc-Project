@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * Converts an approximation produced by a DataApproximator to a word (String)
- * representation to be used by the SimilarityMeasure within the classifier.
+ * representation to be used by the DistanceMeasure within the classifier.
  * Created by George Shiangoli on 25/07/2016.
  */
 public interface DataConverter {
