@@ -32,6 +32,6 @@ public class NeighbourDistance {
 
     @Override
     public String toString() {
-        return "Class Type: " + classType + " :: Distance: " + distance;
+        return classType + "-" + distance;
     }
 }
