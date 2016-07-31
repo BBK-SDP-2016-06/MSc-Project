@@ -1,13 +1,13 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
-import preprocessing.DataConverter;
-import preprocessing.GaussianSplitConverter;
+import model.preprocessing.DataConverter;
+import model.preprocessing.GaussianSplitConverter;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 /**
- * Tests for the GaussianSplitConverter class of the preprocessing package.
+ * Tests for the GaussianSplitConverter class of the model.preprocessing package.
  * Created by George Shiangoli on 27/07/2016.
  */
 public class GaussianSplitConverterTest {

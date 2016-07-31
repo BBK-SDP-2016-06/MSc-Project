@@ -1,16 +1,16 @@
-import data.TimeSeries;
-import data.TimeSeriesImpl;
+import model.data.TimeSeries;
+import model.data.TimeSeriesImpl;
 import org.junit.Before;
 import org.junit.Test;
-import preprocessing.PreProcessor;
-import preprocessing.SAXPreProcessor;
+import model.preprocessing.PreProcessor;
+import model.preprocessing.SAXPreProcessor;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 /**
- * Testing class for the SaxPreProcessor class of the preprocessing package.
+ * Testing class for the SaxPreProcessor class of the model.preprocessing package.
  * Created by George Shiangoli on 28/07/2016.
  */
 public class SAXPreProcessorTest {

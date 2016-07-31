@@ -1,5 +1,5 @@
 import org.junit.Test;
-import preprocessing.MathUtils;
+import model.preprocessing.MathUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.Collections;
 import static org.junit.Assert.*;
 
 /**
- * Tests for the MathUtils class of the preprocessing package.
+ * Tests for the MathUtils class of the model.preprocessing package.
  * Created by George Shiangoli on 26/07/2016.
  */
 public class MathUtilsTest {

@@ -1,6 +1,6 @@
-import data.TimeSeries;
-import data.TimeSeriesImpl;
-import exception.IOExceptionHandler;
+import model.data.TimeSeries;
+import model.data.TimeSeriesImpl;
+import model.exception.IOExceptionHandler;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Tests for the IOExceptionHandler class of the exception package.
+ * Tests for the IOExceptionHandler class of the model.exception package.
  * Created by George Shiangoli on 25/07/2016.
  */
 public class ExceptionHandlerTest {

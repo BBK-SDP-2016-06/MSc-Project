@@ -1,9 +1,9 @@
-import classification.ClassificationResult;
-import classification.Classifier;
-import classification.KNNClassifier;
-import classification.LCSMeasure;
-import data.DiscretizedData;
-import data.DiscretizedDataImpl;
+import model.classification.ClassificationResult;
+import model.classification.Classifier;
+import model.classification.KNNClassifier;
+import model.classification.LCSMeasure;
+import model.data.DiscretizedData;
+import model.data.DiscretizedDataImpl;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Tests for the KNNClassifier class of the classification package.
+ * Tests for the KNNClassifier class of the model.classification package.
  * Created by George Shiangoli on 30/07/2016.
  */
 public class KNNClassifierTest {

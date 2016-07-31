@@ -1,10 +1,10 @@
-import data.DiscretizedData;
-import data.DiscretizedDataImpl;
+import model.data.DiscretizedData;
+import model.data.DiscretizedDataImpl;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Testing class to assert behaviour of DiscretizedData data structure.
+ * Testing class to assert behaviour of DiscretizedData model.data structure.
  * Created by George Shiangoli on 28/07/2016.
  */
 public class DiscretizedDataImplTest {

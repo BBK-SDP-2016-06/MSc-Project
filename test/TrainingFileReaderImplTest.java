@@ -1,8 +1,8 @@
-import exception.ClassTypeException;
-import exception.FileFormatException;
-import exception.TimeSeriesFormatException;
-import io.TrainingFileReader;
-import io.TrainingFileReaderImpl;
+import model.exception.ClassTypeException;
+import model.exception.FileFormatException;
+import model.exception.TimeSeriesFormatException;
+import model.io.TrainingFileReader;
+import model.io.TrainingFileReaderImpl;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 /**
- * Tests for the TrainingFileReaderImpl class of the io package.
+ * Tests for the TrainingFileReaderImpl class of the model.io package.
  * Created by George Shiangoli on 25/07/2016.
  */
 public class TrainingFileReaderImplTest {
