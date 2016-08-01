@@ -31,4 +31,12 @@ public class DataLengthRange {
         this.upperBound = upperBound;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(lowerBound);
+        if (lowerBound == upperBound) return sb.toString();
+        else return sb.append(" - ").append(upperBound).toString();
+    }
+
 }
