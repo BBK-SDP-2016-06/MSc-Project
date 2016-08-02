@@ -45,4 +45,11 @@ public interface FileReader {
      * file that have the required class types as labels.
      */
     List<TimeSeries> getTimeSeriesOfClass(Integer... classTypes);
+
+    /**
+     * Returns a list of integers that represent all class types within the
+     * given file.
+     * @return the class types of the data set.
+     */
+    List<Integer> getClassList();
 }
