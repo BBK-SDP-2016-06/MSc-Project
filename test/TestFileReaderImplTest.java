@@ -153,4 +153,22 @@ public class TestFileReaderImplTest {
         }
     }
 
+    @Test
+    public void testGetClassListOnUnlabelledData() {
+        reader = new TestFileReaderImpl(path + "unlabelledData.txt");
+        assertEquals(new ArrayList<>(), reader.getClassList());
+    }
+
+    @Test
+    public void testGetClassOnLabelledAndUnlabelledData() {
+        reader = new TestFileReaderImpl(path + "labelledAndUnlabelledData.txt");
+        assertEquals(Arrays.asList(1, 2), reader.getClassList());
+    }
+
+    @Test
+    public void testGetClassOnExampleTest() {
+        reader = new TestFileReaderImpl(path + "exampleTest1.txt");
+        assertEquals(Arrays.asList(1, 2, 3, 5), reader.getClassList());
+    }
+
 }

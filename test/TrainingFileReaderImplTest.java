@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.Arrays;
 
 /**
  * Tests for the TrainingFileReaderImpl class of the model.io package.
@@ -142,5 +143,23 @@ public class TrainingFileReaderImplTest {
         } catch (ClassTypeException e) {
             assertEquals("Unlabelled time series on lines: 5, 11", e.getMessage());
         }
+    }
+
+    @Test
+    public void testGetClassListOnValidMultiLine1() {
+        reader = new TrainingFileReaderImpl(path + "validMultiline1.txt");
+        assertEquals(Arrays.asList(0, 1), reader.getClassList());
+    }
+
+    @Test
+    public void testGetClassListOnValidMultiLine2() {
+        reader = new TrainingFileReaderImpl(path + "validMultiline2.txt");
+        assertEquals(Arrays.asList(1, 2, 3, 4), reader.getClassList());
+    }
+
+    @Test
+    public void testGetClassListOnValidMultiLine3() {
+        reader = new TrainingFileReaderImpl(path + "validMultiline3.txt");
+        assertEquals(Arrays.asList(1, 2, 3, 4), reader.getClassList());
     }
 }
