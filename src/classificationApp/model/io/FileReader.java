@@ -52,4 +52,11 @@ public interface FileReader {
      * @return the class types of the data set.
      */
     List<Integer> getClassList();
+
+    /**
+     * Returns whether or not the time series data within this object is z-
+     * normalised or not.
+     * @return true if the time series data is z-normalised, false otherwise.
+     */
+    boolean isNormalized(int index);
 }

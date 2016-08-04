@@ -1,6 +1,7 @@
 package classificationApp.model.io;
 
 import classificationApp.model.data.TimeSeries;
+import classificationApp.model.preprocessing.MathUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -75,5 +76,13 @@ public abstract class FileReaderImpl implements FileReader {
     public List<Integer> getClassList() {
         return timeSeriesData.parallelStream().map(TimeSeries::getClassType)
                 .filter(i -> i != -1).distinct().sorted().collect(toList());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public boolean isNormalized(int index) {
+        return MathUtils.isZNormalized(getTimeSeries(index).getData());
     }
 }
