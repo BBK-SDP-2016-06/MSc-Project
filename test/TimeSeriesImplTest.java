@@ -1,14 +1,14 @@
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import model.data.TimeSeries;
-import model.data.TimeSeriesImpl;
+import classificationApp.model.data.TimeSeries;
+import classificationApp.model.data.TimeSeriesImpl;
 
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Testing class to assert behaviour of TimeSeries model.data structure.
+ * Testing class to assert behaviour of TimeSeries classificationApp.model.data structure.
  * Created by George Shiangoli on 20/07/2016.
  */
 public class TimeSeriesImplTest {

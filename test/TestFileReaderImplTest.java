@@ -1,11 +1,11 @@
-import model.exception.FileFormatException;
-import model.exception.TimeSeriesFormatException;
-import model.io.TestFileReader;
-import model.io.TestFileReaderImpl;
+import classificationApp.model.exception.FileFormatException;
+import classificationApp.model.exception.TimeSeriesFormatException;
+import classificationApp.model.io.TestFileReader;
+import classificationApp.model.io.TestFileReaderImpl;
 import org.junit.Before;
 import org.junit.Test;
-import model.data.TimeSeries;
-import model.data.TimeSeriesImpl;
+import classificationApp.model.data.TimeSeries;
+import classificationApp.model.data.TimeSeriesImpl;
 
 import static org.junit.Assert.*;
 
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Tests for the TestFileReaderImpl class of the model.io package.
+ * Tests for the TestFileReaderImpl class of the classificationApp.model.io package.
  * Created by George Shiangoli on 20/07/2016.
  */
 public class TestFileReaderImplTest {

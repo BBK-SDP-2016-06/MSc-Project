@@ -1,13 +1,13 @@
-import model.io.InputUtils;
+import classificationApp.model.io.InputUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import model.data.TimeSeries;
+import classificationApp.model.data.TimeSeries;
 
 import java.util.Arrays;
 
 
 /**
- * Tests for the static methods of the InputUtils class of the model.io package.
+ * Tests for the static methods of the InputUtils class of the classificationApp.model.io package.
  * Created by George Shiangoli on 19/07/2016.
  */
 public class InputUtilsTest {

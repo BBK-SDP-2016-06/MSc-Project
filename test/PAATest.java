@@ -1,14 +1,14 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
-import model.preprocessing.DataApproximator;
-import model.preprocessing.PiecewiseAggregateApproximator;
+import classificationApp.model.preprocessing.DataApproximator;
+import classificationApp.model.preprocessing.PiecewiseAggregateApproximator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Tests for the PiecewiseAggregateApproximator class of the model.preprocessing package.
+ * Tests for the PiecewiseAggregateApproximator class of the classificationApp.model.preprocessing package.
  * Created by George Shiangoli on 26/07/2016.
  */
 public class PAATest {
@@ -30,7 +30,7 @@ public class PAATest {
             approximator.reduce(Arrays.asList(0.5, 1.5, 2.5, 3.5));
             fail("expected IllegalArgumentException with invalid input");
         } catch (IllegalArgumentException e) {
-            assertEquals("Frame count (5) cannot be greater than size of model.data sample (4).", e.getMessage());
+            assertEquals("Frame count (5) cannot be greater than size of classificationApp.model.data sample (4).", e.getMessage());
         }
     }
 

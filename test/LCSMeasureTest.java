@@ -1,11 +1,11 @@
-import model.classification.DistanceMeasure;
-import model.classification.LCSMeasure;
+import classificationApp.model.classification.DistanceMeasure;
+import classificationApp.model.classification.LCSMeasure;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Tests for the LCSMeasure class of the model.classification package.
+ * Tests for the LCSMeasure class of the classificationApp.model.classification package.
  * Created by George Shiangoli on 30/07/2016.
  */
 public class LCSMeasureTest {

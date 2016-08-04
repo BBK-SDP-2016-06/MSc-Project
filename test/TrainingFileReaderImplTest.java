@@ -1,8 +1,8 @@
-import model.exception.ClassTypeException;
-import model.exception.FileFormatException;
-import model.exception.TimeSeriesFormatException;
-import model.io.TrainingFileReader;
-import model.io.TrainingFileReaderImpl;
+import classificationApp.model.exception.ClassTypeException;
+import classificationApp.model.exception.FileFormatException;
+import classificationApp.model.exception.TimeSeriesFormatException;
+import classificationApp.model.io.TrainingFileReader;
+import classificationApp.model.io.TrainingFileReaderImpl;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.Arrays;
 
 /**
- * Tests for the TrainingFileReaderImpl class of the model.io package.
+ * Tests for the TrainingFileReaderImpl class of the classificationApp.model.io package.
  * Created by George Shiangoli on 25/07/2016.
  */
 public class TrainingFileReaderImplTest {
