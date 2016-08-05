@@ -74,7 +74,7 @@ public class LoadTrainingController {
                 TrainingFileReader trainingData = new TrainingFileReaderImpl(selectedFile.getAbsolutePath());
                 showTrainingDataStatistics(trainingData, selectedFile);
             } catch (ClassTypeException | FileFormatException | TimeSeriesFormatException e) {
-                ControllerUtils.showTrainingFileAlert(e);
+                ControllerUtils.showFileAlert("Testing File Error", e);
                 showTrainingDataStatistics(null, null);
             }
         }

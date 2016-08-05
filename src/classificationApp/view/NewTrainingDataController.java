@@ -72,7 +72,7 @@ public class NewTrainingDataController {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassTypeException | FileFormatException | TimeSeriesFormatException e) {
-                ControllerUtils.showTrainingFileAlert(e);
+                ControllerUtils.showFileAlert("Training File Error", e);
                 loadTrainingController.showTrainingDataStatistics(null, null);
             }
         }
@@ -89,7 +89,7 @@ public class NewTrainingDataController {
             ControllerUtils.showValidDataDialogue();
             okButton.setDisable(false);
         } catch (ClassTypeException | FileFormatException | TimeSeriesFormatException e) {
-            ControllerUtils.showTrainingFileAlert(e);
+            ControllerUtils.showFileAlert("Training File Error", e);
         }
     }
 }
