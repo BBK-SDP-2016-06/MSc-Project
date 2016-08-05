@@ -110,7 +110,7 @@ public class MathUtilsTest {
 
     @Test
     public void testGetStandardDeviationOnMultipleValues() {
-        assertEquals(1.118, MathUtils.getStandardDeviation(Arrays.asList(1.0, 2.0, 3.0, 4.0)), 0.0001);
+        assertEquals(1.29099, MathUtils.getStandardDeviation(Arrays.asList(1.0, 2.0, 3.0, 4.0)), 0.0001);
     }
 
     @Test

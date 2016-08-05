@@ -32,8 +32,14 @@ public class MathUtils {
      * @return the standard deviation of the list of values.
      */
     public static double getStandardDeviation(List<Double> inputData) {
-        double mean = getMean(inputData);
-        return sqrt(inputData.parallelStream().mapToDouble(d -> pow((d - mean), 2)).sum() / inputData.size());
+        if (inputData.isEmpty()) {
+            return Double.NaN;
+        } else if (inputData.size() == 1) {
+            return 0;
+        } else {
+            double mean = getMean(inputData);
+            return sqrt(inputData.parallelStream().mapToDouble(d -> pow((d - mean), 2)).sum() / (inputData.size() - 1));
+        }
     }
 
     /**
