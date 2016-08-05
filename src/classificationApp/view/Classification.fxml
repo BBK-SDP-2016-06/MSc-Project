@@ -17,6 +17,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.ClassificationController">
@@ -35,7 +36,7 @@
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
                   <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="New" />
-                  <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Import" />
+                  <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImport" text="Import" />
                   <Button disable="true" layoutX="10.0" layoutY="35.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Clear" />
                   <Separator prefWidth="200.0" />
                   <Button layoutX="10.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Settings" />
@@ -111,26 +112,30 @@
                   <Insets bottom="10.0" />
                </padding>
             </VBox>
-            <TableView fx:id="testTable" minWidth="10.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
-              <columns>
-                <TableColumn fx:id="index" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Index" />
-                <TableColumn fx:id="classLabel" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Class" />
-                  <TableColumn fx:id="timeSeries" minWidth="100.0" prefWidth="205.0" text="Time Series Data" />
-              </columns>
+            <StackPane GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="10.0" top="10.0" />
                </GridPane.margin>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
+               <children>
+                  <TableView fx:id="testTable">
+                    <columns>
+                      <TableColumn fx:id="index" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Index" />
+                      <TableColumn fx:id="classLabel" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Class" />
+                        <TableColumn fx:id="timeSeries" maxWidth="1.7976931348623157E308" prefWidth="535.0" text="Time Series Data" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </StackPane>
             <AnchorPane maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" styleClass="anchorPaneStats" stylesheets="@Border.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <VBox maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <children>
-                        <LineChart legendVisible="false" prefHeight="387.0" prefWidth="373.0">
+                        <LineChart fx:id="testLineChart" legendVisible="false" prefHeight="387.0" prefWidth="373.0">
                           <xAxis>
-                            <CategoryAxis side="BOTTOM" />
+                            <NumberAxis side="BOTTOM" />
                           </xAxis>
                           <yAxis>
                             <NumberAxis side="LEFT" />
@@ -138,10 +143,10 @@
                         </LineChart>
                         <GridPane>
                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.66668701171875" minWidth="10.0" prefWidth="74.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.33334350585938" minWidth="10.0" prefWidth="76.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="83.0" minWidth="10.0" prefWidth="41.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="75.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.66668701171875" minWidth="10.0" prefWidth="70.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.33334350585938" minWidth="10.0" prefWidth="81.0" />
+                            <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="55.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints vgrow="NEVER" />
@@ -155,6 +160,12 @@
                               <Label text="Value Range:" GridPane.columnIndex="2" />
                               <Label text="SD:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                               <Label text="Mean:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <Label fx:id="testClassLabel" GridPane.columnIndex="1" />
+                              <Label fx:id="testLength" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="testNormalized" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label fx:id="testValueRange" GridPane.columnIndex="3" />
+                              <Label fx:id="testSD" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <Label fx:id="testMean" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
                      </children>
