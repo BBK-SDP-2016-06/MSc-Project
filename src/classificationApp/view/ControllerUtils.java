@@ -16,9 +16,9 @@ import java.io.IOException;
  */
 public class ControllerUtils {
 
-    public static void showTrainingFileAlert(Exception e) {
+    public static void showFileAlert(String title, Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Training File Error");
+        alert.setTitle(title);
         alert.setHeaderText(e.getClass().getSimpleName());
         alert.setContentText(e.getMessage());
         alert.showAndWait();
