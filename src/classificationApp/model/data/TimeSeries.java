@@ -29,4 +29,16 @@ public interface TimeSeries {
      * values.
      */
     long getDataSize();
+
+    /**
+     * Returns the maximum value of the time series data.
+     * @return the maximum value of this time series data.
+     */
+    double getMax();
+
+    /**
+     * Returns the minimum value of the time series data.
+     * @return the minimum value of this time series data.
+     */
+    double getMin();
 }

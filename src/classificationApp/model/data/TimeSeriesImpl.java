@@ -45,6 +45,22 @@ public class TimeSeriesImpl implements TimeSeries {
     }
 
     @Override
+    public double getMax() {
+        return timeSeriesData.parallelStream()
+                .mapToDouble(d -> d)
+                .max()
+                .orElse(0);
+    }
+
+    @Override
+    public double getMin() {
+        return timeSeriesData.parallelStream()
+                .mapToDouble(d -> d)
+                .min()
+                .orElse(0);
+    }
+
+    @Override
     public String toString() {
         return "Class Type: " + getClassType() + "\nTime Series: " + getData();
     }
