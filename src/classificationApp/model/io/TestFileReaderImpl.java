@@ -14,21 +14,4 @@ public class TestFileReaderImpl extends FileReaderImpl implements TestFileReader
         IOExceptionHandler.validateTestTimeSeries(timeSeriesData);
     }
 
-    @Override
-    public double getMax(int index) {
-        return timeSeriesData.get(index).getData()
-                .parallelStream()
-                .mapToDouble(d -> d)
-                .max()
-                .orElse(0);
-    }
-
-    @Override
-    public double getMin(int index) {
-        return timeSeriesData.get(index).getData()
-                .parallelStream()
-                .mapToDouble(d -> d)
-                .min()
-                .orElse(0);
-    }
 }
