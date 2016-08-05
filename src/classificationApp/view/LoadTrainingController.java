@@ -93,6 +93,7 @@ public class LoadTrainingController {
 
     public void showTrainingDataStatistics(TrainingFileReader trainingData, File trainingFile) {
         mainApp.setTrainingData(trainingData);
+        mainApp.setTrainingFile(trainingFile);
         setLoadButton();
         if (mainApp.getTrainingData() == null) {
             fileName.setText("-");
