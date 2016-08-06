@@ -1,14 +1,17 @@
 package classificationApp.view;
 
 import classificationApp.MainApp;
+import classificationApp.model.io.TestFileReader;
+import classificationApp.model.io.TrainingFileReader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Utility class to hold methods used by all controller classes.
@@ -44,6 +47,20 @@ public class ControllerUtils {
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void checkClassLabels(TrainingFileReader train, TestFileReader test) {
+        Set<Integer> trainClasses = train.getClassList().parallelStream().collect(Collectors.toSet());
+        Set<Integer> testClasses = test.getClassList().parallelStream().collect(Collectors.toSet());
+        testClasses.removeAll(trainClasses);
+        if (!testClasses.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Test File Warning");
+            alert.setHeaderText("Test Class Label Warning");
+            alert.setContentText("Test data contains class labels: " + testClasses.toString()
+                    + "\n which are not found in Training data.");
+            alert.showAndWait();
         }
     }
 }
