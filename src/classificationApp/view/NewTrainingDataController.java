@@ -10,8 +10,6 @@ import classificationApp.model.io.TrainingFileReaderImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,7 +21,7 @@ import java.util.stream.Stream;
  * Controller class for the NewTrainingData layout.
  * Created by George Shiangoli on 03/08/2016.
  */
-public class NewTrainingDataController {
+public class NewTrainingDataController extends NewDataController {
 
     @FXML
     private TextArea textArea;
@@ -31,18 +29,13 @@ public class NewTrainingDataController {
     @FXML
     private Button okButton;
 
-    private Stage dialogueStage;
     private LoadTrainingController loadTrainingController;
 
     @FXML
-    public void initialize() {
+    private void initialize() {
         textArea.textProperty().addListener((observable, oldValue, newValue) -> {
             okButton.setDisable(true);
         });
-    }
-
-    public void setDialogueStage(Stage dialogueStage) {
-        this.dialogueStage = dialogueStage;
     }
 
     public void setLoadTrainingController(LoadTrainingController loadTrainingController) {
@@ -56,11 +49,7 @@ public class NewTrainingDataController {
 
     @FXML
     private void handleOK() {
-        FileChooser fc = new FileChooser();
-        FileChooser.ExtensionFilter txtFilter = new FileChooser.ExtensionFilter("TEXT files (*.txt)", "*.txt");
-        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
-        fc.getExtensionFilters().addAll(txtFilter, csvFilter);
-        File file = fc.showSaveDialog(dialogueStage);
+        File file = getSelectedFile();
         if (file != null) {
             try {
                 FileWriter writer = new FileWriter(file);
