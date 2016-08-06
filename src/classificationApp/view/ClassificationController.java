@@ -10,15 +10,20 @@ import classificationApp.model.io.TestFileReader;
 import classificationApp.model.io.TestFileReaderImpl;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Controller class for the classification mode layout.
@@ -72,6 +77,9 @@ public class ClassificationController {
     private Label testMean;
 
     @FXML
+    private Button clearButton;
+
+    @FXML
     private Button exit;
 
     private ObservableList<TimeSeries> tableData;
@@ -86,6 +94,9 @@ public class ClassificationController {
         showStatistics(null);
         testTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showStatistics(newValue));
         testTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        tableData = FXCollections.observableArrayList();
+        tableData.addListener((ListChangeListener<TimeSeries>) c -> clearButton.setDisable(tableData.isEmpty()));
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -100,6 +111,22 @@ public class ClassificationController {
     }
 
     @FXML
+    private void handleNew() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/NewTestData.fxml"));
+        Stage stage = ControllerUtils.getModalStage("New Test Data");
+        try {
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+            NewTestDataController newDataController = loader.getController();
+            newDataController.setDialogueStage(stage);
+            newDataController.setClassificationController(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleImport() {
         FileChooser fc = new FileChooser();
         FileChooser.ExtensionFilter txtFilter = new FileChooser.ExtensionFilter("TEXT files (*.txt)", "*.txt");
@@ -109,11 +136,8 @@ public class ClassificationController {
         File selectedFile = fc.showOpenDialog(mainApp.getMainStage());
         if (selectedFile != null) {
             try {
-                TestFileReader testData = new TestFileReaderImpl(selectedFile.getAbsolutePath());
-                mainApp.setTestData(testData);
-                tableData = FXCollections.observableArrayList();
-                tableData.addAll(testData.getDataSet());
-                testTable.setItems(tableData);
+                setTestData(selectedFile);
+                showStatistics(null);
             } catch (ClassTypeException | FileFormatException | TimeSeriesFormatException e) {
                 ControllerUtils.showFileAlert("Test File Error", e);
             }
@@ -121,11 +145,17 @@ public class ClassificationController {
     }
 
     @FXML
+    private void handleClear() {
+        tableData.clear();
+        mainApp.setTestData(null);
+    }
+
+    @FXML
     private void handleExit() {
         System.exit(0);
     }
 
-    private void showStatistics(TimeSeries timeSeries) {
+    public void showStatistics(TimeSeries timeSeries) {
         if (timeSeries != null) {
             XYChart.Series<Integer, Double> series = new XYChart.Series<>();
             for (int i = 0; i < timeSeries.getDataSize(); i++) {
@@ -149,5 +179,14 @@ public class ClassificationController {
             testSD.setText("");
             testMean.setText("");
         }
+    }
+
+    public void setTestData(File testFile) {
+        TestFileReader testData = new TestFileReaderImpl(testFile.getAbsolutePath());
+        mainApp.setTestData(testData);
+        ControllerUtils.checkClassLabels(mainApp.getTrainingData(), mainApp.getTestData());
+        tableData.clear();
+        tableData.addAll(testData.getDataSet());
+        testTable.setItems(tableData);
     }
 }
