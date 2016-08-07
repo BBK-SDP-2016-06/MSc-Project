@@ -1,7 +1,5 @@
 package classificationApp.model.io;
 
-import classificationApp.model.data.DataLengthRange;
-
 /**
  * A file reader used convert a training file into a list of TimeSeries objects
  * that can be analysed and understood by the application.
@@ -15,11 +13,4 @@ public interface TrainingFileReader extends FileReader {
      * @return the number of classes / categories the training classificationApp.model.data is split into.
      */
     int getClassCount();
-
-    /**
-     * Returns a DataLengthRange object representing the range of time series lengths
-     * present in the training file read by this object.
-     * @return the range of lengths of time series classificationApp.model.data.
-     */
-    DataLengthRange getTimeSeriesLength();
 }

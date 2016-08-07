@@ -1,6 +1,4 @@
 package classificationApp.model.io;
-
-import classificationApp.model.data.DataLengthRange;
 import classificationApp.model.data.TimeSeries;
 import classificationApp.model.exception.IOExceptionHandler;
 
@@ -25,15 +23,5 @@ public class TrainingFileReaderImpl extends FileReaderImpl implements TrainingFi
                 .map(TimeSeries::getClassType)
                 .distinct()
                 .count();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public DataLengthRange getTimeSeriesLength() {
-        long upperBound = timeSeriesData.parallelStream().mapToLong(TimeSeries::getDataSize).max().orElse(0);
-        long lowerBound = timeSeriesData.parallelStream().mapToLong(TimeSeries::getDataSize).min().orElse(0);
-        return new DataLengthRange(lowerBound, upperBound);
     }
 }

@@ -1,5 +1,6 @@
 package classificationApp.model.io;
 
+import classificationApp.model.data.DataLengthRange;
 import classificationApp.model.data.TimeSeries;
 import classificationApp.model.preprocessing.MathUtils;
 
@@ -79,6 +80,16 @@ public abstract class FileReaderImpl implements FileReader {
     public List<Integer> getClassList() {
         return timeSeriesData.parallelStream().map(TimeSeries::getClassType)
                 .filter(i -> i != -1).distinct().sorted().collect(toList());
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public DataLengthRange getTimeSeriesLength() {
+        long upperBound = timeSeriesData.parallelStream().mapToLong(TimeSeries::getDataSize).max().orElse(0);
+        long lowerBound = timeSeriesData.parallelStream().mapToLong(TimeSeries::getDataSize).min().orElse(0);
+        return new DataLengthRange(lowerBound, upperBound);
     }
 
     /**

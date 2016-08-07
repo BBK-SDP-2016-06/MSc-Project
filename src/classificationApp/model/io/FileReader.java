@@ -1,5 +1,6 @@
 package classificationApp.model.io;
 
+import classificationApp.model.data.DataLengthRange;
 import classificationApp.model.data.TimeSeries;
 
 import java.io.File;
@@ -54,6 +55,13 @@ public interface FileReader {
      * @return the class types of the data set.
      */
     List<Integer> getClassList();
+
+    /**
+     * Returns a DataLengthRange object representing the range of time series lengths
+     * present in the training file read by this object.
+     * @return the range of lengths of time series classificationApp.model.data.
+     */
+    DataLengthRange getTimeSeriesLength();
 
     /**
      * Returns whether or not the time series data within this object is z-
