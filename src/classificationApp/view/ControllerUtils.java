@@ -10,6 +10,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -62,5 +64,22 @@ public class ControllerUtils {
                     + "\n which are not found in Training data.");
             alert.showAndWait();
         }
+    }
+
+    public static int getDefaultKValue(TrainingFileReader train) {
+        return train.getTimeSeriesCount() < 3 ? 1 : 3;
+    }
+
+    public static int getDefaultFrameCount(TrainingFileReader train, TestFileReader test) {
+        return Math.min(
+                test.getDataSet().parallelStream()
+                        .mapToInt(ts -> ts.getData().size())
+                        .min()
+                        .getAsInt(),
+                (int)train.getTimeSeriesLength().getLowerBound());
+    }
+
+    public static int getDefaultAlphabetSize() {
+        return 5;
     }
 }
