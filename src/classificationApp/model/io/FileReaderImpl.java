@@ -4,6 +4,7 @@ import classificationApp.model.data.TimeSeries;
 import classificationApp.model.preprocessing.MathUtils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,7 @@ import static java.util.stream.Collectors.toSet;
 public abstract class FileReaderImpl implements FileReader {
 
     protected List<TimeSeries> timeSeriesData;
+    protected File dataFile;
 
     public FileReaderImpl(String filePath) {
         try (BufferedReader reader = new BufferedReader(new java.io.FileReader(filePath))) {
@@ -30,6 +32,7 @@ public abstract class FileReaderImpl implements FileReader {
                     .map(String::trim)
                     .map(InputUtils::toTimeSeries)
                     .collect(toList());
+            dataFile = new File(filePath);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -84,5 +87,10 @@ public abstract class FileReaderImpl implements FileReader {
     @Override
     public boolean isNormalized(int index) {
         return MathUtils.isZNormalized(getTimeSeries(index).getData());
+    }
+
+    @Override
+    public File getFile() {
+        return this.dataFile;
     }
 }

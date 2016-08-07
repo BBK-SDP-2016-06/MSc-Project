@@ -1,6 +1,8 @@
 package classificationApp.model.io;
 
 import classificationApp.model.data.TimeSeries;
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -59,4 +61,10 @@ public interface FileReader {
      * @return true if the time series data is z-normalised, false otherwise.
      */
     boolean isNormalized(int index);
+
+    /**
+     * Returns the file used to retrieve the time series data.
+     * @return the file that this data is located within.
+     */
+    File getFile();
 }
