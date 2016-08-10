@@ -1,5 +1,7 @@
 package classificationApp.model.classification;
 
+import java.util.List;
+
 /**
  * A wrapper class that enables both a predicted class type
  * and corresponding confidence measure to be returned from
@@ -9,11 +11,11 @@ package classificationApp.model.classification;
 public class ClassificationResult {
 
     private int classType;
-    private double confidence;
+    private List<NeighbourDistance> neighbourDistances;
 
-    public ClassificationResult(int classType, double confidence) {
+    public ClassificationResult(int classType, List<NeighbourDistance> neighbourDistances) {
         setClassType(classType);
-        setConfidence(confidence);
+        setNeighbourDistances(neighbourDistances);
     }
 
     public int getClassType() {
@@ -24,11 +26,11 @@ public class ClassificationResult {
         this.classType = classType;
     }
 
-    public double getConfidence() {
-        return confidence;
+    public List<NeighbourDistance> getNeighbourDistances() {
+        return neighbourDistances;
     }
 
-    public void setConfidence(double confidence) {
-        this.confidence = confidence;
+    public void setNeighbourDistances(List<NeighbourDistance> neighbourDistances) {
+        this.neighbourDistances = neighbourDistances;
     }
 }
