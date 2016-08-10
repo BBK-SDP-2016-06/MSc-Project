@@ -1,9 +1,9 @@
 package classificationApp.model.classification;
 
 import classificationApp.model.data.DiscretizedData;
-import classificationApp.model.preprocessing.MathUtils;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -28,13 +28,14 @@ public class KNNClassifier implements Classifier {
     @Override
     public ClassificationResult classify(DiscretizedData test, List<DiscretizedData> train) {
 
-        List<NeighbourDistance> neighbourDistances = train.parallelStream()
+        List<NeighbourDistance> allNeighbourDistances = train.parallelStream()
                 .map(data -> new NeighbourDistance(data.getClassType(), distanceMeasure.getSimilarityFactor(test.getWord(), data.getWord())))
                 .collect(toList());
 
-        List<Integer> closestClassTypes = neighbourDistances.parallelStream()
-                .sorted((n1, n2) -> n2.getDistance() - n1.getDistance())
-                .limit(kValue)
+        List<NeighbourDistance> closestNeighbourDistance = allNeighbourDistances.parallelStream().sorted((n1, n2) -> n2.getDistance() - n1.getDistance())
+                .limit(kValue).collect(Collectors.toList());
+
+        List<Integer> closestClassTypes = closestNeighbourDistance.parallelStream()
                 .map(NeighbourDistance::getClassType)
                 .collect(toList());
 
@@ -44,8 +45,6 @@ public class KNNClassifier implements Classifier {
                 .filter(c -> classTypeCount.get(c) == classTypeCount.values().parallelStream().mapToLong(l -> l).max().getAsLong())
                 .findFirst().get();
 
-        double confidence = MathUtils.to5SF(classTypeCount.get(predictedClass).doubleValue() / (double) kValue);
-
-        return new ClassificationResult(predictedClass, confidence);
+        return new ClassificationResult(predictedClass, closestNeighbourDistance);
     }
 }
