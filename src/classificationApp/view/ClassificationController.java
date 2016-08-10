@@ -1,17 +1,28 @@
 package classificationApp.view;
 
+import static classificationApp.view.ControllerUtils.*;
 import static classificationApp.model.preprocessing.MathUtils.*;
 import classificationApp.MainApp;
+import classificationApp.model.classification.ClassificationPrinter;
+import classificationApp.model.classification.Classifier;
+import classificationApp.model.classification.KNNClassifier;
+import classificationApp.model.classification.LCSMeasure;
+import classificationApp.model.data.DiscretizedData;
+import classificationApp.model.data.DiscretizedDataImpl;
 import classificationApp.model.data.TimeSeries;
 import classificationApp.model.exception.ClassTypeException;
 import classificationApp.model.exception.FileFormatException;
 import classificationApp.model.exception.TimeSeriesFormatException;
 import classificationApp.model.io.TestFileReader;
 import classificationApp.model.io.TestFileReaderImpl;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+import classificationApp.model.io.TrainingFileReader;
+import classificationApp.model.preprocessing.PreProcessor;
+import classificationApp.model.preprocessing.SAXPreProcessor;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,9 +32,12 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 /**
  * Controller class for the classification mode layout.
@@ -42,6 +56,15 @@ public class ClassificationController {
 
     @FXML
     private Label trainingDataLength;
+
+    @FXML
+    private Label kValueLabel;
+
+    @FXML
+    private Label frameCountLabel;
+
+    @FXML
+    private Label alphabetSizeLabel;
 
     @FXML
     private TableView<TimeSeries> testTable;
@@ -80,9 +103,43 @@ public class ClassificationController {
     private Button clearButton;
 
     @FXML
+    private Button settingsButton;
+
+    @FXML
+    private Button classifyAllButton;
+
+    @FXML
+    private Button classifySelectedButton;
+
+    @FXML
+    private Button filterButton;
+
+    @FXML
+    private Button removeFilterButton;
+
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private Button clearResultButton;
+
+    @FXML
     private Button exit;
 
-    private ObservableList<TimeSeries> tableData;
+    @FXML
+    private TextArea resultTextArea;
+
+    @FXML
+    private Label statusLabel;
+
+    @FXML
+    private ProgressBar progressBar;
+
+    private ObservableList<TimeSeries> currentTestData;
+    private IntegerProperty kValue;
+    private IntegerProperty frameCount;
+    private IntegerProperty alphabetSize;
+    private DoubleProperty progress;
 
     private MainApp mainApp;
 
@@ -91,12 +148,56 @@ public class ClassificationController {
         index.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(mainApp.getTestData().getDataSet().indexOf(param.getValue())));
         classLabel.setCellValueFactory(new PropertyValueFactory<>("classType"));
         timeSeries.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getData().toString()));
-        showStatistics(null);
-        testTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> showStatistics(newValue));
-        testTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        tableData = FXCollections.observableArrayList();
-        tableData.addListener((ListChangeListener<TimeSeries>) c -> clearButton.setDisable(tableData.isEmpty()));
+        showStatistics(null);
+        testTable.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        testTable.getSelectionModel().getSelectedIndices().addListener((ListChangeListener<Integer>) c -> {
+            showStatistics(testTable.getSelectionModel().getSelectedItems());
+            classifySelectedButton.setDisable(testTable.getSelectionModel().getSelectedItems().isEmpty());
+        });
+
+        currentTestData = FXCollections.observableArrayList();
+        currentTestData.addListener((ListChangeListener<TimeSeries>) c -> {
+            clearButton.setDisable(currentTestData.isEmpty());
+            settingsButton.setDisable(currentTestData.isEmpty());
+            classifyAllButton.setDisable(currentTestData.isEmpty());
+            filterButton.setDisable(currentTestData.isEmpty());
+            testTable.setItems(currentTestData);
+            removeFilterButton.setDisable(currentTestData.containsAll(mainApp.getTestData().getDataSet()) || currentTestData.isEmpty());
+        });
+
+
+        kValue = new SimpleIntegerProperty();
+        kValue.addListener((observable, oldValue, newValue) ->
+                kValueLabel.setText((newValue.equals(0)) ? "" : newValue.toString()));
+
+        frameCount = new SimpleIntegerProperty();
+        frameCount.addListener((observable, oldValue, newValue) ->
+                frameCountLabel.setText((newValue.equals(0)) ? "" : newValue.toString()));
+
+        alphabetSize = new SimpleIntegerProperty();
+        alphabetSize.addListener((observable, oldValue, newValue) ->
+                alphabetSizeLabel.setText((newValue.equals(0)) ? "" : newValue.toString()));
+
+        resultTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
+            clearResultButton.setDisable(resultTextArea.getText().isEmpty());
+            if (resultTextArea.getText().isEmpty()) {
+                progress.setValue(0);
+                statusLabel.setText("Status:");
+            }
+        });
+
+        progress = new SimpleDoubleProperty(0);
+        progress.addListener((observable, oldValue, newValue) -> {
+            if (progress.getValue() == 1.0) {
+                statusLabel.setText("Status: Finished!");
+            }
+        });
+
+        progressBar.progressProperty().bind(progress);
+
+        statusLabel.textProperty().addListener((observable, oldValue, newValue) ->
+            saveButton.setDisable(!newValue.equals("Status: Finished!")));
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -104,7 +205,7 @@ public class ClassificationController {
     }
 
     public void updateTrainingData() {
-        trainingFileName.setText("Name: " + mainApp.getTrainingFile().getName());
+        trainingFileName.setText("Name: " + mainApp.getTrainingData().getFile().getName());
         trainingClassCount.setText("" + mainApp.getTrainingData().getClassCount());
         trainingSetSize.setText("" + mainApp.getTrainingData().getTimeSeriesCount());
         trainingDataLength.setText(mainApp.getTrainingData().getTimeSeriesLength().toString());
@@ -146,8 +247,66 @@ public class ClassificationController {
 
     @FXML
     private void handleClear() {
-        tableData.clear();
+        currentTestData.clear();
+        setDefaultSettings(mainApp.getTrainingData(), mainApp.getTestData());
         mainApp.setTestData(null);
+    }
+
+    @FXML
+    private void handleSettings() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/ClassificationSettings.fxml"));
+        Stage stage = ControllerUtils.getModalStage("Classification Settings");
+        try {
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+            ClassificationSettingsController controller = loader.getController();
+            controller.setStage(stage);
+            controller.setMainApp(mainApp);
+            controller.setClassificationController(this);
+            controller.setFileDataStatistics(mainApp.getTrainingData(), mainApp.getTestData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleFilter() {
+        testTable.getSelectionModel().clearSelection();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/Filter.fxml"));
+        Stage stage = ControllerUtils.getModalStage("Filter");
+        try {
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+            FilterController controller = loader.getController();
+            controller.setStage(stage);
+            controller.setMainApp(mainApp);
+            controller.setClassificationController(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleRemoveFilter() {
+        currentTestData.clear();
+        currentTestData.setAll(mainApp.getTestData().getDataSet());
+    }
+
+    @FXML
+    private void handleClassifySelected() {
+        displayClassificationResults(testTable.getSelectionModel().getSelectedItems());
+    }
+
+    @FXML
+    private void handleClassify() {
+        displayClassificationResults(currentTestData);
+    }
+
+    @FXML
+    private void handleClearResultButton() {
+        resultTextArea.clear();
     }
 
     @FXML
@@ -155,23 +314,90 @@ public class ClassificationController {
         System.exit(0);
     }
 
-    public void showStatistics(TimeSeries timeSeries) {
-        if (timeSeries != null) {
-            XYChart.Series<Integer, Double> series = new XYChart.Series<>();
-            for (int i = 0; i < timeSeries.getDataSize(); i++) {
-                series.getData().add(new XYChart.Data<>(i, timeSeries.getData().get(i)));
+    private void displayClassificationResults(List<TimeSeries> test) {
+        progress.setValue(0);
+        PreProcessor preProcessor = new SAXPreProcessor(getFrameCount(), getAlphabetSize());
+        List<DiscretizedData> processedTrain = mainApp.getTrainingData().getDataSet()
+                .parallelStream()
+                .map(ts -> new DiscretizedDataImpl(ts.getClassType(), preProcessor.discretize(ts)))
+                .collect(Collectors.toList());
+        Classifier classifier = new KNNClassifier(getKValue(), new LCSMeasure());
+
+        final int threadPoolSize = test.size();
+
+        Executor executor = Executors.newFixedThreadPool(threadPoolSize, runnable -> {
+            Thread t = Executors.defaultThreadFactory().newThread(runnable);
+            t.setDaemon(true);
+            return t;
+        });
+
+        final double[] taskCount = {0};
+
+        for (int i = 0; i < test.size(); i++) {
+            Task<String> task = new ClassificationPrinter(this, classifier, preProcessor,
+                    test.get(i), processedTrain);
+
+            final int index = i;
+
+            task.setOnSucceeded(e -> {
+                resultTextArea.appendText(task.getValue());
+                statusLabel.setText("Status: Classifying index " + index );
+                taskCount[0]++;
+                progress.set(taskCount[0] / test.size());
+            });
+            executor.execute(task);
+        }
+    }
+
+    public void showStatistics(ObservableList<TimeSeries> selectedItems) {
+        testLineChart.getData().clear();
+        if (selectedItems != null) {
+            selectedItems.forEach(ts -> {assert ts != null;});
+            for(TimeSeries ts : selectedItems) {
+                XYChart.Series<Integer, Double> series = new XYChart.Series<>();
+                series.setName(mainApp.getTestData().getDataSet().indexOf(ts) + " - Class: " + ts.getClassType());
+                for (int i = 0; i < ts.getDataSize(); i++) {
+                    series.getData().add(new XYChart.Data<>(i, ts.getData().get(i)));
+                }
+                testLineChart.getData().add(series);
+                testLineChart.setCreateSymbols(false);
             }
-            testLineChart.getData().clear();
-            testLineChart.getData().add(series);
-            testClassLabel.setText((timeSeries.getClassType() == -1) ? "Unlabelled" : "" + timeSeries.getClassType());
-            testLength.setText("" + timeSeries.getDataSize());
-            testNormalized.setText(isZNormalized(timeSeries.getData()) ? "YES" : "NO");
-            testValueRange.setText(timeSeries.getMin() + " - " + timeSeries.getMax());
-            testSD.setText("" + to5SF(getStandardDeviation(timeSeries.getData())));
-            double mean = to5SF(getMean(timeSeries.getData()));
-            testMean.setText(Math.abs(mean - 0) < 0.00001 ? "0.0" : "" + mean);
+
+            List<Integer> classLabels = selectedItems.parallelStream()
+                    .mapToInt(TimeSeries::getClassType)
+                    .distinct().boxed().collect(Collectors.toList());
+            testClassLabel.setText(classLabels.size() == 1 ? classLabels.get(0).toString() : "-");
+
+            List<Long> dataLengths = selectedItems.parallelStream()
+                    .mapToLong(TimeSeries::getDataSize)
+                    .distinct().boxed().collect(Collectors.toList());
+            testLength.setText(dataLengths.size() == 1 ? dataLengths.get(0).toString() : "-");
+
+            List<Boolean> normalized = selectedItems.parallelStream()
+                    .map(ts -> isZNormalized(ts.getData()))
+                    .distinct().collect(Collectors.toList());
+            testNormalized.setText(normalized.size() == 1 ? (normalized.get(0) ? "YES" : "NO") : "-");
+
+            List<Double> minValues = selectedItems.parallelStream()
+                    .mapToDouble(TimeSeries::getMin)
+                    .distinct().boxed().collect(Collectors.toList());
+            List<Double> maxValues = selectedItems.parallelStream()
+                    .mapToDouble(TimeSeries::getMax)
+                    .distinct().boxed().collect(Collectors.toList());
+            testValueRange.setText((minValues.size() == 1 ? minValues.get(0).toString() : "min")
+                    + " - " + (maxValues.size() == 1 ? maxValues.get(0).toString() : "max"));
+
+            List<Double> variances = selectedItems.parallelStream()
+                    .mapToDouble(ts -> to5SF(getStandardDeviation(ts.getData())))
+                    .distinct().boxed().collect(Collectors.toList());
+            testSD.setText(variances.size() == 1 ? variances.get(0).toString() : "-");
+
+            List<Double> avgs = selectedItems.parallelStream()
+                    .mapToDouble(ts -> to5SF(getMean(ts.getData())))
+                    .map(m -> Math.abs(m - 0) < 0.00001 ? 0.0 : m)
+                    .distinct().boxed().collect(Collectors.toList());
+            testMean.setText(avgs.size() == 1 ? avgs.get(0).toString() : "-");
         } else {
-            testLineChart.getData().clear();
             testClassLabel.setText("");
             testLength.setText("");
             testNormalized.setText("");
@@ -185,8 +411,43 @@ public class ClassificationController {
         TestFileReader testData = new TestFileReaderImpl(testFile.getAbsolutePath());
         mainApp.setTestData(testData);
         ControllerUtils.checkClassLabels(mainApp.getTrainingData(), mainApp.getTestData());
-        tableData.clear();
-        tableData.addAll(testData.getDataSet());
-        testTable.setItems(tableData);
+        currentTestData.clear();
+        currentTestData.addAll(testData.getDataSet());
+        setDefaultSettings(mainApp.getTrainingData(), mainApp.getTestData());
     }
+
+    public void setDefaultSettings(TrainingFileReader train, TestFileReader test) {
+        if (currentTestData.isEmpty()) {
+            setClassifierParams(0, 0, 0);
+        } else {
+            setClassifierParams(getDefaultKValue(train), getDefaultFrameCount(train, test), getDefaultAlphabetSize());
+        }
+    }
+
+    public void setClassifierParams(int kValue, int frameCount, int alphabetSize) {
+        this.kValue.setValue(kValue);
+        this.frameCount.setValue(frameCount);
+        this.alphabetSize.setValue(alphabetSize);
+    }
+
+    public int getKValue() {
+        return kValue.getValue();
+    }
+
+    public int getFrameCount() {
+        return frameCount.getValue();
+    }
+
+    public int getAlphabetSize() {
+        return alphabetSize.getValue();
+    }
+
+    public ObservableList<TimeSeries> getCurrentTestData() {
+        return currentTestData;
+    }
+
+    public MainApp getMainApp() {
+        return mainApp;
+    }
+
 }

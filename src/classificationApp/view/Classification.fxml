@@ -14,9 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.ClassificationController">
@@ -28,8 +26,8 @@
           <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="349.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="302.0" prefHeight="305.0" vgrow="ALWAYS" />
-          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="253.0" prefHeight="295.0" vgrow="ALWAYS" />
+          <RowConstraints maxHeight="325.0" minHeight="325.0" vgrow="NEVER" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="330.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
@@ -38,12 +36,13 @@
                   <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImport" text="Import" />
                   <Button fx:id="clearButton" disable="true" layoutX="10.0" layoutY="35.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClear" text="Clear" />
                   <Separator prefWidth="200.0" />
-                  <Button layoutX="10.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Settings" />
+                  <Button fx:id="settingsButton" disable="true" layoutX="10.0" layoutY="60.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleSettings" text="Settings" />
                   <Separator prefWidth="200.0" />
-                  <Button disable="true" layoutX="10.0" layoutY="85.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Classify Selected" />
-                  <Button disable="true" layoutX="10.0" layoutY="110.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Classify All" />
+                  <Button fx:id="classifySelectedButton" disable="true" layoutX="10.0" layoutY="85.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClassifySelected" text="Classify Selected" />
+                  <Button fx:id="classifyAllButton" disable="true" layoutX="10.0" layoutY="110.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleClassify" text="Classify All" />
                   <Separator prefWidth="200.0" />
-                  <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Change Mode" />
+                  <Button fx:id="filterButton" disable="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleFilter" text="Filter" />
+                  <Button fx:id="removeFilterButton" disable="true" layoutX="20.0" layoutY="269.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleRemoveFilter" text="Remove Filters" />
                </children>
                <GridPane.margin>
                   <Insets />
@@ -79,7 +78,7 @@
                         <Label fx:id="trainingFileName" text="Name:" GridPane.columnSpan="2147483647" />
                      </children>
                   </GridPane>
-                  <Pane prefHeight="50.0" />
+                  <Separator prefHeight="0.0" prefWidth="130.0" />
                   <Label text="Classification Model" />
                   <GridPane>
                     <columnConstraints>
@@ -94,16 +93,16 @@
                         <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label text="Clasifier:" />
+                        <Label text="Classifier:" />
                         <Label text="Similarity:" GridPane.rowIndex="1" />
                         <Label text="k-value:" GridPane.rowIndex="2" />
                         <Label text="Frame:" GridPane.rowIndex="3" />
                         <Label text="Alphabet:" GridPane.rowIndex="4" />
                         <Label text="kNN" GridPane.columnIndex="1" />
                         <Label text="LCS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label fx:id="kValueLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label fx:id="frameCountLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="alphabetSizeLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                </children>
@@ -111,28 +110,24 @@
                   <Insets bottom="10.0" />
                </padding>
             </VBox>
-            <StackPane GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <TableView fx:id="testTable" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
+              <columns>
+                <TableColumn fx:id="index" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Index" />
+                <TableColumn fx:id="classLabel" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Class" />
+                  <TableColumn fx:id="timeSeries" maxWidth="1.7976931348623157E308" prefWidth="535.0" text="Time Series Data" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" right="10.0" top="10.0" />
                </GridPane.margin>
+            </TableView>
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" styleClass="anchorPaneStats" stylesheets="@Border.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <TableView fx:id="testTable">
-                    <columns>
-                      <TableColumn fx:id="index" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Index" />
-                      <TableColumn fx:id="classLabel" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="Class" />
-                        <TableColumn fx:id="timeSeries" maxWidth="1.7976931348623157E308" prefWidth="535.0" text="Time Series Data" />
-                    </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
-               </children>
-            </StackPane>
-            <AnchorPane maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" styleClass="anchorPaneStats" stylesheets="@Border.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <VBox maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <children>
-                        <LineChart fx:id="testLineChart" legendVisible="false" prefHeight="387.0" prefWidth="373.0">
+                        <LineChart fx:id="testLineChart" legendSide="RIGHT" maxHeight="1.7976931348623157E308" prefHeight="387.0" prefWidth="373.0" stylesheets="@StatGraph.css" VBox.vgrow="ALWAYS">
                           <xAxis>
                             <NumberAxis side="BOTTOM" />
                           </xAxis>
@@ -179,13 +174,13 @@
                   <Insets bottom="10.0" left="5.0" right="10.0" top="5.0" />
                </GridPane.margin>
                <children>
-                  <TextArea prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
-                  <Label text="Status:" />
-                  <ProgressBar maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0" />
+                  <TextArea fx:id="resultTextArea" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <Label fx:id="statusLabel" text="Status:" />
+                  <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0" />
                   <ButtonBar prefHeight="40.0" prefWidth="200.0">
                     <buttons>
-                      <Button disable="true" mnemonicParsing="false" text="Print" />
-                        <Button disable="true" layoutX="274.0" layoutY="12.0" mnemonicParsing="false" text="Clear" />
+                      <Button fx:id="saveButton" disable="true" mnemonicParsing="false" text="Save" />
+                        <Button fx:id="clearResultButton" disable="true" layoutX="274.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleClearResultButton" text="Clear Result" />
                         <Button fx:id="exit" layoutX="184.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleExit" text="Exit" />
                     </buttons>
                   </ButtonBar>
