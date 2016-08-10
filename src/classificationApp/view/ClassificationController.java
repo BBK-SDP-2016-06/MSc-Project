@@ -315,6 +315,7 @@ public class ClassificationController {
     }
 
     private void displayClassificationResults(List<TimeSeries> test) {
+        statusLabel.setText("Status: Pre-Processing");
         progress.setValue(0);
         PreProcessor preProcessor = new SAXPreProcessor(getFrameCount(), getAlphabetSize());
         List<DiscretizedData> processedTrain = mainApp.getTrainingData().getDataSet()
