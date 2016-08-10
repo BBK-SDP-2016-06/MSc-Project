@@ -65,7 +65,7 @@ public class ControllerUtils {
     }
 
     public static int getDefaultKValue(TrainingFileReader train) {
-        return train.getClassCount() + 1;
+        return train.getTimeSeriesCount() < 3 ? 1 : 3;
     }
 
     public static int getDefaultFrameCount(TrainingFileReader train, TestFileReader test) {
