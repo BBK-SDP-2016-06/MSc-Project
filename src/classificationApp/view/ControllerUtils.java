@@ -10,8 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -67,7 +65,7 @@ public class ControllerUtils {
     }
 
     public static int getDefaultKValue(TrainingFileReader train) {
-        return train.getTimeSeriesCount() < 3 ? 1 : 3;
+        return train.getClassCount() + 1;
     }
 
     public static int getDefaultFrameCount(TrainingFileReader train, TestFileReader test) {
