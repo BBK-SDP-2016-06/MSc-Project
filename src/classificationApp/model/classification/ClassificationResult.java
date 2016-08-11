@@ -10,20 +10,32 @@ import java.util.List;
  */
 public class ClassificationResult {
 
-    private int classType;
+    private int actClass;
+    private int predClass;
     private List<NeighbourDistance> neighbourDistances;
+    private boolean correctPred;
 
-    public ClassificationResult(int classType, List<NeighbourDistance> neighbourDistances) {
-        setClassType(classType);
+    public ClassificationResult(int actClass, int predClass, List<NeighbourDistance> neighbourDistances) {
+        setActClass(actClass);
+        setPredClass(predClass);
         setNeighbourDistances(neighbourDistances);
+        setCorrectPred();
     }
 
-    public int getClassType() {
-        return classType;
+    public int getActClass() {
+        return actClass;
     }
 
-    public void setClassType(int classType) {
-        this.classType = classType;
+    public void setActClass(int actClass) {
+        this.actClass = actClass;
+    }
+
+    public int getPredClass() {
+        return predClass;
+    }
+
+    public void setPredClass(int predClass) {
+        this.predClass = predClass;
     }
 
     public List<NeighbourDistance> getNeighbourDistances() {
@@ -32,5 +44,13 @@ public class ClassificationResult {
 
     public void setNeighbourDistances(List<NeighbourDistance> neighbourDistances) {
         this.neighbourDistances = neighbourDistances;
+    }
+
+    public boolean isCorrectPred() {
+        return correctPred;
+    }
+
+    public void setCorrectPred() {
+        correctPred = getActClass() == getPredClass();
     }
 }
