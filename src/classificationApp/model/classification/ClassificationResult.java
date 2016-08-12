@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class ClassificationResult {
 
+    private int index;
     private int actClass;
     private int predClass;
     private List<NeighbourDistance> neighbourDistances;
@@ -53,4 +54,38 @@ public class ClassificationResult {
     public void setCorrectPred() {
         correctPred = getActClass() == getPredClass();
     }
-}
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Index: ").append(index);
+        sb.append("\n").append(neighbourDistances.size()).append("NN result:");
+        sb.append("\n\n" + "Rank\t\tClass\tSimilarity");
+        for (NeighbourDistance nd : neighbourDistances) {
+            sb.append("\n")
+                    .append(neighbourDistances.indexOf(nd) + 1)
+                    .append("\t\t")
+                    .append(nd.getClassType())
+                    .append("\t\t")
+                    .append(nd.getDistance());
+        }
+        sb.append("\n\nActual class: ").append(actClass);
+        sb.append("\nPredicted class: ").append(predClass);
+
+        if (actClass != -1) {
+            sb.append(isCorrectPred() ? "\nCORRECT" : "\nINCORRECT");
+        } else {
+            sb.append("\nUNLABELLED");
+        }
+        sb.append("\n--------------------------------------\n");
+        return sb.toString();
+    }
+ }
