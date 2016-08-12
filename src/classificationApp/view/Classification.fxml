@@ -30,7 +30,7 @@
           <RowConstraints maxHeight="1.7976931348623157E308" minHeight="330.0" vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+            <VBox fx:id="buttonMenu" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0">
                <children>
                   <Button defaultButton="true" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleNew" text="New" />
                   <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleImport" text="Import" />
@@ -175,11 +175,12 @@
                </GridPane.margin>
                <children>
                   <TextArea fx:id="resultTextArea" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <Label fx:id="errorRate" text="Error Rate:" />
                   <Label fx:id="statusLabel" text="Status:" />
                   <ProgressBar fx:id="progressBar" maxWidth="1.7976931348623157E308" prefWidth="200.0" progress="0.0" />
                   <ButtonBar prefHeight="40.0" prefWidth="200.0">
                     <buttons>
-                      <Button fx:id="saveButton" disable="true" mnemonicParsing="false" text="Save" />
+                      <Button fx:id="statisticsButton" disable="true" mnemonicParsing="false" onAction="#handleStatisticsButton" text="Statistics" />
                         <Button fx:id="clearResultButton" disable="true" layoutX="274.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleClearResultButton" text="Clear Result" />
                         <Button fx:id="exit" layoutX="184.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleExit" text="Exit" />
                     </buttons>

@@ -3,10 +3,7 @@ package classificationApp.view;
 import static classificationApp.view.ControllerUtils.*;
 import static classificationApp.model.preprocessing.MathUtils.*;
 import classificationApp.MainApp;
-import classificationApp.model.classification.ClassificationPrinter;
-import classificationApp.model.classification.Classifier;
-import classificationApp.model.classification.KNNClassifier;
-import classificationApp.model.classification.LCSMeasure;
+import classificationApp.model.classification.*;
 import classificationApp.model.data.DiscretizedData;
 import classificationApp.model.data.DiscretizedDataImpl;
 import classificationApp.model.data.TimeSeries;
@@ -30,6 +27,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
@@ -44,6 +42,9 @@ import java.util.stream.Collectors;
  * Created by George Shiangoli on 05/08/2016.
  */
 public class ClassificationController {
+
+    @FXML
+    private VBox buttonMenu;
 
     @FXML
     private Label trainingFileName;
@@ -118,7 +119,7 @@ public class ClassificationController {
     private Button removeFilterButton;
 
     @FXML
-    private Button saveButton;
+    private Button statisticsButton;
 
     @FXML
     private Button clearResultButton;
@@ -130,12 +131,16 @@ public class ClassificationController {
     private TextArea resultTextArea;
 
     @FXML
+    private Label errorRate;
+
+    @FXML
     private Label statusLabel;
 
     @FXML
     private ProgressBar progressBar;
 
     private ObservableList<TimeSeries> currentTestData;
+    private ObservableList<ClassificationResult> classificationResults;
     private IntegerProperty kValue;
     private IntegerProperty frameCount;
     private IntegerProperty alphabetSize;
@@ -163,7 +168,7 @@ public class ClassificationController {
             classifyAllButton.setDisable(currentTestData.isEmpty());
             filterButton.setDisable(currentTestData.isEmpty());
             testTable.setItems(currentTestData);
-            removeFilterButton.setDisable(currentTestData.containsAll(mainApp.getTestData().getDataSet()) || currentTestData.isEmpty());
+            removeFilterButton.setDisable(mainApp.getTestData() == null || currentTestData.containsAll(mainApp.getTestData().getDataSet()));
         });
 
 
@@ -180,10 +185,11 @@ public class ClassificationController {
                 alphabetSizeLabel.setText((newValue.equals(0)) ? "" : newValue.toString()));
 
         resultTextArea.textProperty().addListener((observable, oldValue, newValue) -> {
-            clearResultButton.setDisable(resultTextArea.getText().isEmpty());
             if (resultTextArea.getText().isEmpty()) {
                 progress.setValue(0);
+                errorRate.setText("Error Rate:");
                 statusLabel.setText("Status:");
+                clearResultButton.setDisable(true);
             }
         });
 
@@ -191,13 +197,21 @@ public class ClassificationController {
         progress.addListener((observable, oldValue, newValue) -> {
             if (progress.getValue() == 1.0) {
                 statusLabel.setText("Status: Finished!");
+                long errorCount = classificationResults.parallelStream().filter(r -> !r.isCorrectPred() && r.getActClass() != -1).count();
+                long labelledSamples = classificationResults.parallelStream().filter(r -> r.getActClass() != -1).count();
+                errorRate.setText("Error Rate: " + errorCount + " / " + labelledSamples + " = " + (labelledSamples == 0 ? 0.0 : to5SF((double)errorCount/(double)labelledSamples)));
+                buttonMenu.setDisable(false);
+                testTable.setDisable(false);
+                clearResultButton.setDisable(false);
             }
         });
 
         progressBar.progressProperty().bind(progress);
 
         statusLabel.textProperty().addListener((observable, oldValue, newValue) ->
-            saveButton.setDisable(!newValue.equals("Status: Finished!")));
+            statisticsButton.setDisable(!newValue.equals("Status: Finished!")));
+
+        classificationResults = FXCollections.observableArrayList();
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -250,6 +264,7 @@ public class ClassificationController {
         currentTestData.clear();
         setDefaultSettings(mainApp.getTrainingData(), mainApp.getTestData());
         mainApp.setTestData(null);
+        removeFilterButton.setDisable(true);
     }
 
     @FXML
@@ -305,8 +320,26 @@ public class ClassificationController {
     }
 
     @FXML
+    private void handleStatisticsButton() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/ResultStatistics.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Classification Results: " + getKValue() + "NN, frame(" + getFrameCount() + "), alphabet(" + getAlphabetSize() + ")");
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+            ResultStatisticsController controller = loader.getController();
+            controller.setStage(stage);
+            controller.setClassificationResults(this.classificationResults);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void handleClearResultButton() {
         resultTextArea.clear();
+        classificationResults.clear();
     }
 
     @FXML
@@ -315,8 +348,12 @@ public class ClassificationController {
     }
 
     private void displayClassificationResults(List<TimeSeries> test) {
+        clearResultButton.setDisable(true);
+        buttonMenu.setDisable(true);
+        testTable.setDisable(true);
+        resultTextArea.clear();
+        classificationResults.clear();
         statusLabel.setText("Status: Pre-Processing");
-        progress.setValue(0);
         PreProcessor preProcessor = new SAXPreProcessor(getFrameCount(), getAlphabetSize());
         List<DiscretizedData> processedTrain = mainApp.getTrainingData().getDataSet()
                 .parallelStream()
@@ -335,14 +372,15 @@ public class ClassificationController {
         final double[] taskCount = {0};
 
         for (int i = 0; i < test.size(); i++) {
-            Task<String> task = new ClassificationPrinter(this, classifier, preProcessor,
+            Task<ClassificationResult> task = new ClassificationOutput(this, classifier, preProcessor,
                     test.get(i), processedTrain);
 
             final int index = i;
 
             task.setOnSucceeded(e -> {
-                resultTextArea.appendText(task.getValue());
                 statusLabel.setText("Status: Classifying index " + index );
+                resultTextArea.appendText(task.getValue().toString());
+                classificationResults.add(task.getValue());
                 taskCount[0]++;
                 progress.set(taskCount[0] / test.size());
             });
