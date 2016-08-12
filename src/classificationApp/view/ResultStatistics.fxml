@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" stylesheets="@table-row-colour.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.ResultStatisticsController">
+   <children>
+      <GridPane hgap="10.0" layoutX="222.0" layoutY="183.0" prefHeight="400.0" prefWidth="600.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="251.0" minWidth="10.0" prefWidth="251.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="5.0" minWidth="5.0" prefWidth="5.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="253.0" minWidth="10.0" prefWidth="194.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="10.0" prefWidth="187.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+        </rowConstraints>
+         <children>
+            <Label text="Full Results" GridPane.columnIndex="2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label text="Error Rate Per Class">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TableView fx:id="fullResultTable" prefHeight="200.0" prefWidth="200.0" stylesheets="@table-row-colour.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="indexRef" prefWidth="75.0" text="Index Ref" />
+                <TableColumn prefWidth="75.0" text="Class">
+                     <columns>
+                        <TableColumn fx:id="actualClass" prefWidth="75.0" text="Actual" />
+                        <TableColumn fx:id="predictedClass" prefWidth="75.0" text="Predicted" />
+                     </columns>
+                  </TableColumn>
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+               <styleClass>
+                  <String fx:value="table-row-cell" />
+                  <String fx:value="table-cell" />
+               </styleClass>
+            </TableView>
+            <TableView fx:id="classErrorTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="classColumn" prefWidth="75.0" text="Class" />
+                <TableColumn fx:id="samplesColumn" prefWidth="75.0" text="Samples" />
+                  <TableColumn fx:id="errorsColumn" prefWidth="75.0" text="Errors" />
+                  <TableColumn fx:id="errorRateColumn" prefWidth="75.0" text="Error Rate" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
+              <buttons>
+                  <Button fx:id="saveButton" layoutX="235.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleSaveButton" text="Save" />
+                  <Button fx:id="closeButton" layoutX="218.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleCloseButton" text="Close" />
+              </buttons>
+            </ButtonBar>
+            <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <children>
+                  <TextArea fx:id="kNNResultTextArea" editable="false" prefHeight="200.0" prefWidth="193.0" promptText="Select table item for individual KNN result" />
+               </children>
+            </VBox>
+            <Separator orientation="VERTICAL" prefHeight="200.0" GridPane.columnIndex="1" GridPane.rowSpan="2147483647" />
+            <Label fx:id="overallResultLabel" text="Label" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Italic" size="13.0" />
+               </font>
+            </Label>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </GridPane>
+   </children>
+</AnchorPane>
