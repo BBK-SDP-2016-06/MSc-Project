@@ -1,3 +1,5 @@
+package model;
+
 import classificationApp.model.classification.DistanceMeasure;
 import classificationApp.model.classification.LCSMeasure;
 import org.junit.Before;

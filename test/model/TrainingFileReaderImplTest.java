@@ -1,3 +1,5 @@
+package model;
+
 import classificationApp.model.exception.ClassTypeException;
 import classificationApp.model.exception.FileFormatException;
 import classificationApp.model.exception.TimeSeriesFormatException;

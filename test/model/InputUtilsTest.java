@@ -1,3 +1,5 @@
+package model;
+
 import classificationApp.model.io.InputUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;

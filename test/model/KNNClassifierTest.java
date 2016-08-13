@@ -1,3 +1,5 @@
+package model;
+
 import classificationApp.model.classification.ClassificationResult;
 import classificationApp.model.classification.Classifier;
 import classificationApp.model.classification.KNNClassifier;
@@ -42,8 +44,7 @@ public class KNNClassifierTest {
         );
         Classifier classifier = new KNNClassifier(5, new LCSMeasure());
         ClassificationResult result = classifier.classify(test, train);
-        assertEquals(1, result.getClassType());
-        assertEquals(0.8, result.getConfidence(), 0.0);
+        assertEquals(1, result.getPredClass());
     }
 
     @Test
@@ -64,7 +65,6 @@ public class KNNClassifierTest {
         );
         Classifier classifier = new KNNClassifier(3, new LCSMeasure());
         ClassificationResult result = classifier.classify(test, train);
-        assertEquals(1, result.getClassType());
-        assertEquals(1.0, result.getConfidence(), 0.0);
+        assertEquals(1, result.getPredClass());
     }
 }

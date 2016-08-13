@@ -1,3 +1,5 @@
+package model;
+
 import classificationApp.model.data.TimeSeries;
 import classificationApp.model.data.TimeSeriesImpl;
 import classificationApp.model.exception.IOExceptionHandler;

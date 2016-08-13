@@ -1,3 +1,5 @@
+package model;
+
 import classificationApp.model.data.DiscretizedData;
 import classificationApp.model.data.DiscretizedDataImpl;
 import org.junit.Test;
