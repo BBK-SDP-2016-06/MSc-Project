@@ -2,6 +2,7 @@ package classificationApp.model.exception;
 import classificationApp.model.data.TimeSeries;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import static java.util.stream.Collectors.toList;
 
@@ -38,6 +39,11 @@ public class IOExceptionHandler {
             throw new ClassTypeException("Unlabelled time series on lines: "
                     + missingClassLines.toString().substring(1, missingClassLines.toString().length() - 1));
         }
+        List<Integer> shortDataLines = getShortDataIndices(input);
+        if(!shortDataLines.isEmpty()) {
+            throw new TimeSeriesFormatException("Time series data too short on lines: "
+                    + missingClassLines.toString().substring(1, missingClassLines.toString().length() - 1));
+        }
     }
 
     public static List<Integer> getDataErrorIndices(List<TimeSeries> input) {
@@ -59,5 +65,12 @@ public class IOExceptionHandler {
                 .filter(i -> input.get(i).getClassType() == -1)
                 .boxed()
                 .collect(toList());
+    }
+
+    public static List<Integer> getShortDataIndices(List<TimeSeries> input) {
+        return IntStream.range(0, input.size())
+                .filter(i -> input.get(i).getDataSize() == 1)
+                .boxed()
+                .collect(Collectors.toList());
     }
 }
