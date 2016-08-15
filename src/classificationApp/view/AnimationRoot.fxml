@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.AnimationRootController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="655.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.controllers.AnimationRootController">
    <children>
       <GridPane fx:id="gridPaneLayout" layoutX="307.0" layoutY="252.0" prefHeight="655.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -38,7 +38,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </ButtonBar>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" stylesheets="@animation-stage-labels.css" GridPane.rowSpan="2147483647">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" stylesheets="@css/animation-stage-labels.css" GridPane.rowSpan="2147483647">
                <children>
                   <Label text="Classification Process:">
                      <font>

@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.ClassificationController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.controllers.ClassificationController">
    <children>
       <GridPane layoutX="306.0" layoutY="243.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -124,11 +124,11 @@
                   <Insets bottom="5.0" left="5.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </TableView>
-            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" styleClass="anchorPaneStats" stylesheets="@Border.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" styleClass="anchorPaneStats" stylesheets="@css/Border.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                      <children>
-                        <LineChart fx:id="testLineChart" legendSide="RIGHT" maxHeight="1.7976931348623157E308" prefHeight="387.0" prefWidth="373.0" stylesheets="@StatGraph.css" VBox.vgrow="ALWAYS">
+                        <LineChart fx:id="testLineChart" legendSide="RIGHT" maxHeight="1.7976931348623157E308" prefHeight="387.0" prefWidth="373.0" stylesheets="@css/StatGraph.css" VBox.vgrow="ALWAYS">
                           <xAxis>
                             <NumberAxis side="BOTTOM" />
                           </xAxis>

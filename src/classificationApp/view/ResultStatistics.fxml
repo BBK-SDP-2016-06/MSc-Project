@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" stylesheets="@table-row-colour.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.ResultStatisticsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" stylesheets="@css/table-row-colour.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.controllers.ResultStatisticsController">
    <children>
       <GridPane hgap="10.0" layoutX="222.0" layoutY="183.0" prefHeight="400.0" prefWidth="600.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <columnConstraints>
@@ -41,7 +41,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <TableView fx:id="fullResultTable" prefHeight="200.0" prefWidth="200.0" stylesheets="@table-row-colour.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <TableView fx:id="fullResultTable" prefHeight="200.0" prefWidth="200.0" stylesheets="@css/table-row-colour.css" GridPane.columnIndex="2" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="indexRef" prefWidth="75.0" text="Index Ref" />
                 <TableColumn prefWidth="75.0" text="Class">

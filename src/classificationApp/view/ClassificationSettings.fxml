@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.ClassificationSettingsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="classificationApp.view.controllers.ClassificationSettingsController">
    <children>
       <GridPane hgap="10.0" layoutX="188.0" layoutY="155.0" prefHeight="400.0" prefWidth="600.0" vgap="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <columnConstraints>
@@ -46,7 +46,7 @@
             <TextField fx:id="kValueText" alignment="CENTER" editable="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
             <TextField fx:id="alphabetText" alignment="CENTER" editable="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
             <TextField fx:id="frameCountText" alignment="CENTER" editable="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="anchorPaneStats" stylesheets="@Border.css" GridPane.columnSpan="2">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="anchorPaneStats" stylesheets="@css/Border.css" GridPane.columnSpan="2">
                <children>
                   <VBox layoutX="73.0" layoutY="17.0" prefHeight="234.0" prefWidth="290.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <children>
@@ -86,7 +86,7 @@
                   <Button mnemonicParsing="false" onAction="#handleChangeTrain" text="Change..." AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="10.0" />
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="anchorPaneStats" stylesheets="@Border.css" GridPane.columnIndex="2" GridPane.columnSpan="2147483647">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="anchorPaneStats" stylesheets="@css/Border.css" GridPane.columnIndex="2" GridPane.columnSpan="2147483647">
                <children>
                   <VBox layoutX="78.0" layoutY="20.0" prefHeight="234.0" prefWidth="280.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <children>
