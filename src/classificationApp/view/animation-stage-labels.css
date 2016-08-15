@@ -1,0 +1,6 @@
+.currentStageLabel {
+    -fx-text-fill: dodgerblue;
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-font-size: 13;
+}
