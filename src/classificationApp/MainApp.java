@@ -1,6 +1,6 @@
 package classificationApp;
 
-import classificationApp.view.*;
+import classificationApp.view.controllers.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
