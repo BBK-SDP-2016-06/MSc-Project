@@ -1,4 +1,4 @@
-package classificationApp.view;
+package classificationApp.view.controllers;
 import classificationApp.MainApp;
 import classificationApp.model.exception.ClassTypeException;
 import classificationApp.model.exception.FileFormatException;

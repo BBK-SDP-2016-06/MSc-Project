@@ -1,4 +1,4 @@
-package classificationApp.view;
+package classificationApp.view.controllers;
 
 import classificationApp.model.classification.ClassificationResult;
 import classificationApp.model.classification.NeighbourDistance;

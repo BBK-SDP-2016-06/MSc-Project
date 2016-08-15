@@ -1,6 +1,5 @@
-package classificationApp.view;
+package classificationApp.view.controllers;
 
-import static classificationApp.view.ControllerUtils.*;
 import classificationApp.MainApp;
 import classificationApp.model.exception.ClassTypeException;
 import classificationApp.model.exception.FileFormatException;
@@ -138,9 +137,9 @@ public class ClassificationSettingsController {
     }
 
     private void setDefaultValues() {
-        kValue.setValue(getDefaultKValue(train));
-        frameCount.setValue(getDefaultFrameCount(train, test));
-        alphabetSize.setValue(getDefaultAlphabetSize());
+        kValue.setValue(ControllerUtils.getDefaultKValue(train));
+        frameCount.setValue(ControllerUtils.getDefaultFrameCount(train, test));
+        alphabetSize.setValue(ControllerUtils.getDefaultAlphabetSize());
     }
 
     private void updateSliderParameters() {
@@ -151,7 +150,7 @@ public class ClassificationSettingsController {
 
         frameCountSlider.setBlockIncrement(1);
         frameCountSlider.setMin(1);
-        frameCountSlider.setMax(getDefaultFrameCount(train, test));
+        frameCountSlider.setMax(ControllerUtils.getDefaultFrameCount(train, test));
     }
 
     @FXML

@@ -1,6 +1,5 @@
-package classificationApp.view;
+package classificationApp.view.controllers;
 
-import static classificationApp.view.ControllerUtils.*;
 import static classificationApp.model.preprocessing.MathUtils.*;
 import classificationApp.MainApp;
 import classificationApp.model.classification.*;
@@ -470,7 +469,7 @@ public class ClassificationController {
         if (currentTestData.isEmpty()) {
             setClassifierParams(0, 0, 0);
         } else {
-            setClassifierParams(getDefaultKValue(train), getDefaultFrameCount(train, test), getDefaultAlphabetSize());
+            setClassifierParams(ControllerUtils.getDefaultKValue(train), ControllerUtils.getDefaultFrameCount(train, test), ControllerUtils.getDefaultAlphabetSize());
         }
     }
 

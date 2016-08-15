@@ -1,4 +1,4 @@
-package classificationApp.view;
+package classificationApp.view.controllers;
 import javafx.fxml.FXML;
 import javafx.stage.Stage;
 

@@ -1,4 +1,4 @@
-package classificationApp.view;
+package classificationApp.view.controllers;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
