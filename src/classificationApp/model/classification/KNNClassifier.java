@@ -45,6 +45,6 @@ public class KNNClassifier implements Classifier {
                 .filter(c -> classTypeCount.get(c) == classTypeCount.values().parallelStream().mapToLong(l -> l).max().getAsLong())
                 .findFirst().get();
 
-        return new ClassificationResult(predictedClass, closestNeighbourDistance);
+        return new ClassificationResult(test.getClassType(), predictedClass, closestNeighbourDistance);
     }
 }
