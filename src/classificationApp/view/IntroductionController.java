@@ -22,6 +22,6 @@ public class IntroductionController {
 
     @FXML
     private void handleExit() {
-        System.exit(0);
+        mainApp.closeApplication();
     }
 }
