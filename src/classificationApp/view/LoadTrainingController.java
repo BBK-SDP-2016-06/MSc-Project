@@ -88,7 +88,7 @@ public class LoadTrainingController {
 
     @FXML
     private void handleExitButtonPress() {
-        System.exit(0);
+        mainApp.closeApplication();
     }
 
     public void showTrainingDataStatistics(TrainingFileReader trainingData, File trainingFile) {
