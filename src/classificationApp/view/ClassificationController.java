@@ -33,7 +33,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
@@ -139,12 +139,18 @@ public class ClassificationController {
     @FXML
     private ProgressBar progressBar;
 
+    @FXML
+    private Button stopButton;
+
     private ObservableList<TimeSeries> currentTestData;
     private ObservableList<ClassificationResult> classificationResults;
+
     private IntegerProperty kValue;
     private IntegerProperty frameCount;
     private IntegerProperty alphabetSize;
+
     private DoubleProperty progress;
+    private ExecutorService executor;
 
     private MainApp mainApp;
 
@@ -190,6 +196,7 @@ public class ClassificationController {
                 errorRate.setText("Error Rate:");
                 statusLabel.setText("Status:");
                 clearResultButton.setDisable(true);
+                statisticsButton.setDisable(true);
             }
         });
 
@@ -203,19 +210,21 @@ public class ClassificationController {
                 buttonMenu.setDisable(false);
                 testTable.setDisable(false);
                 clearResultButton.setDisable(false);
+                stopButton.setDisable(true);
+                statisticsButton.setDisable(false);
             }
         });
 
         progressBar.progressProperty().bind(progress);
-
-        statusLabel.textProperty().addListener((observable, oldValue, newValue) ->
-            statisticsButton.setDisable(!newValue.equals("Status: Finished!")));
 
         classificationResults = FXCollections.observableArrayList();
     }
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+        if (mainApp.getTestData() != null) {
+            setTestData(mainApp.getTestData().getFile());
+        }
     }
 
     public void updateTrainingData() {
@@ -320,6 +329,14 @@ public class ClassificationController {
     }
 
     @FXML
+    private void handleStop() {
+        executor.shutdownNow();
+        stopButton.setDisable(true);
+        progress.setValue(1.0);
+        statisticsButton.setDisable(false);
+    }
+
+    @FXML
     private void handleStatisticsButton() {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -344,30 +361,24 @@ public class ClassificationController {
 
     @FXML
     private void handleExit() {
-        System.exit(0);
+        mainApp.closeApplication();
     }
 
     private void displayClassificationResults(List<TimeSeries> test) {
+        stopButton.setDisable(false);
         clearResultButton.setDisable(true);
         buttonMenu.setDisable(true);
         testTable.setDisable(true);
         resultTextArea.clear();
         classificationResults.clear();
         statusLabel.setText("Status: Pre-Processing");
+        executor = Executors.newSingleThreadExecutor();
         PreProcessor preProcessor = new SAXPreProcessor(getFrameCount(), getAlphabetSize());
         List<DiscretizedData> processedTrain = mainApp.getTrainingData().getDataSet()
                 .parallelStream()
                 .map(ts -> new DiscretizedDataImpl(ts.getClassType(), preProcessor.discretize(ts)))
                 .collect(Collectors.toList());
         Classifier classifier = new KNNClassifier(getKValue(), new LCSMeasure());
-
-        final int threadPoolSize = test.size();
-
-        Executor executor = Executors.newFixedThreadPool(threadPoolSize, runnable -> {
-            Thread t = Executors.defaultThreadFactory().newThread(runnable);
-            t.setDaemon(true);
-            return t;
-        });
 
         final double[] taskCount = {0};
 
@@ -378,13 +389,13 @@ public class ClassificationController {
             final int index = i;
 
             task.setOnSucceeded(e -> {
-                statusLabel.setText("Status: Classifying index " + index );
+                statusLabel.setText("Status: Classifying test sample " + (index + 1) + " / " + test.size() );
                 resultTextArea.appendText(task.getValue().toString());
                 classificationResults.add(task.getValue());
                 taskCount[0]++;
                 progress.set(taskCount[0] / test.size());
             });
-            executor.execute(task);
+            executor.submit(task);
         }
     }
 
