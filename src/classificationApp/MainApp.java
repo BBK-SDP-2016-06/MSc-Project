@@ -1,8 +1,6 @@
 package classificationApp;
 
-import classificationApp.view.ClassificationController;
-import classificationApp.view.IntroductionController;
-import classificationApp.view.LoadTrainingController;
+import classificationApp.view.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import classificationApp.model.io.TestFileReader;
 import classificationApp.model.io.TrainingFileReader;
+
 import java.io.IOException;
 
 /**
@@ -24,6 +23,7 @@ public class MainApp extends Application {
     private Stage openingStage;
     private Stage mainStage;
     private BorderPane rootLayout;
+    private String mode;
 
     public static void main(String[] args) {
         launch(args);
@@ -32,7 +32,15 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.openingStage = stage;
+        this.openingStage.setOnCloseRequest(e -> {
+            e.consume();
+            closeApplication();
+        });
         this.mainStage = new Stage();
+        this.mainStage.setOnCloseRequest(e -> {
+            e.consume();
+            closeApplication();
+        });
         showIntroduction();
     }
 
@@ -67,6 +75,7 @@ public class MainApp extends Application {
     }
 
     public void showClassificationLayout() {
+        mode = "Classification";
         initRootLayout();
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -89,6 +98,37 @@ public class MainApp extends Application {
             rootLayout = loader.load();
             mainStage.setScene(new Scene(rootLayout));
             mainStage.show();
+            RootLayoutController controller = loader.getController();
+            controller.setMainApp(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showAnimationLayout() {
+        mode = "Animation";
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/AnimationRoot.fxml"));
+            AnchorPane layout = loader.load();
+            mainStage.setTitle("MSc Project - Animation Mode");
+            rootLayout.setCenter(layout);
+            AnimationRootController controller = loader.getController();
+            controller.setMainApp(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeApplication() {
+        try {
+            Stage stage = ControllerUtils.getModalStage("Exit Application");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/CloseApplication.fxml"));
+            stage.setScene(new Scene(loader.load()));
+            CloseApplicationController controller = loader.getController();
+            controller.setStage(stage);
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -116,5 +156,9 @@ public class MainApp extends Application {
 
     public Stage getMainStage() {
         return mainStage;
+    }
+
+    public String getMode() {
+        return mode;
     }
 }
