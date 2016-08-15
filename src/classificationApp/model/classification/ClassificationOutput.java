@@ -4,7 +4,7 @@ import classificationApp.model.data.DiscretizedData;
 import classificationApp.model.data.DiscretizedDataImpl;
 import classificationApp.model.data.TimeSeries;
 import classificationApp.model.preprocessing.PreProcessor;
-import classificationApp.view.ClassificationController;
+import classificationApp.view.controllers.ClassificationController;
 import javafx.concurrent.Task;
 import java.util.List;
 
