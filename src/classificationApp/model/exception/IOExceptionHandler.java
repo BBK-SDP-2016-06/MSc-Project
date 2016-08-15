@@ -42,7 +42,7 @@ public class IOExceptionHandler {
         List<Integer> shortDataLines = getShortDataIndices(input);
         if(!shortDataLines.isEmpty()) {
             throw new TimeSeriesFormatException("Time series data too short on lines: "
-                    + missingClassLines.toString().substring(1, missingClassLines.toString().length() - 1));
+                    + shortDataLines.toString().substring(1, shortDataLines.toString().length() - 1));
         }
     }
 
