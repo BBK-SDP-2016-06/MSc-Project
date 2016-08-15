@@ -3,6 +3,7 @@ package classificationApp.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 /**
  * Controller class for the CloseApplication dialogue.
@@ -19,9 +20,19 @@ public class CloseApplicationController {
     @FXML
     private Button noButton;
 
-    @FXML
-    private void handleYesButton() {}
+    private Stage stage;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     @FXML
-    private void handleNoButton() {}
+    private void handleYesButton() {
+        System.exit(0);
+    }
+
+    @FXML
+    private void handleNoButton() {
+        stage.close();
+    }
 }
