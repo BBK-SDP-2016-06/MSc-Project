@@ -1,0 +1,11 @@
+.table-row-cell:correct .table-cell {
+    -fx-background-color: lightgreen;
+}
+
+.table-row-cell:wrong .table-cell {
+    -fx-background-color: lightcoral;
+}
+
+.table-row-cell:all .table-cell {
+    -fx-border-width: 0;
+}
