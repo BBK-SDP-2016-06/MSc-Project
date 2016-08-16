@@ -1,4 +1,4 @@
-package classificationApp.model.preprocessing;
+package classificationApp.model.math;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
