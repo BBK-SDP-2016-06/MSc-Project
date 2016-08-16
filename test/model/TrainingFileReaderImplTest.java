@@ -90,9 +90,12 @@ public class TrainingFileReaderImplTest {
 
     @Test
     public void testTimeSeriesLengthOnVariableLengthLineFile1() {
-        reader = new TrainingFileReaderImpl(path + "variableLength1.txt");
-        assertEquals(1, reader.getTimeSeriesLength().getLowerBound());
-        assertEquals(4, reader.getTimeSeriesLength().getUpperBound());
+        try {
+            reader = new TrainingFileReaderImpl(path + "variableLength1.txt");
+            fail("expected TimeSeriesFormatException for invalid input");
+        } catch (TimeSeriesFormatException e) {
+            assertEquals("Time series data too short on lines: 0, 2", e.getMessage());
+        }
     }
 
     @Test
