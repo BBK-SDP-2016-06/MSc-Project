@@ -5,12 +5,16 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+
+import java.io.IOException;
 
 /**
  * Controller class for the animation mode of the application.
@@ -59,6 +63,7 @@ public class AnimationRootController {
 
     @FXML
     private void initialize() {
+        FXMLLoader loader = new FXMLLoader();
         stageNumber = new SimpleIntegerProperty();
         stageNumber.addListener((observable, oldValue, newValue) -> {
             removeStyleClasses();
@@ -67,6 +72,9 @@ public class AnimationRootController {
             switch (newValue.intValue()) {
                 case 1: //Select test sample / training file
                     rawDataRepresentation.getStyleClass().add("currentStageLabel");
+                    stageDescription.setText("Select test data sample and click next to begin " +
+                            "classification model walk-through.");
+                    loader.setLocation(MainApp.class.getResource("view/A1TestSelection.fxml"));
                     break;
                 case 2: //Raw data representation
                     rawDataRepresentation.getStyleClass().add("currentStageLabel");
@@ -103,6 +111,12 @@ public class AnimationRootController {
                     break;
                 default:
                     break;
+            }
+            try {
+                AnchorPane anchorPane = loader.load();
+                gridPaneLayout.add(anchorPane, 2, 0);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         stageNumber.set(1);
