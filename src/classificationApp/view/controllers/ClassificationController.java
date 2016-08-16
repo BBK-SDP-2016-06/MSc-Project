@@ -26,6 +26,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -342,6 +343,7 @@ public class ClassificationController {
             loader.setLocation(MainApp.class.getResource("view/ResultStatistics.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Classification Results: " + getKValue() + "NN, frame(" + getFrameCount() + "), alphabet(" + getAlphabetSize() + ")");
+            stage.getIcons().add(new Image("file:resources/Icon.jpg"));
             stage.setScene(new Scene(loader.load()));
             stage.show();
             ResultStatisticsController controller = loader.getController();
