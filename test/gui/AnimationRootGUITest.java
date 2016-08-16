@@ -30,7 +30,7 @@ public class AnimationRootGUITest extends ApplicationTest {
     public void checkInitialButtonState() {
         verifyThat("#prevButton", Node::isDisabled);
         verifyThat("#nextButton", n -> !n.isDisabled());
-        verifyThat("#exitButton", n -> !n.isDisable());
+        verifyThat("#exitButton", n -> !n.isDisabled());
     }
 
     @Test
@@ -58,6 +58,22 @@ public class AnimationRootGUITest extends ApplicationTest {
         verifyThat("#similarityMeasure", l -> l.getStyleClass().isEmpty());
         verifyThat("#kNNClassification", l -> l.getStyleClass().isEmpty());
         verifyThat("#result", l -> l.getStyleClass().isEmpty());
+    }
+
+    @Test
+    public void testGUIStatusAfterClickingNextOnce() {
+        clickOn("#nextButton");
+        verifyThat("#rawDataRepresentation", l -> l.getStyleClass().get(0).equals("currentStageLabel"));
+        verifyThat("#normalization", l -> l.getStyleClass().isEmpty());
+        verifyThat("#pAA", l -> l.getStyleClass().isEmpty());
+        verifyThat("#discretization", l -> l.getStyleClass().isEmpty());
+        verifyThat("#similarityMeasure", l -> l.getStyleClass().isEmpty());
+        verifyThat("#kNNClassification", l -> l.getStyleClass().isEmpty());
+        verifyThat("#result", l -> l.getStyleClass().isEmpty());
+
+        verifyThat("#prevButton", n -> !n.isDisabled());
+        verifyThat("#nextButton", n -> !n.isDisabled());
+        verifyThat("#exitButton", n -> !n.isDisabled());
     }
 
 }
