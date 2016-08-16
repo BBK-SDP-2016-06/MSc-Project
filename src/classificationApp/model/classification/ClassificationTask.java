@@ -12,7 +12,7 @@ import java.util.List;
  * Runnable class for displaying classification process to text area.
  * Created by George Shiangoli on 09/08/2016.
  */
-public class ClassificationOutput extends Task<ClassificationResult> {
+public class ClassificationTask extends Task<ClassificationResult> {
 
     private ClassificationController controller;
     private Classifier classifier;
@@ -20,11 +20,11 @@ public class ClassificationOutput extends Task<ClassificationResult> {
     private TimeSeries test;
     private List<DiscretizedData> train;
 
-    public ClassificationOutput(ClassificationController controller,
-                                Classifier classifier,
-                                PreProcessor preProcessor,
-                                TimeSeries test,
-                                List<DiscretizedData> train) {
+    public ClassificationTask(ClassificationController controller,
+                              Classifier classifier,
+                              PreProcessor preProcessor,
+                              TimeSeries test,
+                              List<DiscretizedData> train) {
         this.controller = controller;
         this.classifier = classifier;
         this.preProcessor = preProcessor;
