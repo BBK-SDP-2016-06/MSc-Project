@@ -9,7 +9,7 @@
    <children>
       <VBox alignment="CENTER" layoutX="92.0" layoutY="-37.0" prefHeight="150.0" prefWidth="300.0" spacing="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
-            <Label fx:id="closeAppQuestion" text="Exit Application?" />
+            <Label fx:id="closeAppQuestion" text="Are you sure you want to exit application?" />
             <Button fx:id="yesButton" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleYesButton" prefWidth="75.0" text="Yes" />
             <Button fx:id="noButton" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handleNoButton" prefWidth="75.0" text="No" />
          </children>
