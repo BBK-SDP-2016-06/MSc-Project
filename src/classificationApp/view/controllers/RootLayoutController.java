@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 /**
  * Controller class for the root view (top menu bar of application).
@@ -50,6 +52,8 @@ public class RootLayoutController {
     @FXML
     private void handleAbout() {
         Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+        Stage stage = (Stage)infoAlert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:resources/Icon.jpg"));
         infoAlert.setTitle("About");
         infoAlert.setHeaderText("");
         infoAlert.setContentText("Author: George Shiangoli 2016");
