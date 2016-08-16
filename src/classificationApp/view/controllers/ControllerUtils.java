@@ -6,6 +6,7 @@ import classificationApp.model.io.TrainingFileReader;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -21,6 +22,8 @@ public class ControllerUtils {
 
     public static void showFileAlert(String title, Exception e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        Stage stage = (Stage)alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(new Image("file:resources/Icon.jpg"));
         alert.setTitle(title);
         alert.setHeaderText(e.getClass().getSimpleName());
         alert.setContentText(e.getMessage());
@@ -30,12 +33,14 @@ public class ControllerUtils {
     public static Stage getModalStage(String stageTitle) {
         Stage stage = new Stage();
         stage.setTitle(stageTitle);
+        stage.getIcons().add(new Image("file:resources/Icon.jpg"));
         stage.initModality(Modality.APPLICATION_MODAL);
         return stage;
     }
 
     public static void showValidDataDialogue() {
         Stage stage = new Stage();
+        stage.getIcons().add(new Image("file:resources/Icon.jpg"));
         stage.initModality(Modality.APPLICATION_MODAL);
         try {
             FXMLLoader loader = new FXMLLoader();

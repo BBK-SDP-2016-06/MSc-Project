@@ -4,6 +4,7 @@ import classificationApp.view.controllers.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -32,11 +33,13 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.openingStage = stage;
+        this.openingStage.getIcons().add(new Image("file:resources/Icon.jpg"));
         this.openingStage.setOnCloseRequest(e -> {
             e.consume();
             closeApplication();
         });
         this.mainStage = new Stage();
+        this.mainStage.getIcons().add(new Image("file:resources/Icon.jpg"));
         this.mainStage.setOnCloseRequest(e -> {
             e.consume();
             closeApplication();
