@@ -1,7 +1,7 @@
 package model;
 
 import org.junit.Test;
-import classificationApp.model.preprocessing.MathUtils;
+import classificationApp.model.math.MathUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
