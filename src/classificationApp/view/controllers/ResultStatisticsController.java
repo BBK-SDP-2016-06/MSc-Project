@@ -2,7 +2,7 @@ package classificationApp.view.controllers;
 
 import classificationApp.model.classification.ClassificationResult;
 import classificationApp.model.classification.NeighbourDistance;
-import classificationApp.model.preprocessing.MathUtils;
+import classificationApp.model.math.MathUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.*;
 import javafx.css.PseudoClass;

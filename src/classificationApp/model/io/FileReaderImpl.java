@@ -2,7 +2,7 @@ package classificationApp.model.io;
 
 import classificationApp.model.data.DataLengthRange;
 import classificationApp.model.data.TimeSeries;
-import classificationApp.model.preprocessing.MathUtils;
+import classificationApp.model.math.MathUtils;
 
 import java.io.BufferedReader;
 import java.io.File;

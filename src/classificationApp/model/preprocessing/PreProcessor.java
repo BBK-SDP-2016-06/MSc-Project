@@ -5,7 +5,7 @@ import classificationApp.model.exception.PPExceptionHandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import static classificationApp.model.preprocessing.MathUtils.*;
+import static classificationApp.model.math.MathUtils.*;
 
 /**
  * Transforms a time series classificationApp.model.data representation into

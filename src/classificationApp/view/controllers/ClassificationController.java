@@ -1,6 +1,6 @@
 package classificationApp.view.controllers;
 
-import static classificationApp.model.preprocessing.MathUtils.*;
+import static classificationApp.model.math.MathUtils.*;
 import classificationApp.MainApp;
 import classificationApp.model.classification.*;
 import classificationApp.model.data.DiscretizedData;
@@ -382,7 +382,7 @@ public class ClassificationController {
         final double[] taskCount = {0};
 
         for (int i = 0; i < test.size(); i++) {
-            Task<ClassificationResult> task = new ClassificationOutput(this, classifier, preProcessor,
+            Task<ClassificationResult> task = new ClassificationTask(this, classifier, preProcessor,
                     test.get(i), processedTrain);
 
             final int index = i;
