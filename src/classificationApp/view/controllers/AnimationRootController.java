@@ -47,6 +47,18 @@ public class AnimationRootController {
     private Label result;
 
     @FXML
+    private Label trainingFileName;
+
+    @FXML
+    private Label trainingFileClassCount;
+
+    @FXML
+    private Label trainingFileDataSetSize;
+
+    @FXML
+    private Label trainingFileTimeSeriesLength;
+
+    @FXML
     private TextArea stageDescription;
 
     @FXML
