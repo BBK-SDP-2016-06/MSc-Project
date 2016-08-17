@@ -22,8 +22,8 @@
             <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="200.0" prefHeight="600.0" vgrow="ALWAYS" />
-            <RowConstraints vgrow="NEVER" />
+          <RowConstraints maxHeight="1.7976931348623157E308" minHeight="320.0" prefHeight="600.0" vgrow="ALWAYS" />
+            <RowConstraints maxHeight="80.0" prefHeight="80.0" vgrow="NEVER" />
           <RowConstraints vgrow="NEVER" />
         </rowConstraints>
          <children>
@@ -35,7 +35,7 @@
                   <Button fx:id="exitButton" layoutX="595.0" layoutY="150.0" mnemonicParsing="false" onAction="#handleExitButton" text="Exit" />
               </buttons>
             </ButtonBar>
-            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" stylesheets="@css/animation-stage-labels.css" GridPane.rowSpan="2147483647">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" stylesheets="@css/animation-stage-labels.css">
                <children>
                   <Label text="Classification Process:">
                      <font>
@@ -56,6 +56,33 @@
                   <Insets />
                </GridPane.margin>
             </TextArea>
+            <GridPane GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.rowSpan="2147483647" GridPane.vgrow="NEVER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="trainingFileClassCount" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label text="Training File">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="trainingFileName" text="Name:" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                  <Label text="Class count:" GridPane.rowIndex="2" />
+                  <Label text="Data set size:" GridPane.rowIndex="3" />
+                  <Label text="Data length:" GridPane.rowIndex="4" />
+                  <Label fx:id="trainingFileDataSetSize" text="0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label fx:id="trainingFileTimeSeriesLength" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               </children>
+            </GridPane>
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
