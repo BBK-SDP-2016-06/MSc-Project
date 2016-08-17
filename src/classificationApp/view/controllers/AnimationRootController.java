@@ -136,6 +136,7 @@ public class AnimationRootController {
 
     public void setMainApp(MainApp mainApp) {
         this.mainApp = mainApp;
+        setTRAIN();
     }
 
     @FXML
@@ -163,6 +164,20 @@ public class AnimationRootController {
         }
         if (stageList != null) {
             stageList.getChildren().forEach(n -> n.getStyleClass().clear());
+        }
+    }
+
+    private void setTRAIN() {
+        if (mainApp.getTrainingData() == null) {
+            trainingFileName.setText("Name:");
+            trainingFileClassCount.setText("0");
+            trainingFileDataSetSize.setText("0");
+            trainingFileTimeSeriesLength.setText("0");
+        } else {
+            trainingFileName.setText("Name: " + mainApp.getTrainingData().getFile().getName());
+            trainingFileClassCount.setText(String.valueOf(mainApp.getTrainingData().getClassCount()));
+            trainingFileDataSetSize.setText(String.valueOf(mainApp.getTrainingData().getTimeSeriesCount()));
+            trainingFileTimeSeriesLength.setText(mainApp.getTrainingData().getTimeSeriesLength().toString());
         }
     }
 }
