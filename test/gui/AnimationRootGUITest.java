@@ -76,4 +76,19 @@ public class AnimationRootGUITest extends ApplicationTest {
         verifyThat("#exitButton", n -> !n.isDisabled());
     }
 
+    @Test
+    public void testTrainingDataStatusIsInitiallySetToZero() {
+        Label trainingFileName = find("#trainingFileName");
+        verifyThat(trainingFileName, n -> n.getText().equals("Name:"));
+
+        Label trainingFileClassCount = find("#trainingFileClassCount");
+        verifyThat(trainingFileClassCount, n -> n.getText().equals("0"));
+
+        Label trainingFileDataSetSize = find("#trainingFileDataSetSize");
+        verifyThat(trainingFileDataSetSize, n -> n.getText().equals("0"));
+
+        Label trainingFileTimeSeriesLength = find("#trainingFileTimeSeriesLength");
+        verifyThat(trainingFileTimeSeriesLength, n -> n.getText().equals("0"));
+    }
+
 }
