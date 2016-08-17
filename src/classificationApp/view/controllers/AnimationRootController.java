@@ -1,6 +1,7 @@
 package classificationApp.view.controllers;
 
 import classificationApp.MainApp;
+import classificationApp.model.data.TimeSeries;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
@@ -73,20 +74,25 @@ public class AnimationRootController {
     private MainApp mainApp;
     private IntegerProperty stageNumber;
 
+    private TimeSeries rawTestSample;
+    private TimeSeries normalizedTestSample;
+
     @FXML
     private void initialize() {
-        FXMLLoader loader = new FXMLLoader();
         stageNumber = new SimpleIntegerProperty();
+    }
+
+    public void setMainApp(MainApp mainApp) {
+        this.mainApp = mainApp;
         stageNumber.addListener((observable, oldValue, newValue) -> {
             removeStyleClasses();
             prevButton.setDisable(newValue.intValue() == 1);
-            nextButton.setDisable(newValue.intValue() == 12);
             switch (newValue.intValue()) {
                 case 1: //Select test sample / training file
                     rawDataRepresentation.getStyleClass().add("currentStageLabel");
                     stageDescription.setText("Select test data sample and click next to begin " +
                             "classification model walk-through.");
-                    loader.setLocation(MainApp.class.getResource("view/A1TestSelection.fxml"));
+                    loadWalkThroughStep("view/TestSelection.fxml");
                     break;
                 case 2: //Raw data representation
                     rawDataRepresentation.getStyleClass().add("currentStageLabel");
@@ -124,18 +130,8 @@ public class AnimationRootController {
                 default:
                     break;
             }
-            try {
-                AnchorPane anchorPane = loader.load();
-                gridPaneLayout.add(anchorPane, 2, 0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         });
         stageNumber.set(1);
-    }
-
-    public void setMainApp(MainApp mainApp) {
-        this.mainApp = mainApp;
         setTRAIN();
     }
 
@@ -167,7 +163,20 @@ public class AnimationRootController {
         }
     }
 
-    private void setTRAIN() {
+    private void loadWalkThroughStep(String filePath) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource(filePath));
+            AnchorPane anchorPane = loader.load();
+            gridPaneLayout.add(anchorPane, 2, 0);
+            ClassificationStepController controller = loader.getController();
+            controller.setController(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setTRAIN() {
         if (mainApp.getTrainingData() == null) {
             trainingFileName.setText("Name:");
             trainingFileClassCount.setText("0");
@@ -179,5 +188,29 @@ public class AnimationRootController {
             trainingFileDataSetSize.setText(String.valueOf(mainApp.getTrainingData().getTimeSeriesCount()));
             trainingFileTimeSeriesLength.setText(mainApp.getTrainingData().getTimeSeriesLength().toString());
         }
+    }
+
+    public MainApp getMainApp() {
+        return mainApp;
+    }
+
+    public void setNextButtonDisabled(boolean isDisabled) {
+        nextButton.setDisable(isDisabled);
+    }
+
+    public TimeSeries getRawTestSample() {
+        return rawTestSample;
+    }
+
+    public void setRawTestSample(TimeSeries rawTestSample) {
+        this.rawTestSample = rawTestSample;
+    }
+
+    public TimeSeries getNormalizedTestSample() {
+        return normalizedTestSample;
+    }
+
+    public void setNormalizedTestSample(TimeSeries normalizedTestSample) {
+        this.normalizedTestSample = normalizedTestSample;
     }
 }
