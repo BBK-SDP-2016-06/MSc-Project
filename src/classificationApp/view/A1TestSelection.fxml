@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="anchorPaneStats" stylesheets="@css/Border.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane styleClass="anchorPaneStats" stylesheets="@css/Border.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <StackPane layoutX="11.0" layoutY="11.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
-            <ListView prefHeight="200.0" prefWidth="200.0" />
+            <ListView />
             <Label text="No current TEST file" />
          </children>
       </StackPane>
