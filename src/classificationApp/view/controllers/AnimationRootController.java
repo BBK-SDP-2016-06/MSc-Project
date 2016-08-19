@@ -12,6 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 /**
  * Controller class for the animation mode of the application.
@@ -129,6 +130,20 @@ public class AnimationRootController {
 
     public MainApp getMainApp() {
         return mainApp;
+    }
+
+    public void setImageOpacity(String imageName, double opacity) {
+        try {
+            Field field = this.getClass().getDeclaredField(imageName);
+            ImageView image = (ImageView)field.get(this);
+            image.setOpacity(opacity);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Button getStartAgainButton() {
+        return startAgain;
     }
 
 }
