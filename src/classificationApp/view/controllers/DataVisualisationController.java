@@ -2,22 +2,20 @@ package classificationApp.view.controllers;
 
 import classificationApp.model.data.TimeSeries;
 import classificationApp.model.data.TimeSeriesImpl;
-import classificationApp.model.preprocessing.PreProcessor;
-import classificationApp.model.preprocessing.SAXPreProcessor;
+import classificationApp.model.preprocessing.*;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -38,7 +36,8 @@ public class DataVisualisationController {
     private XYChart.Series<Double, Double> rawDataSeries;
     private XYChart.Series<Double, Double> normalizedDataSeries;
 
-    private List<XYChart.Series<Double, Double>> partitionLines;
+    private List<XYChart.Series<Double, Double>> xPartitionLines;
+    private List<XYChart.Series<Double, Double>> yPartitionLines;
 
     @FXML
     private LineChart<Double, Double> graph;
@@ -56,7 +55,8 @@ public class DataVisualisationController {
         normalizedDataSeries = new XYChart.Series<>();
         normalizedDataSeries.setName("Normalized data");
         graph.setCreateSymbols(false);
-        partitionLines = new ArrayList<>();
+        xPartitionLines = new ArrayList<>();
+        yPartitionLines = new ArrayList<>();
     }
 
     @SuppressWarnings("unchecked")
@@ -160,8 +160,8 @@ public class DataVisualisationController {
         partitionSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             partitionValue.setText(String.valueOf(newValue.intValue()));
             double frameSize = (double)testSample.getDataSize() / newValue.doubleValue();
-            if (!partitionLines.isEmpty()) graph.getData().removeAll(partitionLines);
-            partitionLines.clear();
+            if (!xPartitionLines.isEmpty()) graph.getData().removeAll(xPartitionLines);
+            xPartitionLines.clear();
             double minValue = normalizedData.getMin();
             double maxValue = normalizedData.getMax();
             for (int i = 0; i < newValue.doubleValue(); i++) {
@@ -169,9 +169,9 @@ public class DataVisualisationController {
                 XYChart.Data<Double, Double> maxPoint = new XYChart.Data<>(i * frameSize, maxValue);
                 XYChart.Series<Double, Double> partitionLine = new XYChart.Series<>();
                 partitionLine.getData().addAll(minPoint, maxPoint);
-                partitionLines.add(partitionLine);
+                xPartitionLines.add(partitionLine);
             }
-            graph.getData().addAll(partitionLines);
+            graph.getData().addAll(xPartitionLines);
             graph.getData().parallelStream()
                     .skip(1)
                     .forEach(series -> series.getNode().getStyleClass().add("partitionLines"));
@@ -186,7 +186,7 @@ public class DataVisualisationController {
 
         Button reduceDataButton = new Button("Reduce Data");
         reduceDataButton.setPrefWidth(200);
-        reduceDataButton.setOnAction(e -> showCalculatedMeanLayout());
+        reduceDataButton.setOnAction(e -> showCalculatedMeanLayout(Integer.parseInt(partitionValue.getText())));
 
         VBox partitionLayout = new VBox(5, hbox, reduceDataButton);
         partitionLayout.setAlignment(Pos.CENTER);
@@ -194,7 +194,172 @@ public class DataVisualisationController {
         gridPane.add(partitionLayout, 0, 1);
     }
 
-    private void showCalculatedMeanLayout() {
+    private void showCalculatedMeanLayout(int frameCount) {
+        rootController.setTitle("5. Data Reduction (Pre-processing)");
+        rootController.setDescription("The mean value is then computed for each partition, taking into " +
+                "consideration all data values that fall within the allotted frame.");
+        rootController.setImageOpacity("arrow4", 1.0);
+        rootController.setImageOpacity("meanIcon", 1.0);
 
+        DataApproximator approximator = new PiecewiseAggregateApproximator(frameCount);
+        List<Double> reducedData = approximator.reduce(normalizedData.getData());
+        List<XYChart.Series<Double, Double>> pAALines = new ArrayList<>();
+        double frameWidth = (double)testSample.getDataSize() / (double)frameCount;
+
+        for (int i = 0; i < reducedData.size(); i++) {
+            XYChart.Series<Double, Double> pAALine = new XYChart.Series<>();
+            XYChart.Data<Double, Double> firstValue = new XYChart.Data<>(i * frameWidth, reducedData.get(i));
+            XYChart.Data<Double, Double> secondValue = new XYChart.Data<>((i + 1) * frameWidth, reducedData.get(i));
+            pAALine.getData().addAll(firstValue, secondValue);
+            pAALines.add(pAALine);
+        }
+
+        graph.setAnimated(true);
+        graph.getData().addAll(pAALines);
+        graph.getData().get(0).getNode().getStyleClass().add("backgroundLines");
+        graph.getData().parallelStream().skip(1).limit(frameCount).forEach(data -> data.getNode().getStyleClass().add("partitionLines"));
+        graph.getData().parallelStream().skip(1 + frameCount).forEach(data -> data.getNode().getStyleClass().add("meanLines"));
+
+        Button button = new Button("Gaussian Split");
+        button.setOnAction(e -> showGaussianSplit(reducedData, frameWidth));
+
+        gridPane.getChildren().remove(1);
+        gridPane.add(button, 0, 1);
+    }
+
+    private void showGaussianSplit(List<Double> reducedData, double frameWidth) {
+        rootController.setTitle("6. Word Generation (Pre-processing)");
+        rootController.setDescription("A Gaussian distribution is then used to calculate the symbolic " +
+                "approximation of each segment of the new graph. The y-axis is split according to equal probabilities beneath " +
+                "the Gaussian distribution and then each segment is assigned a letter depending on which bracket the value falls " +
+                "within. The letters are then concatenated to form the resulting SAX approximation of the test sample.");
+        rootController.setImageOpacity("arrow5", 1.0);
+        rootController.setImageOpacity("gaussianIcon", 1.0);
+
+        XYChart.Series<Double, Double> approximationLine = new XYChart.Series<>();
+        for (int i = 0; i < reducedData.size(); i++) {
+            XYChart.Data<Double, Double> firstValue = new XYChart.Data<>(i * frameWidth, reducedData.get(i));
+            XYChart.Data<Double, Double> secondValue = new XYChart.Data<>((i + 1) * frameWidth, reducedData.get(i));
+            approximationLine.getData().addAll(firstValue, secondValue);
+        }
+
+        graph.getData().removeIf(data -> graph.getData().indexOf(data) != 0);
+        graph.getData().add(approximationLine);
+        graph.getData().get(0).getNode().getStyleClass().add("backgroundLines");
+        graph.getData().get(1).getNode().getStyleClass().add("meanLines");
+
+        Label alphabetLabel = new Label("Alphabet Size:");
+        Label alphabetValue = new Label("2");
+
+        Slider alphabetSlider = new Slider(2, 26, 1);
+        alphabetSlider.setMaxWidth(Double.MAX_VALUE);
+        alphabetSlider.setMajorTickUnit(1);
+        alphabetSlider.setMinorTickCount(0);
+        alphabetSlider.setSnapToTicks(true);
+        alphabetSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                alphabetValue.setText(String.valueOf(newValue.intValue()));
+                DataConverter converter = new GaussianSplitConverter(newValue.intValue());
+                Field field = converter.getClass().getDeclaredField("breakPoints");
+                field.setAccessible(true);
+                List<Double> breakPoints = (List<Double>)field.get(converter);
+
+                if (!yPartitionLines.isEmpty()) graph.getData().removeAll(yPartitionLines);
+                yPartitionLines.clear();
+
+                double extent = testSample.getDataSize() + 1;
+
+                for (Double breakPoint : breakPoints) {
+                    XYChart.Data<Double, Double> firstPoint = new XYChart.Data<>(0.0, breakPoint);
+                    XYChart.Data<Double, Double> lastPoint = new XYChart.Data<>(extent, breakPoint);
+                    XYChart.Series<Double, Double> yPartitionLine = new XYChart.Series<>();
+                    yPartitionLine.getData().addAll(firstPoint, lastPoint);
+                    yPartitionLines.add(yPartitionLine);
+                }
+                graph.getData().addAll(yPartitionLines);
+                graph.getData().get(0).getNode().getStyleClass().add("backgroundLines");
+                graph.getData().get(1).getNode().getStyleClass().add("meanLines");
+                graph.getData().parallelStream()
+                        .skip(2)
+                        .forEach(series -> series.getNode().getStyleClass().add("alphabetLines"));
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+        HBox hbox = new HBox(10, alphabetLabel, alphabetSlider, alphabetValue);
+        HBox.setHgrow(alphabetSlider, Priority.ALWAYS);
+        HBox.setHgrow(alphabetValue, Priority.NEVER);
+        HBox.setHgrow(alphabetLabel, Priority.NEVER);
+        hbox.setMaxWidth(Double.MAX_VALUE);
+        hbox.setPadding(new Insets(0, 10, 0, 10));
+
+        Button generateWordButton = new Button("Generate Word");
+        generateWordButton.setPrefWidth(200);
+        generateWordButton.setOnAction(e -> showWord(Integer.parseInt(alphabetValue.getText()), reducedData));
+
+        VBox gaussianLayout = new VBox(5, hbox, generateWordButton);
+        gaussianLayout.setAlignment(Pos.CENTER);
+
+        gridPane.getChildren().remove(1);
+        gridPane.add(gaussianLayout, 0, 1);
+    }
+
+    private void showWord(int alphabetSize, List<Double> reducedData) {
+        DataConverter converter = new GaussianSplitConverter(alphabetSize);
+        String word = converter.toWord(reducedData);
+
+        Button nextButton = new Button("Next");
+        nextButton.setPrefWidth(200);
+        nextButton.setOnAction(e -> rootController.showLCSVisualisation(word, alphabetSize));
+
+        Label wordLabel = new Label("Resulting word approximation: " + word);
+
+        VBox wordResultLayout = new VBox(5, wordLabel, nextButton);
+        wordResultLayout.setAlignment(Pos.CENTER);
+
+        gridPane.getChildren().remove(1);
+        gridPane.add(wordResultLayout, 0, 1);
+        StackPane stack = new StackPane(gridPane.getChildren().remove(0));
+        gridPane.add(stack, 0, 0);
+
+        showChartSymbols(stack, word);
+
+        rootController.getMainApp().getMainStage().getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
+            stack.getChildren().remove(1);
+            showChartSymbols(stack, word);
+        });
+
+        rootController.getMainApp().getMainStage().getScene().widthProperty().addListener((observable, oldValue, newValue) -> {
+            stack.getChildren().remove(1);
+            showChartSymbols(stack, word);
+        });
+    }
+
+    private AnchorPane generateChartSymbols(String word) {
+        AnchorPane symbolLayer = new AnchorPane();
+        Node chartPlotArea = graph.lookup(".chart-plot-background");
+        double chartZeroX = chartPlotArea.getLayoutX();
+        double chartZeroY = chartPlotArea.getLayoutY();
+
+        for (int i = 0; i < word.length(); i++) {
+            Label symbol = new Label(word.charAt(i) + "");
+            symbolLayer.getChildren().add(symbol);
+
+            XYChart.Data<Double, Double> dataItem = graph.getData().get(1).getData().get(i * 2);
+            XYChart.Data<Double, Double> nextDataItem = graph.getData().get(1).getData().get((i * 2) + 1);
+
+            AnchorPane.setLeftAnchor(symbol, ((graph.getXAxis().getDisplayPosition(dataItem.getXValue()) + chartZeroX) +
+                    (graph.getXAxis().getDisplayPosition(nextDataItem.getXValue()) + chartZeroX)) / 2.0);
+
+            AnchorPane.setTopAnchor(symbol, graph.getYAxis().getDisplayPosition(dataItem.getYValue()) + chartZeroY - 15.0);
+        }
+        return symbolLayer;
+    }
+
+    private void showChartSymbols(StackPane stack, String word) {
+        AnchorPane symbolLayer1 = generateChartSymbols(word);
+        stack.getChildren().add(symbolLayer1);
+        symbolLayer1.getChildren().parallelStream().forEach(label -> label.getStyleClass().add("symbolAlphabet"));
     }
 }
