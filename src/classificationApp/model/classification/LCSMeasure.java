@@ -6,6 +6,8 @@ package classificationApp.model.classification;
  */
 public class LCSMeasure implements DistanceMeasure {
 
+    private int[][] matrix;
+
     /**
      * Calculates the length of the Longest Common Subsequence of the two input
      * strings. The application uses this length as a similarity factor between
@@ -27,7 +29,7 @@ public class LCSMeasure implements DistanceMeasure {
         int xLength = s1.length();
         int yLength = s2.length();
 
-        int[][] matrix = new int[xLength][yLength];
+        matrix = new int[xLength][yLength];
 
         for (int i = 0; i < xLength; i++) {
             for (int j = 0; j < yLength; j++) {
@@ -59,5 +61,9 @@ public class LCSMeasure implements DistanceMeasure {
         }
     }
     */
+
+    public int[][] getMatrix() {
+        return matrix;
+    }
 
 }
