@@ -151,7 +151,7 @@ public class DataVisualisationController {
         Label partitionLabel = new Label("Partition Count:");
         Label partitionValue = new Label("1");
 
-        Slider partitionSlider = new Slider(1, (int)testSample.getDataSize(), 1);
+        Slider partitionSlider = new Slider(1, (int)testSample.getDataSize() > 50 ? 50 : (int)testSample.getDataSize(), 1);
         partitionSlider.setMaxWidth(Double.MAX_VALUE);
         partitionSlider.setMajorTickUnit(1);
         partitionSlider.setMinorTickCount(0);
@@ -311,7 +311,7 @@ public class DataVisualisationController {
 
         Button nextButton = new Button("Next");
         nextButton.setPrefWidth(200);
-        nextButton.setOnAction(e -> rootController.showLCSVisualisation(word, alphabetSize));
+        nextButton.setOnAction(e -> rootController.showLCSVisualisation(testSample, word, alphabetSize));
 
         Label wordLabel = new Label("Resulting word approximation: " + word);
 
