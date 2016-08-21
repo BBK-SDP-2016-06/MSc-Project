@@ -146,4 +146,11 @@ public class AnimationRootController {
         return startAgain;
     }
 
+    public void setTitle(String title) {
+        this.title.setText(title);
+    }
+
+    public void setDescription(String description) {
+        this.description.setText(description);
+    }
 }
