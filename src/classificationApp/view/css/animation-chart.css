@@ -1,0 +1,9 @@
+.partitionLines {
+    -fx-stroke: black;
+    -fx-stroke-dash-array: 2;
+    -fx-stroke-width: 1;
+}
+
+.meanLines {
+
+}
