@@ -5,5 +5,22 @@
 }
 
 .meanLines {
+    -fx-stroke: seagreen;
+    -fx-stroke-width: 3px;
+}
 
+.backgroundLines {
+    -fx-stroke-width: 1;
+}
+
+.alphabetLines {
+    -fx-stroke: blue;
+    -fx-stroke-dash-array: 2;
+    -fx-stroke-width: 1;
+}
+
+.symbolAlphabet {
+    -fx-text-fill: seagreen;
+    -fx-font-size: 14;
+    -fx-font-style: italic;
 }
