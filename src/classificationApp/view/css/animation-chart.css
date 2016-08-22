@@ -24,3 +24,7 @@
     -fx-font-size: 14;
     -fx-font-style: italic;
 }
+
+.normalLines {
+    -fx-stroke-width: 2;
+}
