@@ -1,6 +1,7 @@
 package classificationApp.view.controllers;
 
 import classificationApp.MainApp;
+import classificationApp.model.data.DiscretizedData;
 import classificationApp.model.data.TimeSeries;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.List;
 
 /**
  * Controller class for the animation mode of the application.
@@ -82,7 +84,7 @@ public class AnimationRootController {
     @FXML
     private void initialize() {
         title.setText("1. Test Data Selection");
-        description.setText("Select a data sample from a chosen file and click start to begin a walk-through" +
+        description.setText("Select a data sample from a chosen file and click start to begin an interactive walk-through" +
                 " of the classification process used within this model.");
     }
 
@@ -108,6 +110,41 @@ public class AnimationRootController {
             DataVisualisationController visController = loader.getController();
             visController.setRootController(this);
             visController.setTestSample(dataSample);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showLCSVisualisation(TimeSeries testSample, String word, int alphabetSize) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/LCSVisualisation.fxml"));
+            AnchorPane lcsLayout = loader.load();
+            gridPane.getChildren().remove(5);
+            gridPane.add(lcsLayout, 1, 1);
+            GridPane.setColumnSpan(lcsLayout, GridPane.REMAINING);
+            LCSVisualisationController controller = loader.getController();
+            controller.setRootController(this);
+            controller.setTestSample(testSample);
+            controller.setTestWord(word);
+            controller.setAlphabetSize(alphabetSize);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showKNNVisualisation(DiscretizedData testSample, List<DiscretizedData> trainSamples) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainApp.class.getResource("view/KNNVisualisation.fxml"));
+            AnchorPane knnLayout = loader.load();
+            gridPane.getChildren().remove(5);
+            gridPane.add(knnLayout, 1, 1);
+            GridPane.setColumnSpan(knnLayout, GridPane.REMAINING);
+            KNNVisualisationController controller = loader.getController();
+            controller.setRootController(this);
+            controller.setTest(testSample);
+            controller.setTrain(trainSamples);
         } catch (IOException e) {
             e.printStackTrace();
         }
