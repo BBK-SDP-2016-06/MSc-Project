@@ -22,7 +22,7 @@ import java.util.List;
 import static classificationApp.model.math.MathUtils.*;
 
 /**
- * Controller class for the Data Visualisation view of the animation mode
+ * Controller class for the Data Visualisation aspect of the interactive mode
  * of the application.
  * Created by George Shiangoli on 18/08/2016.
  */
