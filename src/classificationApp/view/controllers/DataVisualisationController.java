@@ -14,13 +14,11 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
 import static classificationApp.model.math.MathUtils.*;
 
 /**
@@ -154,7 +152,10 @@ public class DataVisualisationController {
         Label partitionLabel = new Label("Partition Count:");
         Label partitionValue = new Label("1");
 
-        Slider partitionSlider = new Slider(1, (int)testSample.getDataSize() > 50 ? 50 : (int)testSample.getDataSize(), 1);
+        int minDataLength = Math.min((int)testSample.getDataSize(),
+                (int)rootController.getMainApp().getTrainingData().getTimeSeriesLength().getLowerBound());
+
+        Slider partitionSlider = new Slider(1, minDataLength > 50 ? 50 : minDataLength, 1);
         partitionSlider.setMaxWidth(Double.MAX_VALUE);
         partitionSlider.setMajorTickUnit(1);
         partitionSlider.setMinorTickCount(0);
