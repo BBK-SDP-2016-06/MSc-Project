@@ -77,6 +77,9 @@ public class AnimationRootController {
     private ImageView lcsIcon;
 
     @FXML
+    private ImageView arrow7;
+
+    @FXML
     private ImageView knnIcon;
 
     private MainApp mainApp;
