@@ -1,0 +1,38 @@
+.table-row-cell:included .table-cell {
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+
+.table-row-cell:excluded .table-cell {
+    -fx-text-fill: grey;
+}
+
+.correct {
+    -fx-text-fill: green;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+
+.incorrect {
+    -fx-text-fill: red;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+
+.classLabels {
+    -fx-text-fill: blue;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+
+.includedKey {
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+
+.excludedKey {
+    -fx-text-fill: grey;
+}
