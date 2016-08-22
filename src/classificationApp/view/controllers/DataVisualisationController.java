@@ -78,6 +78,7 @@ public class DataVisualisationController {
                 normalizedDataSeries.getData().add(new XYChart.Data<>((double)i, normalizedData.getData().get(i)));
             }
             graph.getData().setAll(normalizedDataSeries);
+            graph.getData().forEach(data -> data.getNode().getStyleClass().add("normalLines"));
             showNormalizedDataLayout();
         } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
@@ -98,6 +99,7 @@ public class DataVisualisationController {
             rawDataSeries.getData().add(new XYChart.Data<>((double)i, testSample.getData().get(i)));
         }
         graph.getData().add(rawDataSeries);
+        graph.getData().get(0).getNode().getStyleClass().add("normalLines");
         String sb = "A graphical representation of the selected test sample " +
                 "in its raw format prior to preprocessing." + "\n\nData Statistics:" +
                 "\nActual Class Label: " + testSample.getClassType() +
@@ -117,6 +119,7 @@ public class DataVisualisationController {
             } else {
                 graph.getData().remove(1);
             }
+            graph.getData().forEach(data -> data.getNode().getStyleClass().add("normalLines"));
         });
         Button partitionButton = new Button("Partition");
         partitionButton.setPrefWidth(200);
@@ -175,6 +178,7 @@ public class DataVisualisationController {
             graph.getData().parallelStream()
                     .skip(1)
                     .forEach(series -> series.getNode().getStyleClass().add("partitionLines"));
+            graph.getData().get(0).getNode().getStyleClass().add("normalLines");
         });
 
         HBox hbox = new HBox(10, partitionLabel, partitionSlider, partitionValue);
