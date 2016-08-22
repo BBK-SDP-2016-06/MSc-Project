@@ -109,12 +109,12 @@ public class MainApp extends Application {
     }
 
     public void showAnimationLayout() {
-        mode = "Animation";
+        mode = "Interactive";
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/AnimationRoot.fxml"));
             AnchorPane layout = loader.load();
-            mainStage.setTitle("MSc Project - Animation Mode");
+            mainStage.setTitle("MSc Project - Interactive Mode");
             rootLayout.setCenter(layout);
             AnimationRootController controller = loader.getController();
             controller.setMainApp(this);
