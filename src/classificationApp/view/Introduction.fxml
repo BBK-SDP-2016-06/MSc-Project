@@ -52,7 +52,7 @@
                <children>
                   <ImageView blendMode="DARKEN" layoutX="-24.0" layoutY="14.0" nodeOrientation="INHERIT" preserveRatio="true" scaleX="0.6" scaleY="0.6" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="-24.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="14.0">
                      <image>
-                        <Image url="file:/C:/Users/George/Documents/Computer%20Science/08%20-%20MSc%20Project/APP/Prototype1/resources/ClassificationLogo.jpg" />
+                        <Image url="ClassificationLogo.jpg" />
                      </image>
                   </ImageView>
                </children>
