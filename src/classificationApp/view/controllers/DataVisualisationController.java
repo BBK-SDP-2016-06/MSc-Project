@@ -135,7 +135,10 @@ public class DataVisualisationController {
         gridPane.getChildren().remove(1);
 
         graph.setLegendVisible(false);
-        if (graph.getData().size() > 1) graph.getData().remove(1);
+        if (graph.getData().size() > 1) {
+            graph.getData().remove(1);
+            graph.getData().get(0).getNode().getStyleClass().add("normalLines");
+        }
         graph.getData().forEach(series -> series.getNode().setOpacity(0.5));
         graph.setAnimated(false);
 
