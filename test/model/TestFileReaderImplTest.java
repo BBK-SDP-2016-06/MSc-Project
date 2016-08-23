@@ -66,17 +66,17 @@ public class TestFileReaderImplTest {
     @Test
     public void testGetDataSetOnExample1() {
         reader = new TestFileReaderImpl(path + "exampleTest1.txt");
-        assertEquals(example1, reader.getDataSet());
+        assertEquals(example1.toString(), reader.getDataSet().toString());
     }
 
     @Test
     public void testGetTimeSeriesOnExample1() {
         reader = new TestFileReaderImpl(path + "exampleTest1.txt");
-        assertEquals(new TimeSeriesImpl(Optional.of(1), Arrays.asList(0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09)), reader.getTimeSeries(0));
-        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(-0.01, -0.02, -0.03, -0.04, -0.05, -0.06, -0.07, -0.08, -0.09)), reader.getTimeSeries(1));
-        assertEquals(new TimeSeriesImpl(Optional.of(3), Arrays.asList(0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0)), reader.getTimeSeries(2));
-        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(-0.02, -0.04, -0.06, -0.08, -0.1, -0.12, -0.14, -0.16, -0.18)), reader.getTimeSeries(3));
-        assertEquals(new TimeSeriesImpl(Optional.of(5), Arrays.asList(3.01, 3.02, 3.03, 3.04, 3.05, 3.06, 3.07, 3.08, 3.09)), reader.getTimeSeries(4));
+        assertEquals(new TimeSeriesImpl(Optional.of(1), Arrays.asList(0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09)).toString(), reader.getTimeSeries(0).toString());
+        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(-0.01, -0.02, -0.03, -0.04, -0.05, -0.06, -0.07, -0.08, -0.09)).toString(), reader.getTimeSeries(1).toString());
+        assertEquals(new TimeSeriesImpl(Optional.of(3), Arrays.asList(0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0)).toString(), reader.getTimeSeries(2).toString());
+        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(-0.02, -0.04, -0.06, -0.08, -0.1, -0.12, -0.14, -0.16, -0.18)).toString(), reader.getTimeSeries(3).toString());
+        assertEquals(new TimeSeriesImpl(Optional.of(5), Arrays.asList(3.01, 3.02, 3.03, 3.04, 3.05, 3.06, 3.07, 3.08, 3.09)).toString(), reader.getTimeSeries(4).toString());
     }
 
     @Test
@@ -84,15 +84,15 @@ public class TestFileReaderImplTest {
         reader = new TestFileReaderImpl(path + "exampleTest1.txt");
         List<TimeSeries> dataList = reader.getTimeSeriesOfClass(1);
         assertEquals(1, dataList.size());
-        assertEquals(new TimeSeriesImpl(Optional.of(1), Arrays.asList(0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09)), dataList.get(0));
+        assertEquals(new TimeSeriesImpl(Optional.of(1), Arrays.asList(0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09)).toString(), dataList.get(0).toString());
         for (TimeSeries ts : dataList) {
             assertEquals(1, (int)ts.getClassType().get());
         }
 
         List<TimeSeries> dataList2 = reader.getTimeSeriesOfClass(2);
         assertEquals(2, dataList2.size());
-        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(-0.01, -0.02, -0.03, -0.04, -0.05, -0.06, -0.07, -0.08, -0.09)), dataList2.get(0));
-        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(-0.02, -0.04, -0.06, -0.08, -0.1, -0.12, -0.14, -0.16, -0.18)), dataList2.get(1));
+        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(-0.01, -0.02, -0.03, -0.04, -0.05, -0.06, -0.07, -0.08, -0.09)).toString(), dataList2.get(0).toString());
+        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(-0.02, -0.04, -0.06, -0.08, -0.1, -0.12, -0.14, -0.16, -0.18)).toString(), dataList2.get(1).toString());
         for (TimeSeries ts : dataList2) {
             assertEquals(2, (int)ts.getClassType().get());
         }
@@ -130,10 +130,10 @@ public class TestFileReaderImplTest {
         assertEquals(8, reader.getTimeSeries(2).getDataSize());
         assertEquals(8, reader.getTimeSeries(3).getDataSize());
 
-        assertEquals(new TimeSeriesImpl(Optional.empty(), Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)), reader.getTimeSeries(0));
-        assertEquals(new TimeSeriesImpl(Optional.empty(), Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)), reader.getTimeSeries(1));
-        assertEquals(new TimeSeriesImpl(Optional.of(1), Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)), reader.getTimeSeries(2));
-        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)), reader.getTimeSeries(3));
+        assertEquals(new TimeSeriesImpl(Optional.empty(), Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)).toString(), reader.getTimeSeries(0).toString());
+        assertEquals(new TimeSeriesImpl(Optional.empty(), Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)).toString(), reader.getTimeSeries(1).toString());
+        assertEquals(new TimeSeriesImpl(Optional.of(1), Arrays.asList(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0)).toString(), reader.getTimeSeries(2).toString());
+        assertEquals(new TimeSeriesImpl(Optional.of(2), Arrays.asList(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5)).toString(), reader.getTimeSeries(3).toString());
     }
 
     @Test
