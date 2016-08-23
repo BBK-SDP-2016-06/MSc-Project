@@ -62,7 +62,7 @@ public class IOExceptionHandler {
 
     public static List<Integer> getClassErrorIndices(List<TimeSeries> input) {
         return IntStream.range(0, input.size())
-                .filter(i -> input.get(i).getClassType() == -1)
+                .filter(i -> !input.get(i).getClassType().isPresent())
                 .boxed()
                 .collect(toList());
     }

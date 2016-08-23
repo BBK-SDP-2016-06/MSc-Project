@@ -101,7 +101,7 @@ public class KNNVisualisationController {
 
     private void showResultTableContent() {
         List<NeighbourDistance> allDistances = train.stream()
-                .map(data -> new NeighbourDistance(data.getClassType(), new LCSMeasure().getSimilarityFactor(test.getWord(), data.getWord())))
+                .map(data -> new NeighbourDistance(data.getClassType().get(), new LCSMeasure().getSimilarityFactor(test.getWord(), data.getWord())))
                 .collect(Collectors.toList());
         List<NeighbourDistance> sorted = allDistances.parallelStream()
                 .sorted((d1, d2) -> d2.getDistance() - d1.getDistance())
@@ -122,15 +122,21 @@ public class KNNVisualisationController {
         Classifier kNNClassifier = new KNNClassifier(kValue.get(), new LCSMeasure());
         ClassificationResult result = kNNClassifier.classify(test, train);
 
-        classLabel.setText(String.valueOf(result.getActClass()));
+        classLabel.setText(String.valueOf(result.getActClass().isPresent() ? result.getActClass().get() : "Unlabelled"));
         classLabel.getStyleClass().add("classLabels");
 
         predictedLabel.setText(String.valueOf(result.getPredClass()));
         predictedLabel.getStyleClass().add("classLabels");
 
-        verdictLabel.setText(result.isCorrectPred() ? "CORRECT" : "INCORRECT");
-        verdictLabel.getStyleClass().add(result.isCorrectPred() ? "correct" : "incorrect");
+        verdictLabel.setText(classLabel.getText().equals("Unlabelled") ? "N/A" : (result.isCorrectPred() ? "CORRECT" : "INCORRECT"));
 
+        if (verdictLabel.getText().equals("CORRECT")) {
+            verdictLabel.getStyleClass().setAll("correct");
+        } else if (verdictLabel.getText().equals("INCORRECT")) {
+            verdictLabel.getStyleClass().setAll("incorrect");
+        } else {
+            verdictLabel.getStyleClass().clear();
+        }
 
         rankTable.setRowFactory(table -> new TableRow<NeighbourDistance>() {
             @Override

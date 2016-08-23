@@ -1,6 +1,8 @@
 package classificationApp.model.data;
 
 
+import java.util.Optional;
+
 /**
  * A class used to represent a single sample of time series classificationApp.model.data
  * within the application that has undergone the discretization
@@ -13,10 +15,10 @@ public interface DiscretizedData {
 
     /**
      * Obtains the class that the original time series was labelled with.
-     * @return the integer value representing the class type of this
-     * DiscretizedData.
+     * @return an optional wrapper containing the integer value representing the class type
+     * of this DiscretizedData or nothing if the data is unlabelled.
      */
-    int getClassType();
+    Optional<Integer> getClassType();
 
     /**
      * Retrieves the word representation of the original time series.

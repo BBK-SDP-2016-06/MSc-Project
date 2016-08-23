@@ -25,7 +25,6 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -33,6 +32,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -157,7 +157,7 @@ public class ClassificationController {
     @FXML
     private void initialize() {
         index.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(mainApp.getTestData().getDataSet().indexOf(param.getValue())));
-        classLabel.setCellValueFactory(new PropertyValueFactory<>("classType"));
+        classLabel.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getClassType().orElse(-1)));
         timeSeries.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getData().toString()));
 
         showStatistics(null);
@@ -204,8 +204,8 @@ public class ClassificationController {
         progress.addListener((observable, oldValue, newValue) -> {
             if (progress.getValue() == 1.0) {
                 statusLabel.setText("Status: Finished!");
-                long errorCount = classificationResults.parallelStream().filter(r -> !r.isCorrectPred() && r.getActClass() != -1).count();
-                long labelledSamples = classificationResults.parallelStream().filter(r -> r.getActClass() != -1).count();
+                long errorCount = classificationResults.parallelStream().filter(r -> !r.isCorrectPred() && r.getActClass().isPresent()).count();
+                long labelledSamples = classificationResults.parallelStream().filter(r -> r.getActClass().isPresent()).count();
                 errorRate.setText("Error Rate: " + errorCount + " / " + labelledSamples + " = " + (labelledSamples == 0 ? 0.0 : to5SF((double)errorCount/(double)labelledSamples)));
                 buttonMenu.setDisable(false);
                 testTable.setDisable(false);
@@ -406,7 +406,7 @@ public class ClassificationController {
             selectedItems.forEach(ts -> {assert ts != null;});
             for(TimeSeries ts : selectedItems) {
                 XYChart.Series<Integer, Double> series = new XYChart.Series<>();
-                series.setName(mainApp.getTestData().getDataSet().indexOf(ts) + " - Class: " + ts.getClassType());
+                series.setName(mainApp.getTestData().getDataSet().indexOf(ts) + " - Class: " + (ts.getClassType().isPresent() ? ts.getClassType().get() : "Unlabelled"));
                 for (int i = 0; i < ts.getDataSize(); i++) {
                     series.getData().add(new XYChart.Data<>(i, ts.getData().get(i)));
                 }
@@ -414,10 +414,10 @@ public class ClassificationController {
                 testLineChart.setCreateSymbols(false);
             }
 
-            List<Integer> classLabels = selectedItems.parallelStream()
-                    .mapToInt(TimeSeries::getClassType)
-                    .distinct().boxed().collect(Collectors.toList());
-            testClassLabel.setText(classLabels.size() == 1 ? classLabels.get(0).toString() : "-");
+            List<Optional<Integer>> classLabels = selectedItems.parallelStream()
+                    .map(TimeSeries::getClassType)
+                    .distinct().collect(Collectors.toList());
+            testClassLabel.setText(classLabels.size() == 1 ? (classLabels.get(0).isPresent() ? classLabels.get(0).get().toString() : "Unlabelled")  : "-");
 
             List<Long> dataLengths = selectedItems.parallelStream()
                     .mapToLong(TimeSeries::getDataSize)

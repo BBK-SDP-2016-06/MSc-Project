@@ -3,6 +3,7 @@ package classificationApp.model.data;
 import classificationApp.model.exception.DataExceptionHandler;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of the TimeSeries interface. Provides a concrete class
@@ -12,17 +13,17 @@ import java.util.List;
  */
 public class TimeSeriesImpl implements TimeSeries {
 
-    private int classType;
+    private Optional<Integer> classType;
     private List<Double> timeSeriesData;
 
-    public TimeSeriesImpl(int classType, List<Double> data) {
-        DataExceptionHandler.validateTimeSeries(classType, data);
+    public TimeSeriesImpl(Optional<Integer> classType, List<Double> data) {
+        DataExceptionHandler.validateTimeSeries(data);
         setClassType(classType);
         setData(data);
     }
 
     @Override
-    public int getClassType() {
+    public Optional<Integer> getClassType() {
         return classType;
     }
 
@@ -36,7 +37,7 @@ public class TimeSeriesImpl implements TimeSeries {
         return timeSeriesData.size();
     }
 
-    private void setClassType(int classType) {
+    private void setClassType(Optional<Integer> classType) {
         this.classType = classType;
     }
 
@@ -62,7 +63,7 @@ public class TimeSeriesImpl implements TimeSeries {
 
     @Override
     public String toString() {
-        return "Class Type: " + getClassType() + "\nTime Series: " + getData();
+        return "Class Type: " + (getClassType().isPresent() ? getClassType().get() : "Unlabelled") + "\nTime Series: " + getData();
     }
 
     @Override
@@ -77,6 +78,6 @@ public class TimeSeriesImpl implements TimeSeries {
     public int hashCode() {
         return (int)timeSeriesData.parallelStream()
                                   .mapToDouble(Double::doubleValue)
-                                  .sum() * classType ;
+                                  .sum() * classType.orElse(-1) ;
     }
 }

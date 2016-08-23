@@ -152,7 +152,7 @@ public class TestDataSelectionController {
     private void updateTestSampleStatistics() {
         if (!testSampleListView.getSelectionModel().getSelectedItems().isEmpty()) {
             TimeSeries test = testSampleListView.getSelectionModel().getSelectedItem();
-            testClass.setText(test.getClassType() == -1 ? "Unlabelled" : String.valueOf(test.getClassType()));
+            testClass.setText(!test.getClassType().isPresent() ? "Unlabelled" : String.valueOf(test.getClassType().get()));
             testLength.setText(String.valueOf(test.getDataSize()));
             testVariance.setText(String.valueOf(to5SF(getStandardDeviation(test.getData()))));
             testMean.setText(String.valueOf(to5SF(getMean(test.getData()))));

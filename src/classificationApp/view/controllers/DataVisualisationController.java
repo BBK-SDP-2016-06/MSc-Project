@@ -100,7 +100,7 @@ public class DataVisualisationController {
         graph.getData().get(0).getNode().getStyleClass().add("normalLines");
         String sb = "A graphical representation of the selected test sample " +
                 "in its raw format prior to preprocessing." + "\n\nData Statistics:" +
-                "\nActual Class Label: " + testSample.getClassType() +
+                "\nActual Class Label: " + (testSample.getClassType().isPresent() ? testSample.getClassType().get() : "Unlabelled")  +
                 "\nLength: " + testSample.getDataSize() +
                 "\nValue Range: " + testSample.getMin() + " - " + testSample.getMax() +
                 "\nMean: " + to5SF(getMean(testSample.getData())) +

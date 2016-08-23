@@ -8,6 +8,7 @@ import classificationApp.model.data.TimeSeriesImpl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Testing class to assert behaviour of TimeSeries classificationApp.model.data structure.
@@ -25,35 +26,30 @@ public class TimeSeriesImplTest {
     @Test
     public void testGetClassType() {
         for (int i = 1; i <= 10; i++) {
-            TimeSeries series = new TimeSeriesImpl(i, sampleData);
-            assertEquals(i, series.getClassType());
+            TimeSeries series = new TimeSeriesImpl(Optional.of(i), sampleData);
+            assertEquals(i, (int)series.getClassType().get());
         }
     }
 
     @Test
     public void testGetData() {
-        TimeSeries series = new TimeSeriesImpl(1, sampleData);
+        TimeSeries series = new TimeSeriesImpl(Optional.of(1), sampleData);
         assertEquals(sampleData, series.getData());
     }
 
     @Test
     public void testGetDataSize() {
-        TimeSeries series = new TimeSeriesImpl(1, sampleData);
+        TimeSeries series = new TimeSeriesImpl(Optional.of(1), sampleData);
         assertEquals(5, series.getDataSize());
     }
 
     @Test
-    public void minusOneClassTypeDoesNotFail() {
-        new TimeSeriesImpl(-1, sampleData);
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void negativeClassTypeFails() {
-        new TimeSeriesImpl(-2, sampleData);
+    public void emptyClassTypeDoesNotFail() {
+        new TimeSeriesImpl(Optional.empty(), sampleData);
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void nullDataListFails() {
-        new TimeSeriesImpl(1, null);
+        new TimeSeriesImpl(Optional.of(1), null);
     }
 }

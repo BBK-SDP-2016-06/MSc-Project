@@ -108,7 +108,7 @@ public class ResultStatisticsController {
         });
 
         indexRef.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getIndex()));
-        actualClass.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getActClass()));
+        actualClass.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getActClass().orElse(-1)));
         predictedClass.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getPredClass()));
 
         classColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getKey()));
@@ -120,12 +120,12 @@ public class ResultStatisticsController {
 
     public void setClassificationResults(ObservableList<ClassificationResult> classificationResults) {
         this.classificationResults.addAll(classificationResults.parallelStream()
-                .filter(r -> !(r.getActClass() == -1))
+                .filter(r -> r.getActClass().isPresent())
                 .sorted((r1, r2) -> r1.getIndex() - r2.getIndex())
                 .collect(Collectors.toList()));
         this.classErrorResults.putAll(classificationResults.parallelStream()
-                .filter(r -> !(r.getActClass() == -1))
-                .collect(Collectors.groupingBy(ClassificationResult::getActClass)));
+                .filter(r -> r.getActClass().isPresent())
+                .collect(Collectors.groupingBy(r -> r.getActClass().get())));
         long errors = this.classificationResults.parallelStream().filter(r -> !r.isCorrectPred()).count();
         overallResultLabel.setText("Overall error rate: " + errors + " / " + this.classificationResults.size()
                 + " = " + (this.classificationResults.isEmpty() ? 0.0 : MathUtils.to5SF((double)errors / (double)this.classificationResults.size())));

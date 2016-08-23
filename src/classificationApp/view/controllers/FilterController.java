@@ -76,7 +76,7 @@ public class FilterController {
             if (!filterValues.isEmpty()) {
                 switch (filterType) {
                     case "Class Type":
-                        classificationController.getCurrentTestData().removeIf(ts -> !filterValues.contains(ts.getClassType()));
+                        classificationController.getCurrentTestData().removeIf(ts -> !filterValues.contains(ts.getClassType().get()));
                         break;
                     case "Length":
                         classificationController.getCurrentTestData().removeIf(ts -> !filterValues.contains((int) ts.getDataSize()));

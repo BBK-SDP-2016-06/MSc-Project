@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import classificationApp.model.data.TimeSeries;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 
 /**
@@ -20,7 +21,7 @@ public class InputUtilsTest {
     public void testConvertingCorrectStringToTimeSeriesObject() {
         TimeSeries series = InputUtils.toTimeSeries("1, 0.5, 1.5, 2.5, 3.5, 4.5");
         assert series != null;
-        assertEquals(1, series.getClassType());
+        assertEquals(1, (int)series.getClassType().get());
         assertEquals(5, series.getDataSize());
         assertTrue(Arrays.asList(0.5, 1.5, 2.5, 3.5, 4.5).equals(series.getData()));
     }
@@ -29,7 +30,7 @@ public class InputUtilsTest {
     public void testConvertingStringWithoutClassLabelToTimeSeriesObject() {
         TimeSeries series = InputUtils.toTimeSeries("0.5,1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5");
         assert series != null;
-        assertEquals(-1, series.getClassType());
+        assertEquals(Optional.empty(), series.getClassType());
         assertEquals(10, series.getDataSize());
         assertTrue(Arrays.asList(0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5).equals(series.getData()));
     }
@@ -38,7 +39,7 @@ public class InputUtilsTest {
     public void testEmptyTimeSeries() {
         TimeSeries series = InputUtils.toTimeSeries("1");
         assert series != null;
-        assertEquals(1, series.getClassType());
+        assertEquals(1, (int)series.getClassType().get());
         assertEquals(0, series.getDataSize());
     }
 

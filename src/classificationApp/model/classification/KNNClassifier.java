@@ -29,7 +29,7 @@ public class KNNClassifier implements Classifier {
     public ClassificationResult classify(DiscretizedData test, List<DiscretizedData> train) {
 
         List<NeighbourDistance> allNeighbourDistances = train.parallelStream()
-                .map(data -> new NeighbourDistance(data.getClassType(), distanceMeasure.getSimilarityFactor(test.getWord(), data.getWord())))
+                .map(data -> new NeighbourDistance(data.getClassType().get(), distanceMeasure.getSimilarityFactor(test.getWord(), data.getWord())))
                 .collect(toList());
 
         List<NeighbourDistance> closestNeighbourDistance = allNeighbourDistances.parallelStream().sorted((n1, n2) -> n2.getDistance() - n1.getDistance())

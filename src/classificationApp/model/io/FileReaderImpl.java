@@ -2,12 +2,12 @@ package classificationApp.model.io;
 
 import classificationApp.model.data.DataLengthRange;
 import classificationApp.model.data.TimeSeries;
-import classificationApp.model.math.MathUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -69,7 +69,7 @@ public abstract class FileReaderImpl implements FileReader {
     @Override
     public List<TimeSeries> getTimeSeriesOfClass(Integer... classTypes) {
         Set<Integer> classSet = Stream.of(classTypes).collect(toSet());
-        return timeSeriesData.parallelStream().filter(ts -> classSet.contains(ts.getClassType()))
+        return timeSeriesData.parallelStream().filter(ts -> classSet.contains(ts.getClassType().get()))
                 .collect(toList());
     }
 
@@ -79,7 +79,7 @@ public abstract class FileReaderImpl implements FileReader {
     @Override
     public List<Integer> getClassList() {
         return timeSeriesData.parallelStream().map(TimeSeries::getClassType)
-                .filter(i -> i != -1).distinct().sorted().collect(toList());
+                .filter(Optional::isPresent).map(Optional::get).distinct().sorted().collect(toList());
     }
 
     /**
@@ -90,14 +90,6 @@ public abstract class FileReaderImpl implements FileReader {
         long upperBound = timeSeriesData.parallelStream().mapToLong(TimeSeries::getDataSize).max().orElse(0);
         long lowerBound = timeSeriesData.parallelStream().mapToLong(TimeSeries::getDataSize).min().orElse(0);
         return new DataLengthRange(lowerBound, upperBound);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    @Override
-    public boolean isNormalized(int index) {
-        return MathUtils.isZNormalized(getTimeSeries(index).getData());
     }
 
     @Override

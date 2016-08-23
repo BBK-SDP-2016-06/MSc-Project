@@ -1,5 +1,4 @@
 package classificationApp.model.io;
-import classificationApp.model.data.TimeSeries;
 import classificationApp.model.exception.IOExceptionHandler;
 
 /**
@@ -20,7 +19,8 @@ public class TrainingFileReaderImpl extends FileReaderImpl implements TrainingFi
     @Override
     public int getClassCount() {
         return (int) timeSeriesData.parallelStream()
-                .map(TimeSeries::getClassType)
+                .filter(ts -> ts.getClassType().isPresent())
+                .map(ts -> ts.getClassType().get())
                 .distinct()
                 .count();
     }

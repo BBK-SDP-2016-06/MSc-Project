@@ -1,6 +1,7 @@
 package classificationApp.model.classification;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A wrapper class that enables both a predicted class type
@@ -11,23 +12,23 @@ import java.util.List;
 public class ClassificationResult {
 
     private int index;
-    private int actClass;
+    private Optional<Integer> actClass;
     private int predClass;
     private List<NeighbourDistance> neighbourDistances;
     private boolean correctPred;
 
-    public ClassificationResult(int actClass, int predClass, List<NeighbourDistance> neighbourDistances) {
+    public ClassificationResult(Optional<Integer> actClass, int predClass, List<NeighbourDistance> neighbourDistances) {
         setActClass(actClass);
         setPredClass(predClass);
         setNeighbourDistances(neighbourDistances);
         setCorrectPred();
     }
 
-    public int getActClass() {
+    public Optional<Integer> getActClass() {
         return actClass;
     }
 
-    public void setActClass(int actClass) {
+    public void setActClass(Optional<Integer> actClass) {
         this.actClass = actClass;
     }
 
@@ -52,7 +53,7 @@ public class ClassificationResult {
     }
 
     public void setCorrectPred() {
-        correctPred = getActClass() == getPredClass();
+        correctPred = getActClass().isPresent() && getActClass().get() == getPredClass();
     }
 
     public int getIndex() {
@@ -77,10 +78,10 @@ public class ClassificationResult {
                     .append("\t\t")
                     .append(nd.getDistance());
         }
-        sb.append("\n\nActual class: ").append(actClass);
+        sb.append("\n\nActual class: ").append(actClass.isPresent()? actClass.get() : "Unlabelled");
         sb.append("\nPredicted class: ").append(predClass);
 
-        if (actClass != -1) {
+        if (actClass.isPresent()) {
             sb.append(isCorrectPred() ? "\nCORRECT" : "\nINCORRECT");
         } else {
             sb.append("\nUNLABELLED");

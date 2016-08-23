@@ -12,6 +12,7 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Tests for the KNNClassifier class of the classificationApp.model.classification package.
@@ -23,24 +24,24 @@ public class KNNClassifierTest {
 
     @Before
     public void init() {
-        test = new DiscretizedDataImpl(-1, "abdcabdddccba");
+        test = new DiscretizedDataImpl(Optional.empty(), "abdcabdddccba");
     }
 
     @Test
     public void testClassifyMethodWithValidInputs1() {
         List<DiscretizedData> train = Arrays.asList(
-                new DiscretizedDataImpl(1, "abbdcabda"),
-                new DiscretizedDataImpl(1, "abadcabdc"),
-                new DiscretizedDataImpl(1, "aabdcacda"),
-                new DiscretizedDataImpl(1, "accdcabdd"),
-                new DiscretizedDataImpl(2, "bbbbdacca"),
-                new DiscretizedDataImpl(2, "bbabdadcd"),
-                new DiscretizedDataImpl(2, "bccbdacca"),
-                new DiscretizedDataImpl(2, "bbabdaaaa"),
-                new DiscretizedDataImpl(3, "bbbcccbbb"),
-                new DiscretizedDataImpl(3, "cbabbdccc"),
-                new DiscretizedDataImpl(3, "abaacccca"),
-                new DiscretizedDataImpl(3, "adddcacca")
+                new DiscretizedDataImpl(Optional.of(1), "abbdcabda"),
+                new DiscretizedDataImpl(Optional.of(1), "abadcabdc"),
+                new DiscretizedDataImpl(Optional.of(1), "aabdcacda"),
+                new DiscretizedDataImpl(Optional.of(1), "accdcabdd"),
+                new DiscretizedDataImpl(Optional.of(2), "bbbbdacca"),
+                new DiscretizedDataImpl(Optional.of(2), "bbabdadcd"),
+                new DiscretizedDataImpl(Optional.of(2), "bccbdacca"),
+                new DiscretizedDataImpl(Optional.of(2), "bbabdaaaa"),
+                new DiscretizedDataImpl(Optional.of(3), "bbbcccbbb"),
+                new DiscretizedDataImpl(Optional.of(3), "cbabbdccc"),
+                new DiscretizedDataImpl(Optional.of(3), "abaacccca"),
+                new DiscretizedDataImpl(Optional.of(3), "adddcacca")
         );
         Classifier classifier = new KNNClassifier(5, new LCSMeasure());
         ClassificationResult result = classifier.classify(test, train);
@@ -50,18 +51,18 @@ public class KNNClassifierTest {
     @Test
     public void testClassifyMethodWithValidInputs2() {
         List<DiscretizedData> train = Arrays.asList(
-                new DiscretizedDataImpl(1, "abbdcabda"),
-                new DiscretizedDataImpl(1, "abadcabdc"),
-                new DiscretizedDataImpl(1, "aabdcacda"),
-                new DiscretizedDataImpl(1, "accdcabdd"),
-                new DiscretizedDataImpl(2, "bbbbdacca"),
-                new DiscretizedDataImpl(2, "bbabdadcd"),
-                new DiscretizedDataImpl(2, "bccbdacca"),
-                new DiscretizedDataImpl(2, "bbabdaaaa"),
-                new DiscretizedDataImpl(3, "bbbcccbbb"),
-                new DiscretizedDataImpl(3, "cbabbdccc"),
-                new DiscretizedDataImpl(3, "abaacccca"),
-                new DiscretizedDataImpl(3, "adddcacca")
+                new DiscretizedDataImpl(Optional.of(1), "abbdcabda"),
+                new DiscretizedDataImpl(Optional.of(1), "abadcabdc"),
+                new DiscretizedDataImpl(Optional.of(1), "aabdcacda"),
+                new DiscretizedDataImpl(Optional.of(1), "accdcabdd"),
+                new DiscretizedDataImpl(Optional.of(2), "bbbbdacca"),
+                new DiscretizedDataImpl(Optional.of(2), "bbabdadcd"),
+                new DiscretizedDataImpl(Optional.of(2), "bccbdacca"),
+                new DiscretizedDataImpl(Optional.of(2), "bbabdaaaa"),
+                new DiscretizedDataImpl(Optional.of(3), "bbbcccbbb"),
+                new DiscretizedDataImpl(Optional.of(3), "cbabbdccc"),
+                new DiscretizedDataImpl(Optional.of(3), "abaacccca"),
+                new DiscretizedDataImpl(Optional.of(3), "adddcacca")
         );
         Classifier classifier = new KNNClassifier(3, new LCSMeasure());
         ClassificationResult result = classifier.classify(test, train);

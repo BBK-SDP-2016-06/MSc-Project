@@ -2,6 +2,8 @@ package classificationApp.model.data;
 
 import classificationApp.model.exception.DataExceptionHandler;
 
+import java.util.Optional;
+
 /**
  * Implementation of the DiscretizedData interface. Provides a concrete class
  * to hold information about individual classificationApp.model.data approximations and their class type.
@@ -10,11 +12,11 @@ import classificationApp.model.exception.DataExceptionHandler;
  */
 public class DiscretizedDataImpl implements DiscretizedData {
 
-    private int classType;
+    private Optional<Integer> classType;
     private String word;
 
-    public DiscretizedDataImpl(int classType, String word) {
-        DataExceptionHandler.validateDiscretizedData(classType, word);
+    public DiscretizedDataImpl(Optional<Integer> classType, String word) {
+        DataExceptionHandler.validateDiscretizedData(word);
         setClassType(classType);
         setWord(word);
     }
@@ -23,7 +25,7 @@ public class DiscretizedDataImpl implements DiscretizedData {
      * @inheritDoc
      */
     @Override
-    public int getClassType() {
+    public Optional<Integer> getClassType() {
         return classType;
     }
 
@@ -35,7 +37,7 @@ public class DiscretizedDataImpl implements DiscretizedData {
         return word;
     }
 
-    private void setClassType(int classType) {
+    private void setClassType(Optional<Integer> classType) {
         this.classType = classType;
     }
 

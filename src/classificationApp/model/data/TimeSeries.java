@@ -1,5 +1,6 @@
 package classificationApp.model.data;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A class used to represent a single sample of time series classificationApp.model.data
@@ -12,10 +13,10 @@ public interface TimeSeries {
 
     /**
      * Obtains the class that this TimeSeries is labelled with.
-     * @return the integer value representing the class type of this
-     * TimeSeries.
+     * @return an optional wrapper containing the integer value representing the class
+     * type of this TimeSeries or no value if the class type is unlabelled.
      */
-    int getClassType();
+    Optional<Integer> getClassType();
 
     /**
      * Retrieves the list of classificationApp.model.data values of this TimeSeries.

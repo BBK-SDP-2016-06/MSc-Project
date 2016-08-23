@@ -3,7 +3,11 @@ package model;
 import classificationApp.model.data.DiscretizedData;
 import classificationApp.model.data.DiscretizedDataImpl;
 import org.junit.Test;
+
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Testing class to assert behaviour of DiscretizedData classificationApp.model.data structure.
@@ -13,35 +17,31 @@ public class DiscretizedDataImplTest {
 
     @Test
     public void testGetClassType() {
-        for (int i = 1; i <= 10; i++) {
-            DiscretizedData data = new DiscretizedDataImpl(i, "abcd");
-            assertEquals(i, data.getClassType());
+        for (int i = 0; i <= 10; i++) {
+            DiscretizedData data = new DiscretizedDataImpl(Optional.of(i), "abcd");
+            assertTrue(data.getClassType().isPresent());
+            assertEquals(i, (int)data.getClassType().get());
         }
     }
 
     @Test
     public void testGetWord() {
-        DiscretizedData data = new DiscretizedDataImpl(1, "abcd");
+        DiscretizedData data = new DiscretizedDataImpl(Optional.of(1), "abcd");
         assertEquals("abcd", data.getWord());
     }
 
     @Test
-    public void minusOneClassTypeDoesNotFail() {
-        new DiscretizedDataImpl(-1, "abcd");
-    }
-
-    @Test (expected = IllegalArgumentException.class)
-    public void negativeClassTypeFails() {
-        new DiscretizedDataImpl(-2, "abcd");
+    public void negativeClassTypeDoesNotFail() {
+        new DiscretizedDataImpl(Optional.of(-1), "abcd");
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void nullWordFails() {
-        new DiscretizedDataImpl(-2, null);
+        new DiscretizedDataImpl(Optional.of(1), null);
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void emptyWordFails() {
-        new DiscretizedDataImpl(-2, "");
+        new DiscretizedDataImpl(Optional.of(1), "");
     }
 }

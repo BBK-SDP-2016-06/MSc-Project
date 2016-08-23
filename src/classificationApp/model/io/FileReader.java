@@ -64,13 +64,6 @@ public interface FileReader {
     DataLengthRange getTimeSeriesLength();
 
     /**
-     * Returns whether or not the time series data within this object is z-
-     * normalised or not.
-     * @return true if the time series data is z-normalised, false otherwise.
-     */
-    boolean isNormalized(int index);
-
-    /**
      * Returns the file used to retrieve the time series data.
      * @return the file that this data is located within.
      */

@@ -4,6 +4,8 @@ import classificationApp.model.data.TimeSeries;
 import classificationApp.model.data.TimeSeriesImpl;
 import java.util.List;
 import static java.util.stream.Collectors.*;
+
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -37,7 +39,7 @@ public class InputUtils {
      */
     public static TimeSeries toTimeSeries(String dataLine) {
         List<String> splitLine = Stream.of(dataLine.split(",")).filter(s -> !s.isEmpty()).collect(toList());
-        int classLabel = isLabelled(splitLine) ? Integer.parseInt(splitLine.remove(0)) : -1;
+        Optional<Integer> classLabel = isLabelled(splitLine) ? Optional.of(Integer.parseInt(splitLine.remove(0))) : Optional.empty();
         try {
             List<Double> timeSeriesData = splitLine.parallelStream()
                     .map(Double::parseDouble)
