@@ -383,12 +383,9 @@ public class ClassificationController {
 
         final double[] taskCount = {0};
 
-        for (int i = 0; i < test.size(); i++) {
-            Task<ClassificationResult> task = new ClassificationTask(this, classifier, preProcessor,
-                    test.get(i), processedTrain);
-
-            final int index = i;
-
+        test.stream().forEach(t -> {
+            Task<ClassificationResult> task = new ClassificationTask(this, classifier, preProcessor, t, processedTrain);
+            final int index = test.indexOf(t);
             task.setOnSucceeded(e -> {
                 statusLabel.setText("Status: Classifying test sample " + (index + 1) + " / " + test.size() );
                 resultTextArea.appendText(task.getValue().toString());
@@ -397,7 +394,7 @@ public class ClassificationController {
                 progress.set(taskCount[0] / test.size());
             });
             executor.submit(task);
-        }
+        });
     }
 
     public void showStatistics(ObservableList<TimeSeries> selectedItems) {
