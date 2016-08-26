@@ -33,8 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 
 /**
@@ -380,21 +379,32 @@ public class ClassificationController {
                 .map(ts -> new DiscretizedDataImpl(ts.getClassType(), preProcessor.discretize(ts)))
                 .collect(Collectors.toList());
         Classifier classifier = new KNNClassifier(getKValue(), new LCSMeasure());
+        try {
+            executeClassificationTask(0, test, classifier, preProcessor, processedTrain);
+        } catch (RejectedExecutionException e) {
+            System.out.println("execution stopped");
+        }
 
-        final double[] taskCount = {0};
+    }
 
-        test.stream().forEach(t -> {
-            Task<ClassificationResult> task = new ClassificationTask(this, classifier, preProcessor, t, processedTrain);
-            final int index = test.indexOf(t);
+    private void executeClassificationTask(int index, List<TimeSeries> tests, Classifier classifier, PreProcessor preProcessor, List<DiscretizedData> train)  {
+        if (index < tests.size()) {
+            Task<ClassificationResult> task = new ClassificationTask(this, classifier, preProcessor, tests.get(index), train);
             task.setOnSucceeded(e -> {
-                statusLabel.setText("Status: Classifying test sample " + (index + 1) + " / " + test.size() );
+                statusLabel.setText("Status: Classifying test sample " + (index + 1) + " / " + tests.size() );
                 resultTextArea.appendText(task.getValue().toString());
                 classificationResults.add(task.getValue());
-                taskCount[0]++;
-                progress.set(taskCount[0] / test.size());
+                progress.set((double)index / (double)tests.size());
+                executeClassificationTask(index + 1, tests, classifier, preProcessor, train);
             });
-            executor.submit(task);
-        });
+            if (executor.isShutdown()) {
+                executeClassificationTask(tests.size(), tests, classifier, preProcessor, train);
+            } else {
+                executor.execute(task);
+            }
+        } else {
+            handleStop();
+        }
     }
 
     public void showStatistics(ObservableList<TimeSeries> selectedItems) {
