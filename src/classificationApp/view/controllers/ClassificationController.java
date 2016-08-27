@@ -203,7 +203,7 @@ public class ClassificationController {
         progress.addListener((observable, oldValue, newValue) -> {
             if (progress.getValue() == 1.0) {
                 statusLabel.setText("Status: Finished!");
-                long errorCount = classificationResults.parallelStream().filter(r -> !r.isCorrectPred() && r.getActClass().isPresent()).count();
+                long errorCount = classificationResults.parallelStream().filter(r -> !r.isCorrectPrediction() && r.getActClass().isPresent()).count();
                 long labelledSamples = classificationResults.parallelStream().filter(r -> r.getActClass().isPresent()).count();
                 errorRate.setText("Error Rate: " + errorCount + " / " + labelledSamples + " = " + (labelledSamples == 0 ? 0.0 : to5SF((double)errorCount/(double)labelledSamples)));
                 buttonMenu.setDisable(false);

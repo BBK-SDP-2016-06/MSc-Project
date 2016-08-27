@@ -104,7 +104,7 @@ public class CommandLineApp {
 
         Classifier classifier = new KNNClassifier(kValue, new LCSMeasure());
 
-        double errorRate = MathUtils.to5SF((double)processedTest.parallelStream().map(data -> classifier.classify(data, processedTrain)).filter(result -> !result.isCorrectPred()).count() / (double)processedTest.size());
+        double errorRate = MathUtils.to5SF((double)processedTest.parallelStream().map(data -> classifier.classify(data, processedTrain)).filter(result -> !result.isCorrectPrediction()).count() / (double)processedTest.size());
         switch (parameter) {
             case "alphabetSize":
                 System.out.println(alphabetSize + "," + errorRate);

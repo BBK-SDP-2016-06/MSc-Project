@@ -9,7 +9,9 @@ import java.util.Optional;
 /**
  * A wrapper class that enables both a predicted class type
  * and corresponding confidence measure to be returned from
- * a classificationApp.model.classification process.
+ * a classificationApp.model.classification process. It is also
+ * used to store all elements required to print a result of a
+ * single classification process.
  * Created by George on 30/07/2016.
  */
 @Getter

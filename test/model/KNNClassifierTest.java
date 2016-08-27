@@ -45,7 +45,7 @@ public class KNNClassifierTest {
         );
         Classifier classifier = new KNNClassifier(5, new LCSMeasure());
         ClassificationResult result = classifier.classify(test, train);
-        assertEquals(1, result.getPredClass());
+        assertEquals(1, result.getPredictedClass());
     }
 
     @Test
@@ -66,6 +66,6 @@ public class KNNClassifierTest {
         );
         Classifier classifier = new KNNClassifier(3, new LCSMeasure());
         ClassificationResult result = classifier.classify(test, train);
-        assertEquals(1, result.getPredClass());
+        assertEquals(1, result.getPredictedClass());
     }
 }

@@ -125,10 +125,10 @@ public class KNNVisualisationController {
         classLabel.setText(String.valueOf(result.getActClass().isPresent() ? result.getActClass().get() : "Unlabelled"));
         classLabel.getStyleClass().add("classLabels");
 
-        predictedLabel.setText(String.valueOf(result.getPredClass()));
+        predictedLabel.setText(String.valueOf(result.getPredictedClass()));
         predictedLabel.getStyleClass().add("classLabels");
 
-        verdictLabel.setText(classLabel.getText().equals("Unlabelled") ? "N/A" : (result.isCorrectPred() ? "CORRECT" : "INCORRECT"));
+        verdictLabel.setText(classLabel.getText().equals("Unlabelled") ? "N/A" : (result.isCorrectPrediction() ? "CORRECT" : "INCORRECT"));
 
         if (verdictLabel.getText().equals("CORRECT")) {
             verdictLabel.getStyleClass().setAll("correct");

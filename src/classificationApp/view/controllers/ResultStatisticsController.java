@@ -101,21 +101,21 @@ public class ResultStatisticsController {
             @Override
             public void updateItem(ClassificationResult item, boolean empty) {
                 super.updateItem(item, empty);
-                pseudoClassStateChanged(correctPseudoClass, (!empty) && item.isCorrectPred());
-                pseudoClassStateChanged(wrongPseudoClass, (!empty) && !item.isCorrectPred());
+                pseudoClassStateChanged(correctPseudoClass, (!empty) && item.isCorrectPrediction());
+                pseudoClassStateChanged(wrongPseudoClass, (!empty) && !item.isCorrectPrediction());
                 pseudoClassStateChanged(allPseudoClass, true);
             }
         });
 
         indexRef.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getIndex()));
         actualClass.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getActClass().orElse(-1)));
-        predictedClass.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getPredClass()));
+        predictedClass.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getPredictedClass()));
 
         classColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getKey()));
         samplesColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().getValue().size()));
-        errorsColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>((int)param.getValue().getValue().parallelStream().filter(r -> !r.isCorrectPred()).count()));
+        errorsColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>((int)param.getValue().getValue().parallelStream().filter(r -> !r.isCorrectPrediction()).count()));
         errorRateColumn.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(MathUtils.to5SF(
-                (double)param.getValue().getValue().parallelStream().filter(r -> !r.isCorrectPred()).count()/(double)param.getValue().getValue().size())));
+                (double)param.getValue().getValue().parallelStream().filter(r -> !r.isCorrectPrediction()).count()/(double)param.getValue().getValue().size())));
     }
 
     public void setClassificationResults(ObservableList<ClassificationResult> classificationResults) {
@@ -126,7 +126,7 @@ public class ResultStatisticsController {
         this.classErrorResults.putAll(classificationResults.parallelStream()
                 .filter(r -> r.getActClass().isPresent())
                 .collect(Collectors.groupingBy(r -> r.getActClass().get())));
-        long errors = this.classificationResults.parallelStream().filter(r -> !r.isCorrectPred()).count();
+        long errors = this.classificationResults.parallelStream().filter(r -> !r.isCorrectPrediction()).count();
         overallResultLabel.setText("Overall error rate: " + errors + " / " + this.classificationResults.size()
                 + " = " + (this.classificationResults.isEmpty() ? 0.0 : MathUtils.to5SF((double)errors / (double)this.classificationResults.size())));
     }
