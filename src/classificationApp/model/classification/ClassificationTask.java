@@ -8,10 +8,14 @@ import classificationApp.view.controllers.ClassificationController;
 import javafx.concurrent.Task;
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+
 /**
  * Runnable class for displaying classification process to text area.
  * Created by George Shiangoli on 09/08/2016.
  */
+
+@AllArgsConstructor
 public class ClassificationTask extends Task<ClassificationResult> {
 
     private ClassificationController controller;
@@ -19,18 +23,6 @@ public class ClassificationTask extends Task<ClassificationResult> {
     private PreProcessor preProcessor;
     private TimeSeries test;
     private List<DiscretizedData> train;
-
-    public ClassificationTask(ClassificationController controller,
-                              Classifier classifier,
-                              PreProcessor preProcessor,
-                              TimeSeries test,
-                              List<DiscretizedData> train) {
-        this.controller = controller;
-        this.classifier = classifier;
-        this.preProcessor = preProcessor;
-        this.test = test;
-        this.train = train;
-    }
 
     @Override
     protected ClassificationResult call() throws Exception {
