@@ -31,10 +31,10 @@ public class KNNClassifier implements Classifier {
                 .map(data -> new NeighbourDistance(data.getClassType().get(), distanceMeasure.getSimilarityFactor(test.getWord(), data.getWord())))
                 .collect(toList());
 
-        List<NeighbourDistance> closestNeighbourDistance = allNeighbourDistances.parallelStream().sorted((n1, n2) -> n2.getDistance() - n1.getDistance())
+        List<NeighbourDistance> closestNeighbourDistances = allNeighbourDistances.parallelStream().sorted((n1, n2) -> n2.getDistance() - n1.getDistance())
                 .limit(kValue).collect(Collectors.toList());
 
-        List<Integer> closestClassTypes = closestNeighbourDistance.parallelStream()
+        List<Integer> closestClassTypes = closestNeighbourDistances.parallelStream()
                 .map(NeighbourDistance::getClassType)
                 .collect(toList());
 
@@ -44,6 +44,6 @@ public class KNNClassifier implements Classifier {
                 .filter(c -> classTypeCount.get(c) == classTypeCount.values().parallelStream().mapToLong(l -> l).max().getAsLong())
                 .findFirst().get();
 
-        return new ClassificationResult(test.getClassType(), predictedClass, closestNeighbourDistance);
+        return new ClassificationResult(test.getClassType(), predictedClass, closestNeighbourDistances);
     }
 }
