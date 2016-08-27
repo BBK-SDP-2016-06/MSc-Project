@@ -1,5 +1,8 @@
 package classificationApp.model.classification;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -9,59 +12,25 @@ import java.util.Optional;
  * a classificationApp.model.classification process.
  * Created by George on 30/07/2016.
  */
+@Getter
+@Setter
 public class ClassificationResult {
 
     private int index;
     private Optional<Integer> actClass;
-    private int predClass;
+    private int predictedClass;
     private List<NeighbourDistance> neighbourDistances;
-    private boolean correctPred;
+    private boolean correctPrediction;
 
     public ClassificationResult(Optional<Integer> actClass, int predClass, List<NeighbourDistance> neighbourDistances) {
         setActClass(actClass);
-        setPredClass(predClass);
+        setPredictedClass(predClass);
         setNeighbourDistances(neighbourDistances);
-        setCorrectPred();
+        setCorrectPrediction();
     }
 
-    public Optional<Integer> getActClass() {
-        return actClass;
-    }
-
-    public void setActClass(Optional<Integer> actClass) {
-        this.actClass = actClass;
-    }
-
-    public int getPredClass() {
-        return predClass;
-    }
-
-    public void setPredClass(int predClass) {
-        this.predClass = predClass;
-    }
-
-    public List<NeighbourDistance> getNeighbourDistances() {
-        return neighbourDistances;
-    }
-
-    public void setNeighbourDistances(List<NeighbourDistance> neighbourDistances) {
-        this.neighbourDistances = neighbourDistances;
-    }
-
-    public boolean isCorrectPred() {
-        return correctPred;
-    }
-
-    public void setCorrectPred() {
-        correctPred = getActClass().isPresent() && getActClass().get() == getPredClass();
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
+    public void setCorrectPrediction() {
+        correctPrediction = getActClass().isPresent() && getActClass().get() == getPredictedClass();
     }
 
     @Override
@@ -79,10 +48,10 @@ public class ClassificationResult {
                     .append(nd.getDistance());
         }
         sb.append("\n\nActual class: ").append(actClass.isPresent()? actClass.get() : "Unlabelled");
-        sb.append("\nPredicted class: ").append(predClass);
+        sb.append("\nPredicted class: ").append(predictedClass);
 
         if (actClass.isPresent()) {
-            sb.append(isCorrectPred() ? "\nCORRECT" : "\nINCORRECT");
+            sb.append(isCorrectPrediction() ? "\nCORRECT" : "\nINCORRECT");
         } else {
             sb.append("\nUNLABELLED");
         }
