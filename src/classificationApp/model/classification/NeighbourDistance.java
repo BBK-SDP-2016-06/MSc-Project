@@ -1,6 +1,7 @@
 package classificationApp.model.classification;
 
-import lombok.*;
+import lombok.Data;
+import lombok.AllArgsConstructor;
 
 /**
  * Holds information about a training data sample's class type
