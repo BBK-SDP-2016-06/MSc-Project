@@ -3,7 +3,7 @@ package classificationApp.model.classification;
 import lombok.*;
 
 /**
- * Holds information about a training classificationApp.model.data sample's class type
+ * Holds information about a training data sample's class type
  * and its computed distance from the test sample.
  * Created by George Shiangoli on 30/07/2016.
  */
