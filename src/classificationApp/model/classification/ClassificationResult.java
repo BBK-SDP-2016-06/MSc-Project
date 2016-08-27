@@ -24,9 +24,9 @@ public class ClassificationResult {
     private List<NeighbourDistance> neighbourDistances;
     private boolean correctPrediction;
 
-    public ClassificationResult(Optional<Integer> actClass, int predClass, List<NeighbourDistance> neighbourDistances) {
+    public ClassificationResult(Optional<Integer> actClass, int predictedClass, List<NeighbourDistance> neighbourDistances) {
         setActClass(actClass);
-        setPredictedClass(predClass);
+        setPredictedClass(predictedClass);
         setNeighbourDistances(neighbourDistances);
         setCorrectPrediction();
     }
