@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import lombok.AllArgsConstructor;
+
 import static java.util.stream.Collectors.*;
 
 /**
@@ -15,15 +17,12 @@ import static java.util.stream.Collectors.*;
  * by a DistanceMeasurer.
  * Created by George Shiangoli on 30/07/2016.
  */
+
+@AllArgsConstructor
 public class KNNClassifier implements Classifier {
 
     private int kValue;
     private DistanceMeasure distanceMeasure;
-
-    public KNNClassifier(int kValue, DistanceMeasure distanceMeasure) {
-        this.kValue = kValue;
-        this.distanceMeasure = distanceMeasure;
-    }
 
     @Override
     public ClassificationResult classify(DiscretizedData test, List<DiscretizedData> train) {
