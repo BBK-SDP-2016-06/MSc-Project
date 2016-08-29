@@ -4,10 +4,7 @@ import classificationApp.model.classification.LCSMeasure;
 import classificationApp.model.data.DiscretizedData;
 import classificationApp.model.data.DiscretizedDataImpl;
 import classificationApp.model.data.TimeSeries;
-import classificationApp.model.preprocessing.DataApproximator;
-import classificationApp.model.preprocessing.DataConverter;
-import classificationApp.model.preprocessing.GaussianSplitConverter;
-import classificationApp.model.preprocessing.PiecewiseAggregateApproximator;
+import classificationApp.model.preprocessing.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -134,12 +131,11 @@ public class LCSVisualisationController {
     }
 
     private void populatePreProcessedTrainTable() {
-        DataApproximator approximator = new PiecewiseAggregateApproximator(testWord.length());
-        DataConverter converter = new GaussianSplitConverter(alphabetSize);
+        PreProcessor sax = new SAXPreProcessor(testWord.length(), alphabetSize);
 
         trainWords = rootController.getMainApp().getTrainingData().getDataSet()
                 .parallelStream()
-                .map(ts -> converter.toWord(approximator.reduce(ts.getData())))
+                .map(sax::discretize)
                 .collect(Collectors.toList());
 
         List<Integer> similarityMeasures = trainWords.stream()
