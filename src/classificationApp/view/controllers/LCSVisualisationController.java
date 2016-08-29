@@ -29,7 +29,7 @@ public class LCSVisualisationController {
     private int alphabetSize;
     private ObservableList<TimeSeries> trainSamples;
     private LCSMeasure lcs;
-    private List<String> trainWords;
+    private List<DiscretizedData> trainWords;
 
     @FXML
     private TableView<TimeSeries> preprocessedTrainTable;
@@ -96,10 +96,7 @@ public class LCSVisualisationController {
     @FXML
     private void handleNextButton() {
         DiscretizedData test = new DiscretizedDataImpl(testSample.getClassType(), testWord);
-        List<DiscretizedData> train = trainWords.stream()
-                .map(w -> new DiscretizedDataImpl(rootController.getMainApp().getTrainingData().getDataSet().get(trainWords.indexOf(w)).getClassType(), w))
-                .collect(Collectors.toList());
-        this.rootController.showKNNVisualisation(test, train);
+        this.rootController.showKNNVisualisation(test, trainWords);
     }
 
 
@@ -135,17 +132,17 @@ public class LCSVisualisationController {
 
         trainWords = rootController.getMainApp().getTrainingData().getDataSet()
                 .parallelStream()
-                .map(sax::discretize)
+                .map(data -> new DiscretizedDataImpl(data.getClassType(), sax.discretize(data)))
                 .collect(Collectors.toList());
 
         List<Integer> similarityMeasures = trainWords.stream()
-                .map(word -> lcs.getSimilarityFactor(testWord, word))
+                .map(w -> lcs.getSimilarityFactor(testWord, w.getWord()))
                 .collect(Collectors.toList());
 
         indexColumn.setCellValueFactory(param ->
                 new ReadOnlyObjectWrapper<>(rootController.getMainApp().getTrainingData().getDataSet().indexOf(param.getValue())));
         wordColumn.setCellValueFactory(param ->
-                new ReadOnlyObjectWrapper<>(trainWords.get(rootController.getMainApp().getTrainingData().getDataSet().indexOf(param.getValue()))));
+                new ReadOnlyObjectWrapper<>(trainWords.get(rootController.getMainApp().getTrainingData().getDataSet().indexOf(param.getValue())).getWord()));
         similarityColumn.setCellValueFactory(param ->
                 new ReadOnlyObjectWrapper<>(similarityMeasures.get(rootController.getMainApp().getTrainingData().getDataSet().indexOf(param.getValue()))));
 
