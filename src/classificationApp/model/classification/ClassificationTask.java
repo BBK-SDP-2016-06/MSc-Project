@@ -11,7 +11,9 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 
 /**
- * Runnable class for displaying classification process to text area.
+ * Runnable class for carrying out the classification process and
+ * displaying the classification result to the text area of the
+ * main application GUI.
  * Created by George Shiangoli on 09/08/2016.
  */
 

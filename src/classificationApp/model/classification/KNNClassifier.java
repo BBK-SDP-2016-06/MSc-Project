@@ -11,7 +11,7 @@ import static java.util.stream.Collectors.*;
 
 /**
  * Classifies a given test sample against a training set via means
- * of the k nearest neighbour classificationApp.model.classification algorithm. The k value
+ * of the k nearest neighbour classification algorithm. The k value
  * indicates the number of closest samples that will be assessed and
  * the distance between the test and training samples is calculated
  * by a DistanceMeasurer.
@@ -24,6 +24,13 @@ public class KNNClassifier implements Classifier {
     private int kValue;
     private DistanceMeasure distanceMeasure;
 
+    /**
+     * Performs the kNN classification algorithm on the test and training samples.
+     * @param test the sample of data, already discretized to be classified.
+     * @param train the training set of data that the test sample will be compared
+     *              to.
+     * @return the ClassificationResult object produced as a result of apply kNN.
+     */
     @Override
     public ClassificationResult classify(DiscretizedData test, List<DiscretizedData> train) {
 

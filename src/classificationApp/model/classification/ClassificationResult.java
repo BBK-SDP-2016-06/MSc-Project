@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * A wrapper class that enables both a predicted class type
  * and corresponding confidence measure to be returned from
- * a classificationApp.model.classification process. It is also
+ * a resulting classification process. It is also
  * used to store all elements required to print a result of a
  * single classification process.
  * Created by George on 30/07/2016.
@@ -18,10 +18,10 @@ import java.util.Optional;
 @Setter
 public class ClassificationResult {
 
-    private int index;
+    private int index; //index of the original data sample (used as reference point)
     private Optional<Integer> actClass;
     private int predictedClass;
-    private List<NeighbourDistance> neighbourDistances;
+    private List<NeighbourDistance> neighbourDistances; //list of computed distances as measured by LCS
     private boolean correctPrediction;
 
     public ClassificationResult(Optional<Integer> actClass, int predictedClass, List<NeighbourDistance> neighbourDistances) {
