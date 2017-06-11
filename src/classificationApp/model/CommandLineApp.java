@@ -19,13 +19,22 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
- * Small application to obtain error rate results via the command line.
+ * Small application to obtain error rate results via the command line. The user is required to provide a time series
+ * directory name and one of three parameters that is to be tested: alphabet size, frame count and k number. The
+ * command line output is in a format that can be easily copied and pasted into a simple text application and saved
+ * as a comma separated value file (*.csv).
  * Created by George Shiangoli on 24/08/2016.
  */
 public class CommandLineApp {
 
+    // Local absolute root of the UCR Time Series Data repository.
+    // This will need to be changed to relative root to work on other machines
     private final static String ROOT = "C:\\Users\\George\\Documents\\Computer Science\\08 - MSc Project\\APP\\Data\\UCR_TS_Archive_2015";
+
+    //Class to hold the test TimeSeries objects
     private TestFileReader test;
+
+    //Class to hold the training TimeSeries objects
     private TrainingFileReader train;
 
     public static void main(String[] args) {
@@ -34,13 +43,14 @@ public class CommandLineApp {
     }
 
     private void launch() {
-        System.out.print("Time Series Directory: ");
 
+        // User provides time series data repository name
+        System.out.print("Time Series Directory: ");
         Scanner scan = new Scanner(System.in);
         String input = scan.nextLine();
 
+        // Asserts whether repository provided by user exists. If so initialises test and training FileReader fields.
         File directory = new File(ROOT + File.separator + input);
-
         if (directory.isDirectory()) {
             File[] files = directory.listFiles();
             assert files != null;
@@ -54,8 +64,10 @@ public class CommandLineApp {
             }
         }
 
+        // User provides parameter to be tested
         System.out.print("Test parameter type (a = alphabet size, f = frame count, k = k-value): ");
         String choice = scan.nextLine();
+
         switch (choice) {
             case "a":
                 System.out.print("Frame count: ");

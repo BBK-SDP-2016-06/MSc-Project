@@ -31,6 +31,7 @@ public class FilterController {
     private Stage stage;
     private MainApp mainApp;
     private ClassificationController classificationController;
+    private final static String RANGE_KEYWORD = "to";
 
     @FXML
     private void initialize() {
@@ -57,15 +58,15 @@ public class FilterController {
             List<Integer> singleValues = Stream.of(userFilter.getText().split(","))
                     .map(String::trim)
                     .filter(s -> !s.isEmpty())
-                    .filter(s -> !s.contains("-"))
+                    .filter(s -> !s.contains(RANGE_KEYWORD))
                     .mapToInt(Integer::parseInt)
                     .boxed().collect(Collectors.toList());
 
             List<List<Integer>> rangeValues = Stream.of(userFilter.getText().split(","))
                     .map(String::trim)
                     .filter(s -> !s.isEmpty())
-                    .filter(s -> s.contains("-"))
-                    .map(s -> Stream.of(s.split("-")).map(String::trim).map(Integer::parseInt).collect(Collectors.toList()))
+                    .filter(s -> s.contains(RANGE_KEYWORD))
+                    .map(s -> Stream.of(s.split(RANGE_KEYWORD)).map(String::trim).map(Integer::parseInt).collect(Collectors.toList()))
                     .collect(Collectors.toList());
 
             List<Integer> filterValues = rangeValues.parallelStream().flatMap(l -> IntStream.range(l.get(0), 1 + l.get(1)).boxed()).collect(Collectors.toList());
